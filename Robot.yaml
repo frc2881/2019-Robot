@@ -402,7 +402,7 @@ Children:
           validators: *id015
           value: '0'
       Base: Solenoid
-      Name: HP Intake (Plan B) Solenoid
+      Name: HP Intake Plan B Solenoid
     - Children: []
       Properties:
         Output Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
@@ -606,7 +606,7 @@ Children:
         validators: null
         value: &id018 []
     Base: Subsystem
-    Name: Compressor
+    Name: Pneumatics
   - Children:
     - Children: []
       Properties:
@@ -1815,11 +1815,11 @@ Properties:
     name: Export Subsystems, validators: null, value: true}
   Simulation World File: !!robotbuilder.data.properties.StringProperty {default: /usr/share/frcsim/worlds/GearsBotDemo.world,
     name: Simulation World File, validators: null, value: /usr/share/frcsim/worlds/GearsBotDemo.world}
-  Wiring file location: !!robotbuilder.data.properties.FileProperty {default: 'C:\Users\frc\',
-    extension: null, folder: true, name: Wiring file location, validators: null, value: 'C:\Users\frc\FRCProjects\LadyCansDrive'}
-  Export Directory: !!robotbuilder.data.properties.FileProperty {default: 'C:\Users\frc\FRCProjects',
-    extension: null, folder: true, name: Export Directory, validators: null, value: ..\}
+  Wiring file location: !!robotbuilder.data.properties.FileProperty {default: /Users/fifteen.cent/,
+    extension: null, folder: true, name: Wiring file location, validators: null, value: ./}
+  Export Directory: !!robotbuilder.data.properties.FileProperty {default: /Users/fifteen.cent/FRCProjects,
+    extension: null, folder: true, name: Export Directory, validators: null, value: ../}
   Autonomous Command: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
     name: Autonomous Command, type: Command, validators: null, value: Autonomous Command}
 Base: Robot
-Name: LadyCansDrive
+Name: 2019RobotBuilder
