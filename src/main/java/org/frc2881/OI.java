@@ -143,7 +143,7 @@ public class OI {
 
         //scores HP
         loadHP = buttonFromAxis(manipulator, PS4.RED_CIRCLE);
-        loadHP.whenPressed(new HPLoad());
+        loadHP.whenPressed(new HPPlace());
 
         //scores Cargo
         loadCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
