@@ -18,6 +18,16 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc2881.commands.*;
+import org.frc2881.commands.basic.*;
+import org.frc2881.commands.basic.background.*;
+import org.frc2881.commands.basic.drive.*;
+import org.frc2881.commands.basic.wait.*;
+import org.frc2881.commands.basic.rumble.*;
+import org.frc2881.commands.scoring.*;
+import org.frc2881.commands.scoring.arm.*;
+import org.frc2881.commands.scoring.cargo.*;
+import org.frc2881.commands.scoring.HP.*;
+import org.frc2881.commands.scoring.lift.*;
 import org.frc2881.subsystems.*;
 
 /**

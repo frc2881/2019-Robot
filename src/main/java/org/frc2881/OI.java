@@ -8,15 +8,25 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881;
 
 import org.frc2881.commands.*;
+import org.frc2881.commands.basic.*;
+import org.frc2881.commands.basic.background.*;
+import org.frc2881.commands.basic.drive.*;
+import org.frc2881.commands.basic.wait.*;
+import org.frc2881.commands.basic.rumble.*;
+import org.frc2881.commands.scoring.*;
+import org.frc2881.commands.scoring.arm.*;
+import org.frc2881.commands.scoring.cargo.*;
+import org.frc2881.commands.scoring.HP.*;
+import org.frc2881.commands.scoring.lift.*;
 import org.frc2881.controllers.PS4;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.*;
 import org.frc2881.subsystems.*;
@@ -147,7 +157,7 @@ public class OI {
 
         //scores Cargo
         loadCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
-        loadCargo.whenPressed(new CargoLoad());
+        loadCargo.whenPressed(new CargoPlace());
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
@@ -156,12 +166,12 @@ public class OI {
         SmartDashboard.putData("Arm Control", new ArmControl());
         SmartDashboard.putData("Arm To Height", new ArmToHeight(Arm.MEDIUM_GOAL_HEIGHT, true));
         SmartDashboard.putData("Cargo Control Rollers", new CargoControlRollers());
-        SmartDashboard.putData("Cargo Loaded", new CargoLoad());
+        SmartDashboard.putData("Cargo Loaded", new CargoPlace());
         SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers());
         SmartDashboard.putData("Cargo Intake", new CargoIntake());
         SmartDashboard.putData("Do Nothing", new DoNothing());
         SmartDashboard.putData("Drive Forward", new DriveForward());
-        SmartDashboard.putData("HP Loaded", new HPLoad());
+        SmartDashboard.putData("HP Loaded", new HPPlace());
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers());
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
