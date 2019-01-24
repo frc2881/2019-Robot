@@ -10,10 +10,10 @@
 
 
 package org.frc2881.commands.basic.wait;
-import edu.wpi.first.wpilibj.command.Command;
-import org.frc2881.Robot;
 
-/**
+import edu.wpi.first.wpilibj.command.Command;
+
+/** 
  *
  */
 public class WaitUntilHPDetected extends Command {

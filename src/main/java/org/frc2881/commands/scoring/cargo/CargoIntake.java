@@ -10,8 +10,8 @@
 
 
 package org.frc2881.commands.scoring.cargo;
+
 import edu.wpi.first.wpilibj.command.Command;
-import org.frc2881.Robot;
 
 /**
  *

@@ -10,26 +10,51 @@
 
 package org.frc2881;
 
-import org.frc2881.commands.*;
-import org.frc2881.commands.basic.*;
-import org.frc2881.commands.basic.background.*;
-import org.frc2881.commands.basic.drive.*;
-import org.frc2881.commands.basic.wait.*;
-import org.frc2881.commands.basic.rumble.*;
-import org.frc2881.commands.scoring.*;
-import org.frc2881.commands.scoring.arm.*;
-import org.frc2881.commands.scoring.cargo.*;
-import org.frc2881.commands.scoring.HP.*;
-import org.frc2881.commands.scoring.lift.*;
+import org.frc2881.commands.basic.CameraSwitch;
+import org.frc2881.commands.basic.background.NavXReset;
+import org.frc2881.commands.basic.background.RobotPrep;
+import org.frc2881.commands.basic.background.TWINKLES;
+import org.frc2881.commands.basic.drive.DriveForward;
+import org.frc2881.commands.basic.drive.DriveWithJoysticks;
+import org.frc2881.commands.basic.drive.IntakeSetAsBack;
+import org.frc2881.commands.basic.drive.IntakeSetAsFront;
+import org.frc2881.commands.basic.rumble.RumbleDriver;
+import org.frc2881.commands.basic.rumble.RumbleJoysticks;
+import org.frc2881.commands.basic.rumble.RumbleNo;
+import org.frc2881.commands.basic.rumble.RumbleYes;
+import org.frc2881.commands.basic.wait.DoNothing;
+import org.frc2881.commands.basic.wait.WaitForPressure;
+import org.frc2881.commands.basic.wait.WaitForever;
+import org.frc2881.commands.basic.wait.WaitUntilCargoDetected;
+import org.frc2881.commands.basic.wait.WaitUntilHPDetected;
+import org.frc2881.commands.basic.wait.WaitUntilNavXDetected;
+import org.frc2881.commands.scoring.AutonomousCommand;
+import org.frc2881.commands.scoring.HP.HPControlRollers;
+import org.frc2881.commands.scoring.HP.HPIntakeGround;
+import org.frc2881.commands.scoring.HP.HPIntakeHuman;
+import org.frc2881.commands.scoring.HP.HPPlace;
+import org.frc2881.commands.scoring.HP.HPSetRollers;
+import org.frc2881.commands.scoring.arm.ArmCalibrateEncoder;
+import org.frc2881.commands.scoring.arm.ArmControl;
+import org.frc2881.commands.scoring.arm.ArmToHeight;
+import org.frc2881.commands.scoring.cargo.CargoControlRollers;
+import org.frc2881.commands.scoring.cargo.CargoIntake;
+import org.frc2881.commands.scoring.cargo.CargoPlace;
+import org.frc2881.commands.scoring.cargo.CargoSetRollers;
+import org.frc2881.commands.scoring.lift.LiftControl;
+import org.frc2881.commands.scoring.lift.LiftCrawler;
+import org.frc2881.commands.scoring.lift.LiftPin;
+import org.frc2881.commands.scoring.lift.LiftSetScrew;
+import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
+import org.frc2881.subsystems.Arm;
+import org.frc2881.subsystems.Lift;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.buttons.*;
-import org.frc2881.subsystems.*;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
