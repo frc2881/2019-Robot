@@ -152,4 +152,9 @@ bin/
 
 # End of https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
 
+# Ignore IDEA project files
 .idea/
+2019RobotDrive.iml
+2019RobotDrive.ipr
+2019RobotDrive.iws
+2019RobotDrive.iml
