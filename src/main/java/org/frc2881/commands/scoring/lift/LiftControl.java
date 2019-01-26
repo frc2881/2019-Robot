@@ -13,6 +13,7 @@ package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -44,7 +45,8 @@ public class LiftControl extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.lift.setLiftLeft(0.5);
+        Robot.lift.setLiftLeft(Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft));
+        Robot.lift.setLiftRight(Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft));
 
     }
 
@@ -58,6 +60,7 @@ public class LiftControl extends Command {
     @Override
     protected void end() {
         Robot.lift.setLiftLeft(0);
+        Robot.lift.setLiftRight(0);
     }
 
     // Called when another command which requires one or more of the same
