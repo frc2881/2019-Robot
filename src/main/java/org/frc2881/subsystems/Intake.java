@@ -34,7 +34,6 @@ public class Intake extends Subsystem {
     private Solenoid hPSuctionCupSolenoid;
     private Solenoid hPGripperSolenoid;
     private Solenoid hPIntakePlanBSolenoid;
-    private Solenoid wristSolenoid;
     private Ultrasonic hPDistanceEcholocation;
     private Spark hPIntakeMotor;
 
@@ -52,10 +51,6 @@ public class Intake extends Subsystem {
         
         hPIntakePlanBSolenoid = new Solenoid(0, 3);
         addChild("HP Intake Plan B Solenoid",hPIntakePlanBSolenoid);
-        
-        
-        wristSolenoid = new Solenoid(0, 4);
-        addChild("Wrist Solenoid",wristSolenoid);
         
         
         hPDistanceEcholocation = new Ultrasonic(4, 5);
@@ -79,6 +74,18 @@ public class Intake extends Subsystem {
 
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
+    }
+
+    public void suction() {
+
+        hPSuctionCupSolenoid.set(!hPSuctionCupSolenoid.get());
+
+    }
+
+    public void setSuctionState(boolean state){
+
+        hPSuctionCupSolenoid.set(state);
+
     }
 
     @Override
