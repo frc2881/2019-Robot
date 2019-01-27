@@ -134,4 +134,7 @@ public class Robot extends TimedRobot {
         String line = IntStream.range(0, 40 - message.length()).mapToObj(n -> lineChar).collect(Collectors.joining());
         System.err.println(message + line);
     }
+
+	public static void log(String string) {
+	}
 }
