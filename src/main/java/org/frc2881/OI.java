@@ -210,8 +210,8 @@ public class OI {
         SmartDashboard.putData("NavX Reset", new NavXReset());
         SmartDashboard.putData("Rumble Driver", new RumbleDriver());
         SmartDashboard.putData("Rumble Joysticks", new RumbleJoysticks());
-        SmartDashboard.putData("Rumble Yes", new RumbleYes());
-        SmartDashboard.putData("Rumble No", new RumbleNo());
+        SmartDashboard.putData("Rumble Yes", new RumbleYes(driver));
+        SmartDashboard.putData("Rumble No", new RumbleNo(driver));
         SmartDashboard.putData("Intake Set As Back", new IntakeSetAsBack());
         SmartDashboard.putData("Intake Set As Front", new IntakeSetAsFront());
         SmartDashboard.putData("TWINKLES", new TWINKLES());

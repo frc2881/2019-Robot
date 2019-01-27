@@ -8,32 +8,32 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.commands.scoring.HP;
 
 import edu.wpi.first.wpilibj.command.Command;
-
 import org.frc2881.Robot;
-
+import org.frc2881.commands.basic.rumble.RumbleNo;
+import org.frc2881.controllers.PS4;
+import org.frc2881.utils.AmpMonitor;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 
 
 /**
- * @param <AmpMonitor>
+ * 
  *
  */
-public class HPControlRollers<AmpMonitor> extends Command {
+public class HPControlRollers extends Command {
 
-   // private AmpMonitor ampMonitor = new AmpMonitor(10.0, () -> Robot.intakeSubsystem.getHighestRollerCurrent());
+    private AmpMonitor ampMonitor = new AmpMonitor(10, () -> Robot.intake.getHPRollerCurrent());
     private boolean monitoringAmps;
     private double speedCap;
     private double joystickValue;
     private double programTime;
-    private boolean joystickLeft;
-    private boolean joystickRight;
 
     public HPControlRollers() {
-        requires(Robot.intakeSubsystem);
+        requires(Robot.intake);
 }
 
 
@@ -64,30 +64,17 @@ public class HPControlRollers<AmpMonitor> extends Command {
     @Override
     protected void execute() {
         if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
-                joystickValue - Robot.oi.manipulator.getY(GenericHID.Hand.kLeft) >= 0.25)) {
-
-            joystickLeft = Math.abs(Robot.oi.manipulator.getY(GenericHID.Hand.kLeft)) <= 0.15 &&
-                    Robot.oi.manipulator.getX(GenericHID.Hand.kLeft) <= -0.15;
-            joystickRight = Math.abs(Robot.oi.manipulator.getY(GenericHID.Hand.kLeft)) <= 0.15 &&
-                    Robot.oi.manipulator.getX(GenericHID.Hand.kLeft) >= 0.15;
-
-            if (joystickLeft || joystickRight) {
-                System.out.println("turning");
-                double turnSpeed = -Robot.oi.manipulator.getX(GenericHID.Hand.kLeft);
-                Robot.intakeSubsystem.turnHPIntakeMotor(turnSpeed * .5);
-            }
-
-            else {
-                double straightSpeed = -Robot.oi.manipulator.getY(GenericHID.Hand.kLeft);
-                Robot.intakeSubsystem.hPIntakeMotor(straightSpeed);
-                if (straightSpeed < -.35){
-                    new SetClaw(LiftSubsystem.ClawState.OPEN).start();
-                }
-            }
+                joystickValue + Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) >= 0.25)) {
+            Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER));
         }
 
+        else if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
+            joystickValue - Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER) >= 0.25)) {
+        Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER));
+         }
+
         else {
-            Robot.intakeSubsystem.hPIntakeMotor(speedCap);
+            Robot.intake.HPRollers(speedCap);
         }
 
         if (!monitoringAmps && timeSinceInitialized() > .2){
@@ -99,25 +86,25 @@ public class HPControlRollers<AmpMonitor> extends Command {
             Robot.log("HP Roller current limit exceeded");
 
             speedCap = 0.2;
-            joystickValue = Robot.oi.manipulator.getY(GenericHID.Hand.kLeft);
+
+            //Makes joystick value the trigger that is being pressed
+            if (Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER) <= 0.15 &&
+                 Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) > 0){
+                joystickValue = Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER);
+            }   
+
+            else {
+                joystickValue = Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER);
+            }
+
             programTime = timeSinceInitialized();
 
-            if (Math.abs(Robot.oi.manipulator.getX(GenericHID.Hand.kLeft)) <= 0.15 &&
-                    Robot.oi.manipulator.getY(GenericHID.Hand.kLeft) > 0) {
-                Robot.intakeSubsystem.hPIntakeMotor(-speedCap);
+            if (Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER) > 0) {
+                Robot.intake.HPRollers(speedCap);
             }
 
-            else if (Math.abs(Robot.oi.manipulator.getX(GenericHID.Hand.kLeft)) <= 0.15 &&
-                    Robot.oi.manipulator.getY(GenericHID.Hand.kLeft) < 0 ){
-                Robot.intakeSubsystem.hPIntakeMotor(speedCap);
-            }
-
-            else if (joystickLeft && Robot.oi.manipulator.getX(GenericHID.Hand.kLeft) < 0 ){
-                Robot.intakeSubsystem.turnRollers(speedCap);
-            }
-
-            else if (joystickRight && Robot.oi.manipulator.getY(GenericHID.Hand.kLeft) > 0 ){
-                Robot.intakeSubsystem.turnRollers(-speedCap);
+            else if (Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) > 0 ){
+                Robot.intake.HPRollers(-speedCap);
             }
 
             new RumbleNo(Robot.oi.manipulator).start();
@@ -136,11 +123,5 @@ public class HPControlRollers<AmpMonitor> extends Command {
     @Override
     protected void end() {
         Robot.log("HP Control Rollers has ended");
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
     }
 }
