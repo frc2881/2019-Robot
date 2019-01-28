@@ -55,7 +55,7 @@ public class ArmCalibrateEncoder extends Command {
 
 
         if (Robot.arm.isSpeedReallySmall()) {
-            Robot.log("Speed ended arm calibration: " + Arm.getArmRate());
+            Robot.log("Speed ended arm calibration: " + Robot.arm.getArmRate());
             return true;
         }
         return true;
