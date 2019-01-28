@@ -2,6 +2,7 @@ package org.frc2881.commands.basic.drive;
 
 import org.frc2881.Robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -19,12 +20,16 @@ public class DriveWithJoysticks extends Command {
     protected void initialize() {
 
     }
+
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        //What are the names of the joysticks?
-        double left = -Robot.oi.driverJoysticks.getY(GenericHID.Hand.kLeft);
-        double right = -Robot.oi.driverJoysticks.getY(GenericHID.Hand.kRight);
+        //if the joysticks move, it moves the corrisponding side of the robot \/
+        if (Math.abs(Robot.oi.driver.getY(GenericHID.Hand.kLeft)) < 0.06 &&
+                Math.abs(Robot.oi.driver.getY(GenericHID.Hand.kRight)) < 0.06) {
+            Robot.drive.getLeftDistance();
+            Robot.drive.getRightDistance();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -36,6 +41,7 @@ public class DriveWithJoysticks extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.log("Tele-op tank drive has ended");
     }
 
     // Called when another command which requires one or more of the same
