@@ -11,6 +11,9 @@
 
 package org.frc2881;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.frc2881.commands.scoring.AutonomousCommand;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Drive;
@@ -118,6 +121,7 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        printRobotMode("Enabled", "-");
     }
 
     /**
@@ -126,6 +130,11 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+    }
+
+    private void printRobotMode(String message, String lineChar) {
+        String line = IntStream.range(0, 40 - message.length()).mapToObj(n -> lineChar).collect(Collectors.joining());
+        System.err.println(message + line);
     }
 
 	public static void log(String string) {

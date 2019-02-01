@@ -28,12 +28,14 @@ import org.frc2881.commands.basic.wait.WaitForever;
 import org.frc2881.commands.basic.wait.WaitUntilCargoDetected;
 import org.frc2881.commands.basic.wait.WaitUntilHPDetected;
 import org.frc2881.commands.basic.wait.WaitUntilNavXDetected;
+import org.frc2881.commands.scoring.ArmWrist;
 import org.frc2881.commands.scoring.AutonomousCommand;
 import org.frc2881.commands.scoring.HP.HPControlRollers;
 import org.frc2881.commands.scoring.HP.HPIntakeGround;
 import org.frc2881.commands.scoring.HP.HPIntakeHuman;
 import org.frc2881.commands.scoring.HP.HPPlace;
 import org.frc2881.commands.scoring.HP.HPSetRollers;
+import org.frc2881.commands.scoring.HP.HPSuction;
 import org.frc2881.commands.scoring.arm.ArmCalibrateEncoder;
 import org.frc2881.commands.scoring.arm.ArmControl;
 import org.frc2881.commands.scoring.arm.ArmToHeight;
@@ -110,6 +112,8 @@ public class OI {
     public Button manipulatorOption;
     public Button intakeHPHuman;
     public Button intakeHPFloor;
+    public Button hPSuction;
+    public Button moveWrist;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -155,6 +159,10 @@ public class OI {
        
 
         //MANIPULATOR
+        
+        //moves wrist to opposite state
+        moveWrist = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        moveWrist.whenPressed(new ArmWrist());
 
         //intakes HP from ground
         intakeHPFloor = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
@@ -184,6 +192,10 @@ public class OI {
         loadCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
         loadCargo.whenPressed(new CargoPlace());
 
+        //toggles suction
+        hPSuction = new JoystickButton(manipulator, PS4.RED_CIRCLE);
+        hPSuction.whenPressed(new HPSuction());
+        
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("Drive With Joysticks", new DriveWithJoysticks());
