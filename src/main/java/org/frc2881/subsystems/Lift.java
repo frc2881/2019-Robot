@@ -138,4 +138,8 @@ public class Lift extends PIDSubsystem {
     public void setLiftRight(double speed){
         liftMotorRight.setSpeed(speed);
     }
+
+    public void setLiftPin(boolean state){
+        liftPin.set(state);
+    }
 }
