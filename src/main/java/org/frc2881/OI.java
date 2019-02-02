@@ -193,7 +193,7 @@ public class OI {
         loadCargo.whenPressed(new CargoPlace());
 
         //toggles suction
-        hPSuction = new JoystickButton(manipulator, PS4.RED_CIRCLE);
+        hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
         hPSuction.whenPressed(new HPSuction());
         
         // SmartDashboard Buttons
