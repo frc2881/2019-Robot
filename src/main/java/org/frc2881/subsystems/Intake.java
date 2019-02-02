@@ -38,15 +38,15 @@ public class Intake extends Subsystem {
     private int intakeHPRollerPdpChannel = 1;
 
     public Intake() {
-        cargoSuctionCupSolenoid = new Solenoid(0, 1);
+        cargoSuctionCupSolenoid = new Solenoid(11, 1);
         addChild("cargo Suction Cup Solenoid",cargoSuctionCupSolenoid);
         
         
-        cargoGripperSolenoid = new Solenoid(0, 2);
+        cargoGripperSolenoid = new Solenoid(11, 2);
         addChild("cargo Gripper Solenoid",cargoGripperSolenoid);
         
         
-        cargoIntakePlanBSolenoid = new Solenoid(0, 3);
+        cargoIntakePlanBSolenoid = new Solenoid(11, 3);
         addChild("cargo Intake Plan B Solenoid",cargoIntakePlanBSolenoid);
         
         

@@ -21,7 +21,7 @@ public class PrettyLights extends Subsystem {
     private Spark tWINKLES;
 
     public PrettyLights() {
-        tWINKLES = new Spark(2);
+        tWINKLES = new Spark(6);
         addChild("TWINKLES",tWINKLES);
         tWINKLES.setInverted(false);
         
