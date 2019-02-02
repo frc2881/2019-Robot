@@ -63,7 +63,7 @@ public class Lift extends PIDSubsystem {
         addChild("Lift Crawler",liftCrawler);
         liftCrawler.setInverted(false);
         
-        liftPin = new Solenoid(0, 0);
+        liftPin = new Solenoid(11, 0);
         addChild("Lift Pin",liftPin);
         
         

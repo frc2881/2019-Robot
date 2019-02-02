@@ -54,7 +54,7 @@ public class Arm extends PIDSubsystem {
         armEncoder.setDistancePerPulse(1.0);
         armEncoder.setPIDSourceType(PIDSourceType.kRate);
         
-        wristSolenoid = new Solenoid(0, 4);
+        wristSolenoid = new Solenoid(11, 4);
         addChild("Wrist Solenoid",wristSolenoid);
 
         // Use these to get going:
