@@ -10,8 +10,13 @@
 
 
 package org.frc2881.commands.basic.wait;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Compressor;
+import org.frc2881.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+
+import org.frc2881.Robot;
 
 /**
  *
@@ -37,6 +42,10 @@ public class WaitForPressure extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+
+        Robot.log("Wait For Pressure has started");
+
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -47,12 +56,15 @@ public class WaitForPressure extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return timeSinceInitialized() > 0.2 && Robot.pneumatics.hasEnoughPressure();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+
+        Robot.log("Wait For Pressure has finished.");
+
     }
 
     // Called when another command which requires one or more of the same
