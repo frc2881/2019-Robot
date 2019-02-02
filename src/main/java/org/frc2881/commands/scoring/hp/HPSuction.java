@@ -8,22 +8,29 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands;
+package org.frc2881.commands.scoring.hp;
+
+import org.frc2881.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class CargoControlRollers extends Command {
+public class HPSuction extends Command {
 
-    public CargoControlRollers() {
+    public HPSuction() {
+
+        requires(Robot.intake);
 
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+
+        Robot.intake.suction();
+
     }
 
     // Called repeatedly when this Command is scheduled to run
