@@ -13,6 +13,8 @@ package org.frc2881.commands.basic.rumble;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
+import org.frc2881.Robot;
+
 /**
  *
  */
@@ -26,9 +28,9 @@ public class RumbleNo extends TimedCommand {
 
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.logInitialize(this);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -42,14 +44,8 @@ public class RumbleNo extends TimedCommand {
         return false;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
+        Robot.logEnd(this);
     }
 }

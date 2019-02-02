@@ -17,14 +17,14 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**o
+/**
  *
  */
 public class RumbleDriver extends Command {
-   // Called just before this Command runs the first time
+
    @Override
    protected void initialize() {
-       Robot.log("RumbleDriver has started");
+       Robot.logInitialize(this);
        Robot.oi.driver.setRumble(RumbleType.kRightRumble, .7);
    }
 
@@ -49,6 +49,6 @@ public class RumbleDriver extends Command {
    @Override
    protected void end() {
        Robot.oi.driver.setRumble(RumbleType.kRightRumble, 0);
-       Robot.log("RumbleDriver has finished");
+       Robot.logEnd(this);
    }
 }

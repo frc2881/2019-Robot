@@ -10,8 +10,8 @@
 
 package org.frc2881;
 
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.frc2881.commands.scoring.AutonomousCommand;
 import org.frc2881.subsystems.Arm;
@@ -24,9 +24,10 @@ import org.frc2881.subsystems.PrettyLights;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -126,12 +127,29 @@ public class Robot extends TimedRobot {
     }
 
     private void printRobotMode(String message, String lineChar) {
-        String line = IntStream.range(0, 40 - message.length()).mapToObj(n -> lineChar).collect(Collectors.joining());
+        String line = IntStream.range(0, 40 - message.length()).mapToObj(n -> lineChar).collect(joining());
         System.err.println(message + line);
     }
 
     public static void log(String message) {
         long time = System.currentTimeMillis() - startTime;
         System.out.printf("[%6.2f] %s%n", time / 1000.0, message);
+    }
+
+    public static void logInitialize(Command command) {
+        log("Command " + command.getClass().getSimpleName() + " started");
+    }
+
+    public static void logInitialize(Command command, Object... settings) {
+        log("Command " + command.getClass().getSimpleName() + " started: " +
+                Stream.of(settings).map(Object::toString).collect(joining(", ")));
+    }
+
+    public static void logEnd(Command command) {
+        log("Command " + command.getClass().getSimpleName() + " ended");
+    }
+
+    public static void logInterrupted(Command command) {
+        log("Command " + command.getClass().getSimpleName() + " interrupted");
     }
 }
