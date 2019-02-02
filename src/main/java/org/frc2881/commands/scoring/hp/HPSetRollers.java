@@ -26,10 +26,9 @@ public class HPSetRollers extends Command {
         this.speed = speed;
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.log("HPSetRollers has started: " + speed);
+        Robot.logInitialize(this, speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -44,10 +43,9 @@ public class HPSetRollers extends Command {
         return false;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
         Robot.intake.stopHPRollers();
-        Robot.log("HPSetRollers has finished");
+        Robot.logEnd(this);
     }
 }

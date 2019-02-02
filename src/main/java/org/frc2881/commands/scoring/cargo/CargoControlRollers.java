@@ -31,10 +31,9 @@ public class CargoControlRollers extends Command {
         requires(Robot.intake);
 }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.log("Control Rollers has started");
+        Robot.logInitialize(this);
         monitoringAmps = false;
     }
 
@@ -84,9 +83,8 @@ public class CargoControlRollers extends Command {
         return false;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.log("Cargo Control Rollers has ended");
+        Robot.logEnd(this);
     }
 }

@@ -11,6 +11,7 @@
 package org.frc2881.commands.basic.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.frc2881.Robot;
 
 /**
  *
@@ -18,17 +19,18 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveForward extends Command {
 
     public DriveForward() {
-
+        // TODO: implement this
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.logInitialize(this);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        // TODO: implement this
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,14 +39,8 @@ public class DriveForward extends Command {
         return false;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
+        Robot.logEnd(this);
     }
 }

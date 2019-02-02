@@ -24,9 +24,9 @@ public class LiftControl extends Command {
 
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.logInitialize(this);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -43,17 +43,10 @@ public class LiftControl extends Command {
         return false;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
         Robot.lift.setLiftLeft(0);
         Robot.lift.setLiftRight(0);
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-        end();
+        Robot.logEnd(this);
     }
 }

@@ -24,10 +24,9 @@ public class ArmCalibrateEncoder extends Command {
         requires(Robot.arm);
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.log("Calibrate Arm Encoder has started");
+        Robot.logInitialize(this);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -54,12 +53,11 @@ public class ArmCalibrateEncoder extends Command {
         return true;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
         Robot.arm.setArmMotorSpeed(0);
         Robot.arm.resetArmEncoder();
+        Robot.logEnd(this);
     }
-
 }
 
