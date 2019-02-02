@@ -10,6 +10,8 @@
 
 package org.frc2881.commands.scoring.arm;
 
+import org.frc2881.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -18,12 +20,16 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ArmWrist extends Command {
 
     public ArmWrist() {
+        requires(Robot.arm);
 
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        
+        Robot.arm.moveWrist();
+
     }
 
     // Called repeatedly when this Command is scheduled to run

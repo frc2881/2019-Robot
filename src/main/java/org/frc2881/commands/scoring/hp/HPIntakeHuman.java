@@ -8,16 +8,16 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands;
+package org.frc2881.commands.scoring.hp;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class HPControlRollers extends Command {
+public class HPIntakeHuman extends Command {
 
-    public HPControlRollers() {
+    public HPIntakeHuman() {
 
     }
 

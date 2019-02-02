@@ -8,50 +8,46 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands.scoring;
+package org.frc2881.commands.scoring.hp;
 
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ArmWrist extends Command {
+public class HPSetRollers extends Command {
 
-    public ArmWrist() {
-        requires(Robot.arm);
+    private double speed;
 
+    public HPSetRollers(double speed) {
+        requires(Robot.intake);
+        this.speed = speed;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        
-        Robot.arm.moveWrist();
-
+        Robot.log("HPSetRollers has started: " + speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.intake.HPRollers(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
+        Robot.intake.stopHPRollers();
+        Robot.log("HPSetRollers has finished");
     }
 }
