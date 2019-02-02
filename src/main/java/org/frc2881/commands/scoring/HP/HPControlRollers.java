@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 
-
 /**
  * 
  *
@@ -35,15 +34,6 @@ public class HPControlRollers extends Command {
     public HPControlRollers() {
         requires(Robot.intake);
 }
-
-
-
-
-
-
-
-
-
 
     // Called just before this Command runs the first time
     @Override

@@ -8,14 +8,12 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.commands.scoring.cargo;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleNo;
 import org.frc2881.utils.AmpMonitor;
 import edu.wpi.first.wpilibj.GenericHID;
-
 
 /**
  * 
@@ -32,15 +30,6 @@ public class CargoControlRollers extends Command {
     public CargoControlRollers() {
         requires(Robot.intake);
 }
-
-
-
-
-
-
-
-
-
 
     // Called just before this Command runs the first time
     @Override

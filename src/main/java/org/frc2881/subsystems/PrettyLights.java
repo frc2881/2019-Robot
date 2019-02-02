@@ -8,24 +8,17 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.subsystems;
-
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
-
 
 /**
  *
  */
 public class PrettyLights extends Subsystem {
 
-
-
     private Spark tWINKLES;
-
 
     public PrettyLights() {
         tWINKLES = new Spark(2);
@@ -38,8 +31,6 @@ public class PrettyLights extends Subsystem {
     @Override
     public void initDefaultCommand() {
 
-
-
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
@@ -49,9 +40,6 @@ public class PrettyLights extends Subsystem {
         // Put code here to be run every loop
 
     }
-
-
-
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.

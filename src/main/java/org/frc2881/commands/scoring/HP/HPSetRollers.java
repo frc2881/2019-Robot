@@ -8,7 +8,6 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.commands.scoring.HP;
 
 import org.frc2881.Robot;

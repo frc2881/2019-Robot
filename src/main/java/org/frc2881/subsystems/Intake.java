@@ -16,14 +16,10 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-
-
 /**
  *
  */
 public class Intake extends Subsystem {
-
-
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Solenoid cargoSuctionCupSolenoid;
@@ -40,7 +36,6 @@ public class Intake extends Subsystem {
     private Spark hPIntakeMotor;
 
     private int intakeHPRollerPdpChannel = 1;
-
 
     public Intake() {
         cargoSuctionCupSolenoid = new Solenoid(0, 1);
@@ -73,13 +68,10 @@ public class Intake extends Subsystem {
         cargoIntakeMotor.setInverted(false);
         
 
-
     }
 
     @Override
     public void initDefaultCommand() {
-
-
 
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());

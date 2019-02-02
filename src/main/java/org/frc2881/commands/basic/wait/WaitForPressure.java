@@ -8,7 +8,6 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.commands.basic.wait;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
@@ -23,11 +22,7 @@ import org.frc2881.Robot;
  */
 public class WaitForPressure extends Command {
 
-
-
     public WaitForPressure() {
-
-
 
     }
 
@@ -36,7 +31,6 @@ public class WaitForPressure extends Command {
     protected void initialize() {
 
         Robot.log("Wait For Pressure has started");
-
 
     }
 

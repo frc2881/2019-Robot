@@ -8,9 +8,7 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.subsystems;
-
 
 import org.frc2881.Robot;
 
@@ -22,20 +20,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.AnalogInput;
 import org.frc2881.Robot;
 
-
-
 /**
  *
  */
 public class Pneumatics extends Subsystem {
 
-
-
-
     private final Compressor compressor;
     private final AnalogInput compressorPressure;
     
-
 
     public Pneumatics() {
 
@@ -63,8 +55,6 @@ public class Pneumatics extends Subsystem {
     @Override
     public void initDefaultCommand() {
 
-
-
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
@@ -83,9 +73,6 @@ public class Pneumatics extends Subsystem {
         // Put code here to be run every loop
 
     }
-
-
-
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.

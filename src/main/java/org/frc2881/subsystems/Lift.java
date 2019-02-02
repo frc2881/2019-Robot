@@ -8,7 +8,6 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.subsystems;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -19,13 +18,10 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-
 /**
  *
  */
 public class Lift extends PIDSubsystem {
-
-
 
     public static double LOW_PLATFORM_HEIGHT = 1;
     public static double HIGH_PLATFORM_HEIGHT = 2;
@@ -37,7 +33,6 @@ public class Lift extends PIDSubsystem {
     private Spark liftCrawler;
     private Solenoid liftPin;
 
-
     // Initialize your subsystem here
     public Lift() {
         super("Lift", 1.0, 0.0, 0.0);
@@ -45,7 +40,6 @@ public class Lift extends PIDSubsystem {
         getPIDController().setContinuous(false);
         getPIDController().setName("Lift", "PIDSubsystem Controller");
         LiveWindow.add(getPIDController());
-
 
         liftEncoderLeft = new Encoder(0, 1, false, EncodingType.k4X);
         addChild("Lift Encoder Left",liftEncoderLeft);
@@ -74,8 +68,6 @@ public class Lift extends PIDSubsystem {
         
         
 
-
-
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
@@ -84,8 +76,6 @@ public class Lift extends PIDSubsystem {
 
     @Override
     public void initDefaultCommand() {
-
-
 
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
@@ -109,9 +99,6 @@ public class Lift extends PIDSubsystem {
         liftMotorLeft.pidWrite(output);
 
     }
-
-
-
 
     public void setLiftLeft(double speed){
         liftMotorLeft.setSpeed(speed);

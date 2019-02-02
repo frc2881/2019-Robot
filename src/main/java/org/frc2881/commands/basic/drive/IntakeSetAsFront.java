@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class IntakeSetAsFront extends InstantCommand {
 
-
     @Override
     protected void initialize() {
         //Robot.Drive.setIntakeLocation(Drive.IntakeLocation.FRONT);  // TODO
@@ -21,5 +20,4 @@ public class IntakeSetAsFront extends InstantCommand {
     }
 
 }
-
 

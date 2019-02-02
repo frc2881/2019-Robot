@@ -8,7 +8,6 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.commands.basic.background;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -18,11 +17,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class RobotPrep extends Command {
 
-
-
     public RobotPrep() {
-
-
 
     }
 

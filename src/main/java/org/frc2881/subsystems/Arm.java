@@ -8,7 +8,6 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.subsystems;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -19,13 +18,10 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-
 /**
  *
  */
 public class Arm extends PIDSubsystem {
-
-
 
     public static double HIGH_GOAL_HEIGHT = 3;
     public static double MEDIUM_GOAL_HEIGHT = 2;
@@ -40,7 +36,6 @@ public class Arm extends PIDSubsystem {
     private Encoder armEncoder;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
-
 
     // Initialize your subsystem here
     public Arm() {
@@ -61,9 +56,6 @@ public class Arm extends PIDSubsystem {
         
         wristSolenoid = new Solenoid(0, 4);
         addChild("Wrist Solenoid",wristSolenoid);
-
-
-
 
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
@@ -93,8 +85,6 @@ public class Arm extends PIDSubsystem {
     @Override
     public void initDefaultCommand() {
 
-
-
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
@@ -117,8 +107,6 @@ public class Arm extends PIDSubsystem {
         armMotor.pidWrite(output);
 
     }
-
-
 
     public boolean isSpeedReallySmall() {
         return Math.abs(armEncoder.getRate()) < .05;
@@ -178,6 +166,5 @@ public class Arm extends PIDSubsystem {
 //        armMotor.setExpiration(0.1);
 //        armMotor.setSafetyEnabled(true);
     }
-
 
 }

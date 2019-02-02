@@ -90,7 +90,6 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-
     public static final double DEADBAND = 0.06;
 
     public Button setIntakeFront;
@@ -115,13 +114,11 @@ public class OI {
     public XboxController driver;
     public XboxController manipulator;
 
-
     public OI() {
 
         manipulator = new XboxController(2);
 
         driver = new XboxController(1);
-
 
         //DRIVER
 
@@ -152,7 +149,6 @@ public class OI {
         //sets intake as front
         setIntakeFront = new JoystickButton(driver, PS4.GREEN_TRIANGLE);
         setIntakeFront.whenPressed(new IntakeSetAsFront());
-
 
         //MANIPULATOR
         

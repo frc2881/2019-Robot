@@ -8,7 +8,6 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.commands.scoring.arm;
 
 import org.frc2881.Robot;
@@ -20,8 +19,6 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ArmCalibrateEncoder extends Command {
-
-
 
     public ArmCalibrateEncoder() {
         requires(Robot.arm);
@@ -49,7 +46,6 @@ public class ArmCalibrateEncoder extends Command {
         if (timeSinceInitialized() < .5) {
             return false;
         }
-
 
         if (Robot.arm.isSpeedReallySmall()) {
             Robot.log("Speed ended arm calibration: " + Robot.arm.getArmRate());

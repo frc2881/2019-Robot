@@ -8,7 +8,6 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881.commands.scoring;
 
 import org.frc2881.Robot;
@@ -21,12 +20,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ArmWrist extends Command {
 
-
-
     public ArmWrist() {
         requires(Robot.arm);
-
-
 
     }
 

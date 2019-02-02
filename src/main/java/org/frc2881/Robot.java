@@ -8,7 +8,6 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.frc2881;
 
 import java.util.stream.Collectors;
@@ -50,7 +49,6 @@ public class Robot extends TimedRobot {
     public static Pneumatics pneumatics;
     public static PrettyLights prettyLights;
     private static long startTime = System.currentTimeMillis();
-
 
     /**
      * This function is run when the robot is first started up and should be
