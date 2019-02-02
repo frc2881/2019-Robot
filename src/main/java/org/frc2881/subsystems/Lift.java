@@ -66,15 +66,15 @@ public class Lift extends PIDSubsystem {
         liftEncoderRight.setDistancePerPulse(1.0);
         liftEncoderRight.setPIDSourceType(PIDSourceType.kRate);
         
-        liftMotorLeft = new Spark(4);
+        liftMotorLeft = new Spark(2);
         addChild("Lift Motor Left",liftMotorLeft);
         liftMotorLeft.setInverted(false);
         
-        liftMotorRight = new Spark(5);
+        liftMotorRight = new Spark(1);
         addChild("Lift Motor Right",liftMotorRight);
         liftMotorRight.setInverted(false);
         
-        liftCrawler = new Spark(3);
+        liftCrawler = new Spark(5);
         addChild("Lift Crawler",liftCrawler);
         liftCrawler.setInverted(false);
         
