@@ -10,37 +10,54 @@
 
 package org.frc2881.commands.scoring.arm;
 
+import org.frc2881.subsystems.Arm;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.Robot;
+import org.frc2881.commands.basic.rumble.RumbleYes;
 
 /**
  *
  */
 public class ArmToHeight extends Command {
 
-    public ArmToHeight(double height, boolean rumble) {
+    private double height;
+    private boolean rumble;
 
+    public ArmToHeight(double height, boolean rumble) {
+        requires (Robot.arm);
+        this.height = height;
+        this.rumble = rumble;
     }
 
     @Override
     protected void initialize() {
-        Robot.logInitialize(this);
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
+        Robot.logInitialize(this, height);
+        Robot.arm.setSetpoint(this.height);
+        Robot.arm.enable();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.arm.onTarget() || timeSinceInitialized() >= 2;
     }
 
     @Override
     protected void end() {
+        Robot.arm.disable();
+        if (rumble) {
+            new RumbleYes(Robot.oi.manipulator).start();
+        }
         Robot.logEnd(this);
     }
+
+    @Override
+    protected void interrupted() {
+        Robot.arm.disable();
+        Robot.arm.setArmMotorSpeed(0);
+        Robot.logInterrupted(this);
+    }
+
 }
