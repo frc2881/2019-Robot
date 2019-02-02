@@ -10,6 +10,7 @@
 
 package org.frc2881.subsystems;
 
+import org.frc2881.commands.scoring.cargo.CargoIntake;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
@@ -72,9 +73,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new CargoIntake());
     }
 
     public void suction() {
