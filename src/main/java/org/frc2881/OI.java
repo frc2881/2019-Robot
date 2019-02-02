@@ -203,12 +203,12 @@ public class OI {
         SmartDashboard.putData("Arm To Height", new ArmToHeight(Arm.MEDIUM_GOAL_HEIGHT, true));
         SmartDashboard.putData("Cargo Control Rollers", new CargoControlRollers());
         SmartDashboard.putData("Cargo Loaded", new CargoPlace());
-        SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers());
+        SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5));
         SmartDashboard.putData("Cargo Intake", new CargoIntake());
         SmartDashboard.putData("Do Nothing", new DoNothing());
         SmartDashboard.putData("Drive Forward", new DriveForward());
         SmartDashboard.putData("HP Loaded", new HPPlace());
-        SmartDashboard.putData("HP Set Rollers", new HPSetRollers());
+        SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
         SmartDashboard.putData("HP Intake Ground", new HPIntakeGround());

@@ -137,6 +137,4 @@ public class Robot extends TimedRobot {
         System.err.println(message + line);
     }
 
-	public static void log(String string) {
-	}
 }
