@@ -158,6 +158,10 @@ public class OI {
 
 
         //MANIPULATOR
+        
+        //moves wrist to opposite state
+        moveWrist = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        moveWrist.whenPressed(new ArmWrist());
 
         //moves wrist to opposite state
         moveWrist = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
@@ -192,7 +196,7 @@ public class OI {
         loadCargo.whenPressed(new CargoPlace());
 
         //toggles suction
-        hPSuction = new JoystickButton(manipulator, PS4.RED_CIRCLE);
+        hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
         hPSuction.whenPressed(new HPSuction());
 
         // SmartDashboard Buttons

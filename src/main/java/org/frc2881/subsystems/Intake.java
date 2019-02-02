@@ -63,19 +63,11 @@ public class Intake extends Subsystem {
         addChild("cargo Intake Plan B Solenoid",cargoIntakePlanBSolenoid);
         
         
-
-        wristSolenoid = new Solenoid(0, 4);
-        addChild("Wrist Solenoid",wristSolenoid);
-        
         
         cargoDistanceEcholocation = new Ultrasonic(4, 5);
         addChild("cargo Distance Echolocation",cargoDistanceEcholocation);
         
         
-        cargoIntakeMotor = new Spark(0);
-        addChild("cargo Intake Motor",cargoIntakeMotor);
-        cargoIntakeMotor.setInverted(false);
-
         hPDistanceEcholocation = new Ultrasonic(4, 5);
         addChild("HP Distance Echolocation",hPDistanceEcholocation);
         
