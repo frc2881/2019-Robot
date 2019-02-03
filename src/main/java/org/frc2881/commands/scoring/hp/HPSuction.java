@@ -11,6 +11,7 @@
 package org.frc2881.commands.scoring.hp;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Intake.SuctionState;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -19,31 +20,26 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class HPSuction extends Command {
 
-    public HPSuction() {
+    private SuctionState state;
 
+    public HPSuction(SuctionState state) {
         requires(Robot.intake);
-
+        this.state = state;
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        Robot.intake.suction();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
+        Robot.intake.suction(state);
     }
 
     @Override
     protected void end() {
         Robot.logEnd(this);
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return true;
     }
 }

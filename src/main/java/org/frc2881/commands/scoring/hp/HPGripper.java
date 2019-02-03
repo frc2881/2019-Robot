@@ -13,34 +13,34 @@ package org.frc2881.commands.scoring.hp;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Intake.GripperState;
 
 /**
  *
  */
 public class HPGripper extends Command {
+    private final GripperState state;
 
-    public HPGripper() {
-
+    public HPGripper(GripperState state) {
+        super("HPGripper" + (state == GripperState.OPEN ? "Open" : "Closed"));
+       // requires(Robot.intakeSubsystem); We don't need this because we need the rollers to run at the same time as the Gripper.
+        this.state = state;
     }
 
+    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.logInitialize(this);
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
+        //this turns the piston to true/extended
+        Robot.intake.setHPGripper(state);
     }
 
     @Override
     protected void end() {
-        Robot.logEnd(this);
+        Robot.log("Set HPGripper has ended: " + state);
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return true;
     }
 }

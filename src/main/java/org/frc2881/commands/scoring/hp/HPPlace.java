@@ -10,37 +10,17 @@
 
 package org.frc2881.commands.scoring.hp;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-import org.frc2881.Robot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.frc2881.subsystems.Intake.GripperState;
+import org.frc2881.subsystems.Intake.SuctionState;
 
 /**
  *
  */
-public class HPPlace extends Command {
+public class HPPlace extends CommandGroup {
 
     public HPPlace() {
-
-    }
-
-    @Override
-    protected void initialize() {
-        Robot.logInitialize(this);
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    protected void end() {
-        Robot.logEnd(this);
+        addSequential(new HPGripper(GripperState.CLOSED));
+        addSequential(new HPSuction(SuctionState.OPEN));
     }
 }
