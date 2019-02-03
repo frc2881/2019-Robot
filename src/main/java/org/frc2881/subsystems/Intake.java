@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Intake extends Subsystem {
 
     public enum GripperState {OPEN, CLOSED}
-    public enum SuctionState {OPEN, CLOSED}
+    public enum SuctionState {OPEN, CLOSED, BUTTON}
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Solenoid wrist;
@@ -76,7 +76,12 @@ public class Intake extends Subsystem {
     }
 
     public void suction(SuctionState state) {
-        hPSuctionCup.set(state == SuctionState.OPEN);
+        if (state == SuctionState.BUTTON) {
+            hPSuctionCup.set(!hPSuctionCup.get());
+
+        } else {
+            hPSuctionCup.set(state == SuctionState.OPEN);
+        }
     }
 
     @Override
