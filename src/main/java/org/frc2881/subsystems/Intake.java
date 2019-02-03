@@ -38,8 +38,8 @@ public class Intake extends Subsystem {
 
     public Intake() {
         
-        cargoDistanceEcholocation = new Ultrasonic(4, 5);
-        addChild("cargo Distance Echolocation",cargoDistanceEcholocation);
+//        cargoDistanceEcholocation = new Ultrasonic(4, 5);
+//        addChild("cargo Distance Echolocation",cargoDistanceEcholocation);
 
 
         cargoIntakeMotor = new Spark(4);
@@ -47,16 +47,19 @@ public class Intake extends Subsystem {
         cargoIntakeMotor.setInverted(false);
 
 
-        hPGripper = new Solenoid(11, 1);
+        hPSuctionCup = new Solenoid(11, 1);
+        addChild("HP Suction Cup Solenoid",hPSuctionCup);
+
+        hPGripper = new Solenoid(11, 2);
         addChild("HP Gripper Solenoid",hPGripper);
         
         
-        hPIntakePlanB = new Solenoid(11, 2);
+        hPIntakePlanB = new Solenoid(11, 3);
         addChild("HP Intake Plan B Solenoid",hPIntakePlanB);
 
 
-        hPDistanceEcholocation = new Ultrasonic(4, 5);
-        addChild("HP Distance Echolocation",hPDistanceEcholocation);
+//        hPDistanceEcholocation = new Ultrasonic(4, 5);
+//        addChild("HP Distance Echolocation",hPDistanceEcholocation);
         
         
         hPIntakeMotor = new Spark(3);
