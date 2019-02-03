@@ -13,10 +13,11 @@ public class IntakeSetAsFront extends InstantCommand {
 
     @Override
     protected void initialize() {
-        //Robot.Drive.setIntakeLocation(Drive.IntakeLocation.FRONT);  // TODO
+        Robot.Drive.setIntakeLocation(Drive.IntakeLocation.FRONT);
         //Prints in the driver station
         Robot.log("Intake has been set to FRONT.");
         Robot.log("Meaning the INTAKE of the robot is now the FRONT");
+        Robot.logInitialize(this);
     }
 
 }
