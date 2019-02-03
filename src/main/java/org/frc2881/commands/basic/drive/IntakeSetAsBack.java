@@ -13,6 +13,7 @@ package org.frc2881.commands.basic.drive;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Drive;
 
 /**
  *
@@ -25,6 +26,10 @@ public class IntakeSetAsBack extends Command {
 
     @Override
     protected void initialize() {
+        Robot.Drive.setIntakeLocation(Drive.IntakeLocation.BACK);
+        //Prints in the driver station
+        Robot.log("Intake has been set to BACK.");
+        Robot.log("Meaning the BACK of the robot is now the FRONT");
         Robot.logInitialize(this);
     }
 

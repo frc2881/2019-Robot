@@ -23,10 +23,9 @@ public class DriveWithJoysticks extends Command {
     @Override
     protected void execute() {
         //if the joysticks move, it moves the corrisponding side of the robot \/
-        if (Math.abs(Robot.oi.driver.getY(GenericHID.Hand.kLeft)) < 0.06 &&
-                Math.abs(Robot.oi.driver.getY(GenericHID.Hand.kRight)) < 0.06) {
-            Robot.drive.getLeftDistance();
-            Robot.drive.getRightDistance();
+        double left = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
+        double right = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
+        Robot.drive.tankDrive(left, right, false);
         }
     }
 
