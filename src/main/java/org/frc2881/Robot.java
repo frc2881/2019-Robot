@@ -38,7 +38,6 @@ import static java.util.stream.Collectors.joining;
  */
 public class Robot extends TimedRobot {
 
-    public static final String Drive = null;
 	Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
