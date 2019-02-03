@@ -12,13 +12,11 @@ package org.frc2881.subsystems;
 
 import org.frc2881.Robot;
 
-import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.AnalogInput;
-import org.frc2881.Robot;
 
 /**
  *

@@ -25,7 +25,6 @@ public class Intake extends Subsystem {
     public enum SuctionState {OPEN, CLOSED, BUTTON}
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
-    private Solenoid wrist;
     private Ultrasonic cargoDistanceEcholocation;
     private Spark cargoIntakeMotor;
     private int intakecargoRollerPdpChannel = 1;
@@ -63,9 +62,6 @@ public class Intake extends Subsystem {
         hPIntakeMotor = new Spark(3);
         addChild("HP Intake Motor",hPIntakeMotor);
         hPIntakeMotor.setInverted(false);
-
-        wrist = new Solenoid(11, 3);
-        addChild("Wrist Solenoid",wrist);
     }
 
     @Override

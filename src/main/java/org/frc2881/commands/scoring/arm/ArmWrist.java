@@ -11,24 +11,26 @@
 package org.frc2881.commands.scoring.arm;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Arm.WristState;
 
 import edu.wpi.first.wpilibj.command.Command;
-
-import org.frc2881.Robot;
 
 /**
  *
  */
 public class ArmWrist extends Command {
 
-    public ArmWrist() {
+    private WristState state;
+
+    public ArmWrist(WristState state) {
         requires(Robot.arm);
+        this.state = state;
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        Robot.arm.moveWrist();
+        Robot.arm.moveWrist(state);
     }
 
     // Called repeatedly when this Command is scheduled to run

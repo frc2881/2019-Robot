@@ -11,8 +11,6 @@
 package org.frc2881.commands.scoring.hp;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-
-import org.frc2881.Robot;
 import org.frc2881.subsystems.Intake.GripperState;
 import org.frc2881.subsystems.Intake.SuctionState;
 
