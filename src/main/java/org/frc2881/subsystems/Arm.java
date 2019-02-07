@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Arm extends PIDSubsystem {
 
+    public enum WristState {UP, DOWN, BUTTON}
     public static double HIGH_GOAL_HEIGHT = 3;
     public static double MEDIUM_GOAL_HEIGHT = 2;
     public static double LOW_GOAL_HEIGHT = 1;
@@ -70,18 +71,15 @@ public class Arm extends PIDSubsystem {
     }
             
 
-    public void moveWrist(){
-        
-        wristSolenoid.set(!wristSolenoid.get());
+    public void moveWrist(WristState state){
+        if (state == WristState.BUTTON) {
+            wristSolenoid.set(!wristSolenoid.get());
 
+        } else {
+            wristSolenoid.set(state == WristState.UP);
+        }
     }
 
-    public void setWristState(boolean state){
-
-        wristSolenoid.set(state);
-
-    }
-    
     @Override
     public void initDefaultCommand() {
 

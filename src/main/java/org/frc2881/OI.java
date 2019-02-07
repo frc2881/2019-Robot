@@ -51,6 +51,8 @@ import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Lift;
+import org.frc2881.subsystems.Arm.WristState;
+import org.frc2881.subsystems.Intake.SuctionState;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -154,11 +156,7 @@ public class OI {
         
         //moves wrist to opposite state
         moveWrist = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
-        moveWrist.whenPressed(new ArmWrist());
-
-        //moves wrist to opposite state
-        moveWrist = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
-        moveWrist.whenPressed(new ArmWrist());
+        moveWrist.whenPressed(new ArmWrist(WristState.BUTTON));
 
         //intakes HP from ground
         intakeHPFloor = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
@@ -190,7 +188,7 @@ public class OI {
 
         //toggles suction
         hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
-        hPSuction.whenPressed(new HPSuction());
+        hPSuction.whenPressed(new HPSuction(SuctionState.BUTTON));
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());

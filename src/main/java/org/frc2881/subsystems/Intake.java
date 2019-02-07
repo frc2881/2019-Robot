@@ -21,53 +21,50 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Intake extends Subsystem {
 
+    public enum GripperState {OPEN, CLOSED}
+    public enum SuctionState {OPEN, CLOSED, BUTTON}
+
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
-    private Solenoid cargoSuctionCupSolenoid;
-    private Solenoid cargoGripperSolenoid;
-    private Solenoid cargoIntakePlanBSolenoid;
-    private Solenoid wristSolenoid;
     private Ultrasonic cargoDistanceEcholocation;
     private Spark cargoIntakeMotor;
     private int intakecargoRollerPdpChannel = 1;
-    private Solenoid hPSuctionCupSolenoid;
-    private Solenoid hPGripperSolenoid;
-    private Solenoid hPIntakePlanBSolenoid;
+    private Solenoid hPSuctionCup;
+    private Solenoid hPGripper;
+    private Solenoid hPIntakePlanB;
     private Ultrasonic hPDistanceEcholocation;
     private Spark hPIntakeMotor;
 
     private int intakeHPRollerPdpChannel = 1;
 
     public Intake() {
-        cargoSuctionCupSolenoid = new Solenoid(11, 1);
-        addChild("cargo Suction Cup Solenoid",cargoSuctionCupSolenoid);
+        
+//        cargoDistanceEcholocation = new Ultrasonic(4, 5);
+//        addChild("cargo Distance Echolocation",cargoDistanceEcholocation);
+
+
+        cargoIntakeMotor = new Spark(4);
+        addChild("Cargo Intake Motor",cargoIntakeMotor);
+        cargoIntakeMotor.setInverted(false);
+
+
+        hPSuctionCup = new Solenoid(11, 1);
+        addChild("HP Suction Cup Solenoid",hPSuctionCup);
+
+        hPGripper = new Solenoid(11, 2);
+        addChild("HP Gripper Solenoid",hPGripper);
         
         
-        cargoGripperSolenoid = new Solenoid(11, 2);
-        addChild("cargo Gripper Solenoid",cargoGripperSolenoid);
-        
-        
-        cargoIntakePlanBSolenoid = new Solenoid(11, 3);
-        addChild("cargo Intake Plan B Solenoid",cargoIntakePlanBSolenoid);
-        
-        
-        
-        cargoDistanceEcholocation = new Ultrasonic(4, 5);
-        addChild("cargo Distance Echolocation",cargoDistanceEcholocation);
-        
-        
-        hPDistanceEcholocation = new Ultrasonic(4, 5);
-        addChild("HP Distance Echolocation",hPDistanceEcholocation);
+        hPIntakePlanB = new Solenoid(11, 3);
+        addChild("HP Intake Plan B Solenoid",hPIntakePlanB);
+
+
+//        hPDistanceEcholocation = new Ultrasonic(4, 5);
+//        addChild("HP Distance Echolocation",hPDistanceEcholocation);
         
         
         hPIntakeMotor = new Spark(3);
         addChild("HP Intake Motor",hPIntakeMotor);
         hPIntakeMotor.setInverted(false);
-
-        cargoIntakeMotor = new Spark(4);
-        addChild("Cargo Intake Motor",cargoIntakeMotor);
-        cargoIntakeMotor.setInverted(false);
-        
-
     }
 
     @Override
@@ -77,16 +74,13 @@ public class Intake extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public void suction() {
+    public void suction(SuctionState state) {
+        if (state == SuctionState.BUTTON) {
+            hPSuctionCup.set(!hPSuctionCup.get());
 
-        hPSuctionCupSolenoid.set(!hPSuctionCupSolenoid.get());
-
-    }
-
-    public void setSuctionState(boolean state){
-
-        hPSuctionCupSolenoid.set(state);
-
+        } else {
+            hPSuctionCup.set(state == SuctionState.OPEN);
+        }
     }
 
     @Override
@@ -127,5 +121,9 @@ public class Intake extends Subsystem {
     //Stops the rollers (put at the end of the command)
     public void stopHPRollers() {
         hPIntakeMotor.set(0);
+    }
+
+    public void setHPGripper(GripperState state) {
+        hPGripper.set(state == GripperState.CLOSED);
     }
 }

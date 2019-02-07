@@ -11,7 +11,6 @@
 package org.frc2881.commands.scoring.arm;
 
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -41,7 +40,6 @@ public class ArmCalibrateEncoder extends Command {
     @Override
     protected boolean isFinished() {
        
-        
         if (timeSinceInitialized() < .5) {
             return false;
         }
