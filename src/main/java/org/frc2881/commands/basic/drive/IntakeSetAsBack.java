@@ -26,7 +26,7 @@ public class IntakeSetAsBack extends Command {
 
     @Override
     protected void initialize() {
-        Robot.Drive.setIntakeLocation(Drive.IntakeLocation.BACK);
+        Robot.drive.setIntakeLocation(Drive.IntakeLocation.BACK);
         //Prints in the driver station
         Robot.log("Intake has been set to BACK.");
         Robot.log("Meaning the BACK of the robot is now the FRONT");

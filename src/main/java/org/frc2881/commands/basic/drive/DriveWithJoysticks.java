@@ -26,7 +26,6 @@ public class DriveWithJoysticks extends Command {
         double left = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
         double right = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
         Robot.drive.tankDrive(left, right, false);
-        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
