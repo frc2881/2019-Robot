@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
     public static Pneumatics pneumatics;
     public static PrettyLights prettyLights;
     private static long startTime = System.currentTimeMillis();
+	public static Object cargo;
 
     /**
      * This function is run when the robot is first started up and should be

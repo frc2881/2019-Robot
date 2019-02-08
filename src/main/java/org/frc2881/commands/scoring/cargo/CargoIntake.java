@@ -13,6 +13,7 @@ package org.frc2881.commands.scoring.cargo;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.Robot;
+import org.frc2881.controllers.PS4;
 
 /**
  *
@@ -20,6 +21,7 @@ import org.frc2881.Robot;
 public class CargoIntake extends Command {
 
     public CargoIntake() {
+        requires (Robot.intake);
 
     }
 
@@ -31,6 +33,7 @@ public class CargoIntake extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.intake.cargoRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER));
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -41,6 +44,7 @@ public class CargoIntake extends Command {
 
     @Override
     protected void end() {
+        Robot.intake.cargoRollers(0);
         Robot.logEnd(this);
     }
-}
+} 
