@@ -10,8 +10,10 @@
 
 package org.frc2881.commands.scoring.arm;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
+import org.frc2881.OI;
 import org.frc2881.Robot;
 
 /**
@@ -20,27 +22,32 @@ import org.frc2881.Robot;
 public class ArmControl extends Command {
 
     public ArmControl() {
-
+        requires(Robot.arm);
     }
 
+    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.logInitialize(this);
+        Robot.log("Arm control has started");
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        double speed = -Robot.oi.manipulator.getY(Hand.kRight);
+        Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)));
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         return false;
     }
 
+    // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.logEnd(this);
+        Robot.log("Arm Control has ended");
     }
+
 }
+
