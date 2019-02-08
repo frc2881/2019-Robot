@@ -258,6 +258,10 @@ public class OI {
         };
     }
 
+    public static double squareInput(double speed) {
+        return Math.copySign(speed * speed, speed);
+    }
+
     public static double applyDeadband(double value) {
         if (Math.abs(value) > DEADBAND) {
             if (value > 0.0) {

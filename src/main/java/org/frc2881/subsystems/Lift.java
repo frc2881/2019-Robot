@@ -11,6 +11,9 @@
 package org.frc2881.subsystems;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+
+import org.frc2881.commands.scoring.lift.LiftControl;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -76,9 +79,7 @@ public class Lift extends PIDSubsystem {
 
     @Override
     public void initDefaultCommand() {
-
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new LiftControl());
     }
 
     @Override

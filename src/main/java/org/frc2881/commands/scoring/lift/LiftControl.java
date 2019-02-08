@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LiftControl extends Command {
 
     public LiftControl() {
-
+        requires(Robot.lift);
     }
 
     @Override

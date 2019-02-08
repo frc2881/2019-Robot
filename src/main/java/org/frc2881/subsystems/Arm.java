@@ -11,6 +11,9 @@
 package org.frc2881.subsystems;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+
+import org.frc2881.commands.scoring.arm.ArmControl;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -27,6 +30,7 @@ public class Arm extends PIDSubsystem {
     public static double HIGH_GOAL_HEIGHT = 3;
     public static double MEDIUM_GOAL_HEIGHT = 2;
     public static double LOW_GOAL_HEIGHT = 1;
+    public static double FLOOR = 0;
     
     private static final double topLimit = 7;
     private static final double bottomLimit = 0;
@@ -70,6 +74,10 @@ public class Arm extends PIDSubsystem {
         armEncoder.reset();
     }
             
+    @Override
+    public void initDefaultCommand() {
+        setDefaultCommand(new ArmControl());
+    }
 
     public void moveWrist(WristState state){
         if (state == WristState.BUTTON) {
@@ -78,13 +86,6 @@ public class Arm extends PIDSubsystem {
         } else {
             wristSolenoid.set(state == WristState.UP);
         }
-    }
-
-    @Override
-    public void initDefaultCommand() {
-
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
     }
 
     @Override
@@ -126,7 +127,6 @@ public class Arm extends PIDSubsystem {
         }
 
         armMotor.set(speed);
-        //I love Robots!!!
     }
     private double getArmMotorMin() {
         double position = armEncoder.getDistance();
