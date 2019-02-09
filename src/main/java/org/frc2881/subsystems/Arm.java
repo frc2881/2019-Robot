@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 import org.frc2881.commands.scoring.arm.ArmControl;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -41,6 +42,7 @@ public class Arm extends PIDSubsystem {
     private Encoder armEncoder;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
+    private AnalogInput armPotentiometer;
 
     // Initialize your subsystem here
     public Arm() {
@@ -61,6 +63,9 @@ public class Arm extends PIDSubsystem {
         
         wristSolenoid = new Solenoid(11, 4);
         addChild("Wrist Solenoid",wristSolenoid);
+
+        armPotentiometer = new AnalogInput(1);
+        addChild("Arm Potentiometer", armPotentiometer);
 
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
@@ -106,7 +111,7 @@ public class Arm extends PIDSubsystem {
         armMotor.pidWrite(output);
 
     }
-
+    
     public boolean isSpeedReallySmall() {
         return Math.abs(armEncoder.getRate()) < .05;
     }
@@ -116,7 +121,7 @@ public class Arm extends PIDSubsystem {
     }
     public void setArmMotorSpeed(double speed) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
-        double min = getArmMotorMin();
+        /*double min = getArmMotorMin();
         double max = getArmMotorMax();
 
         if (speed < min) {
@@ -125,9 +130,10 @@ public class Arm extends PIDSubsystem {
         if (speed > max) {
             speed = max;
         }
-
+        */
         armMotor.set(speed);
     }
+
     private double getArmMotorMin() {
         double position = armEncoder.getDistance();
         double min = -1;
