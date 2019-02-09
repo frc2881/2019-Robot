@@ -12,37 +12,17 @@ package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class LiftPin extends Command {
-
-    public LiftPin() {
-
-    }
+public class LiftPin extends InstantCommand {
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
         Robot.lift.setLiftPin(true);
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    protected void end() {
-        Robot.lift.setLiftPin(false);
-        Robot.logEnd(this);
-    }
 }
