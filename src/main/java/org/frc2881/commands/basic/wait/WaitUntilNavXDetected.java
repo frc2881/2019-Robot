@@ -13,6 +13,7 @@ package org.frc2881.commands.basic.wait;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc2881.Robot;
 
+
 /**
  *
  */
@@ -25,8 +26,7 @@ public class WaitUntilNavXDetected extends Command {
 
     @Override
     protected boolean isFinished() {
-        // TODO: implement this
-        return false;
+        return Robot.drive.isNavXReady();
     }
 
     @Override
@@ -34,3 +34,4 @@ public class WaitUntilNavXDetected extends Command {
         Robot.logEnd(this);
     }
 }
+
