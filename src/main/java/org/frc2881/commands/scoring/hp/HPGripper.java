@@ -10,15 +10,15 @@
 
 package org.frc2881.commands.scoring.hp;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 import org.frc2881.Robot;
 import org.frc2881.subsystems.Intake.GripperState;
+
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class HPGripper extends Command {
+public class HPGripper extends InstantCommand {
     private final GripperState state;
 
     public HPGripper(GripperState state) {
@@ -26,7 +26,7 @@ public class HPGripper extends Command {
        // requires(Robot.intakeSubsystem); We don't need this because we need the rollers to run at the same time as the Gripper.
         this.state = state;
     }
-
+    
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
@@ -39,8 +39,4 @@ public class HPGripper extends Command {
         Robot.log("Set HPGripper has ended: " + state);
     }
 
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
 }

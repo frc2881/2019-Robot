@@ -13,12 +13,12 @@ package org.frc2881.commands.scoring.arm;
 import org.frc2881.Robot;
 import org.frc2881.subsystems.Arm.WristState;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class ArmWrist extends Command {
+public class ArmWrist extends InstantCommand {
 
     private WristState state;
 
@@ -33,19 +33,4 @@ public class ArmWrist extends Command {
         Robot.arm.moveWrist(state);
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
-
-    @Override
-    protected void end() {
-        Robot.logEnd(this);
-    }
 }
