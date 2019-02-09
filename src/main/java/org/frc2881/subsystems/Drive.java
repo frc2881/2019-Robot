@@ -68,9 +68,6 @@ public class Drive extends Subsystem {
             left = addDevice("Left", new WPI_TalonSRX(1));
             right = addDevice("Right", new WPI_TalonSRX(2));
         }
-
-        // Left and right are oriented in opposite ways so one is usually inverted
-        right.setInverted(true);
         
         differentialDrive = new DifferentialDrive(left, right);
         addChild("Differential Drive",differentialDrive);

@@ -52,7 +52,7 @@ public class Arm extends PIDSubsystem {
 
         armMotor = new Spark(0);
         addChild("Arm Motor",armMotor);
-        armMotor.setInverted(false);
+        armMotor.setInverted(true);
         
         armEncoder = new Encoder(6, 7, false, EncodingType.k4X);
         addChild("Arm Encoder",armEncoder);
