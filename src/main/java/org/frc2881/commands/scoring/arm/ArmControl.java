@@ -30,7 +30,7 @@ public class ArmControl extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.logInitialize(this);
+        Robot.log("Arm control has started");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -51,7 +51,7 @@ public class ArmControl extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.logEnd(this);
+        Robot.log("Arm Control has ended");
     }
 
 }

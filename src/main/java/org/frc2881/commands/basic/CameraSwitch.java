@@ -10,37 +10,19 @@
 
 package org.frc2881.commands.basic;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 import org.frc2881.Robot;
+
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class CameraSwitch extends Command {
-
-    public CameraSwitch() {
-
-    }
+public class CameraSwitch extends InstantCommand {
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
+        //TODO
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    protected void end() {
-        Robot.logEnd(this);
-    }
 }

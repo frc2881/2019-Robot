@@ -13,12 +13,12 @@ package org.frc2881.commands.scoring.hp;
 import org.frc2881.Robot;
 import org.frc2881.subsystems.Intake.SuctionState;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class HPSuction extends Command {
+public class HPSuction extends InstantCommand {
 
     private SuctionState state;
 
@@ -33,13 +33,4 @@ public class HPSuction extends Command {
         Robot.intake.suction(state);
     }
 
-    @Override
-    protected void end() {
-        Robot.logEnd(this);
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
 }

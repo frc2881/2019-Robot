@@ -10,6 +10,9 @@
 
 package org.frc2881.subsystems;
 
+import org.frc2881.commands.scoring.arm.ArmControl;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 import org.frc2881.commands.scoring.arm.ArmControl;
@@ -17,15 +20,24 @@ import org.frc2881.commands.scoring.arm.ArmControl;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  *
  */
 public class Arm extends PIDSubsystem {
+
+    /** From the pivot point to the plane of the hatch panel is about 44 inches. */
+    private static final double ARM_LENGTH = 44.0;
+    /** Height of the gripper midpoint when the arm is horizontal. */
+    private static final double HEIGHT_AT_HORIZONTAL = 50.0;
+    /** The potentiometer reads about v_in/vcc=0.463 when the arm is horizontal. */
+    private static final double POTENTIOMETER_AT_HORIZONTAL = 0.463;
 
     public enum WristState {UP, DOWN, BUTTON}
     public static double HIGH_GOAL_HEIGHT = 3;
@@ -43,6 +55,7 @@ public class Arm extends PIDSubsystem {
     private AnalogInput armPotentiometer;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
+    private AnalogInput armPotentiometer;
 
     // Initialize your subsystem here
     public Arm() {
@@ -54,7 +67,7 @@ public class Arm extends PIDSubsystem {
 
         armMotor = new Spark(0);
         addChild("Arm Motor",armMotor);
-        armMotor.setInverted(false);
+        armMotor.setInverted(true);
         
         armPotentiometer = new AnalogInput(1);
         addChild("Arm Potentiometer", armPotentiometer);
@@ -63,11 +76,22 @@ public class Arm extends PIDSubsystem {
         wristSolenoid = new Solenoid(11, 4);
         addChild("Wrist Solenoid",wristSolenoid);
 
+        armPotentiometer = new AnalogInput(1);
+        addChild("Arm Potentiometer", armPotentiometer);
+
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
         // enable() - Enables the PID controller.
     }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Height", this::getArmHeight, null);
+        builder.addDoubleProperty("Angle", this::getArmAngleDegrees, null);
+    }
+
     public void reset() {
         isArmCalibrated = false;
         armMotor.setSafetyEnabled(false);  // wait for calibration before enabling motor safety
@@ -93,9 +117,8 @@ public class Arm extends PIDSubsystem {
     protected double returnPIDInput() {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
-        // yourPot.getAverageVoltage() / kYourMaxVoltage;
-
-        return armPotentiometer.pidGet();
+      
+        return getArmAngleRadians();
 
     }
 
@@ -105,9 +128,35 @@ public class Arm extends PIDSubsystem {
         // e.g. yourMotor.set(output);
 
         armMotor.pidWrite(output);
-
     }
 
+    public void setArmDesiredHeight(double height) {
+        setSetpoint(angleFromHeight(height));
+    }
+
+    public double getArmHeight() {
+        // From the pivot point to the plane of the hatch panel is about 44 inches
+        return heightFromAngle(getArmAngleRadians());
+    }
+
+    /** Returns the approximate angle of the arm relative to horizontal, in radians. */
+    private double getArmAngleRadians() {
+        double value = armPotentiometer.getVoltage() / RobotController.getVoltage5V();
+        return 4.345 * (POTENTIOMETER_AT_HORIZONTAL - value);
+    }
+
+    private double getArmAngleDegrees() {
+        return getArmAngleRadians() * 180 / Math.PI;
+    }
+
+    private static double heightFromAngle(double radians) {
+        return ARM_LENGTH * Math.sin(radians) + HEIGHT_AT_HORIZONTAL;
+    }
+
+    private static double angleFromHeight(double height) {
+        return Math.asin((height - HEIGHT_AT_HORIZONTAL) / ARM_LENGTH);
+    }
+    
     public boolean isSpeedReallySmall() {
         return Math.abs(armPotentiometer.pidGet()) < .05;
     }
@@ -116,13 +165,9 @@ public class Arm extends PIDSubsystem {
         return armPotentiometer.pidGet();
     }
 
-    public Double getArmPosition(){
-        return armPotentiometer.pidGet();
-    }
-
     public void setArmMotorSpeed(double speed) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
-        double min = getArmMotorMin();
+        /*double min = getArmMotorMin();
         double max = getArmMotorMax();
 
         if (speed < min) {
@@ -131,11 +176,14 @@ public class Arm extends PIDSubsystem {
         if (speed > max) {
             speed = max;
         }
-
+        */
         armMotor.set(speed);
     }
+
     private double getArmMotorMin() {
-        double position = armPotentiometer.pidGet();
+
+        double position = getArmHeight();
+
         double min = -1;
        
             if (position <= bottomLimit) {
@@ -149,7 +197,9 @@ public class Arm extends PIDSubsystem {
     }
 
     private double getArmMotorMax() {
-        double position = armPotentiometer.pidGet();
+
+        double position = getArmHeight();
+
         double max = 1;
         if (!isArmCalibrated) {
             max = 0;
@@ -164,8 +214,10 @@ public class Arm extends PIDSubsystem {
         }
         return max;
     }
-    public void resetArmPotentiometer() {
-        armPotentiometer.resetAccumulator();
+
+    public void resetArmEncoder() {
+        armEncoder.reset();
+
         isArmCalibrated = true;
 //        armMotor.setExpiration(0.1);
 //        armMotor.setSafetyEnabled(true);

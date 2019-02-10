@@ -47,15 +47,14 @@ public class Pneumatics extends Subsystem {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
+        builder.addBooleanProperty("ClosedLoop", compressor::getClosedLoopControl, compressor::setClosedLoopControl);
         builder.addDoubleProperty("Pressure", this::getPressure, null);
     }
 
     @Override
     public void initDefaultCommand() {
-
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
     }
+
     public double getPressure(){
         //http://www.revrobotics.com/content/docs/REV-11-1107-DS.pdf formula for pressure
         double vout = compressorPressure.getAverageVoltage();
