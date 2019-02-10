@@ -142,7 +142,7 @@ public class OI {
 
         //drives lift wheels forward
         liftCrawler = new JoystickButton(driver, PS4.PINK_SQUARE);
-        liftCrawler.whenPressed(new LiftCrawler());
+        liftCrawler.whileHeld(new LiftCrawler());
 
         //sets intake as back
         setIntakeBack = new JoystickButton(driver, PS4.BLUE_X);

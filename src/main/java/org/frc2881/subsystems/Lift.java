@@ -112,4 +112,8 @@ public class Lift extends PIDSubsystem {
     public void setLiftPin(boolean state){
         liftPin.set(state);
     }
+
+	public void setLiftCrawler(double speed) {
+        liftCrawler.set(speed);
+	}
 }

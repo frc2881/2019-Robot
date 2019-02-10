@@ -36,7 +36,7 @@ public class Arm extends PIDSubsystem {
     private static final double bottomLimit = 0;
     private static final double topThreshold = 5;
     private static final double bottomThreshold = 3;
-
+    
     private Spark armMotor;
     private Encoder armEncoder;
     private boolean isArmCalibrated;
@@ -67,13 +67,13 @@ public class Arm extends PIDSubsystem {
         //                  to
         // enable() - Enables the PID controller.
     }
-    public void reset() {
+    /*public void reset() {
         isArmCalibrated = false;
         armMotor.setSafetyEnabled(false);  // wait for calibration before enabling motor safety
         getPIDController().reset();
         armEncoder.reset();
     }
-            
+      */      
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new ArmControl());
@@ -116,7 +116,7 @@ public class Arm extends PIDSubsystem {
     }
     public void setArmMotorSpeed(double speed) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
-        double min = getArmMotorMin();
+        /*double min = getArmMotorMin();
         double max = getArmMotorMax();
 
         if (speed < min) {
@@ -125,7 +125,7 @@ public class Arm extends PIDSubsystem {
         if (speed > max) {
             speed = max;
         }
-
+*/
         armMotor.set(speed);
     }
     private double getArmMotorMin() {
