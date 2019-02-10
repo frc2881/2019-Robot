@@ -32,7 +32,7 @@ public class ArmToHeight extends Command {
     @Override
     protected void initialize() {
         Robot.logInitialize(this, height);
-        Robot.arm.setSetpoint(this.height);
+        Robot.arm.setArmDesiredHeight(this.height);
         Robot.arm.enable();
     }
 
