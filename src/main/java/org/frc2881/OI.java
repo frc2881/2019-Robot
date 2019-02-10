@@ -258,7 +258,7 @@ public class OI {
         };
     }
 
-    public static double squareInput(double speed) {
+        public static double squareInput(double speed) {
         return Math.copySign(speed * speed, speed);
     }
 

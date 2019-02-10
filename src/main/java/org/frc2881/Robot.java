@@ -40,6 +40,7 @@ import static java.util.stream.Collectors.joining;
  */
 public class Robot extends TimedRobot {
 
+	public static final String otherFancyLights = null;
 	Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 

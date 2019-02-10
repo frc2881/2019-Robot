@@ -15,8 +15,7 @@ public class PrettyLights extends Subsystem implements SendableWithChildren {
     public static final double hotPink = 0.57;
     public static final double green = 0.77;
     public static final double orange = 0.65;
-
-    private final Spark tWINKLES;
+    public final Spark tWINKLES;
 
     public PrettyLights() {
         tWINKLES = new Spark(6);
@@ -30,13 +29,17 @@ public class PrettyLights extends Subsystem implements SendableWithChildren {
     public void initDefaultCommand() {
              // Set the default command for a subsystem here.
              setDefaultCommand(new TWINKLES());
-        // setDefaultCommand(new MySpecialCommand());
+                                        // setDefaultCommand(new MySpecialCommand());
     }
 
     @Override
     public void periodic() {
         // Put code here to be run every loop
 
+    }
+
+    public void setColor(double color){
+        tWINKLES.set(color);
     }
 
     // Put methods for controlling this subsystem

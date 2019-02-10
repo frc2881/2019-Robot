@@ -26,13 +26,13 @@ public class TWINKLES extends Command {
         //Pink if robot is idle
         DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
         if (alliance == DriverStation.Alliance.Blue) {
-            RobotMap.otherFancyLights.set(PrettyLights.blue_heartbeat);
+            Robot.prettyLights.setColor(PrettyLights.blue_heartbeat);
 
         } else if (alliance == DriverStation.Alliance.Red) {
-            RobotMap.otherFancyLights.set(PrettyLights.red_heartbeat);
+            Robot.prettyLights.tWINKLES.set(PrettyLights.red_heartbeat);
 
         } else {
-            RobotMap.otherFancyLights.set(PrettyLights.hotPink);
+            Robot.prettyLights.tWINKLES.set(PrettyLights.hotPink);
         }
     }
 
