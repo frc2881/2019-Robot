@@ -24,9 +24,9 @@ public class Intake extends Subsystem {
 
     public enum GripperState {OPEN, CLOSED}
     public enum SuctionState {OPEN, CLOSED, BUTTON}
+    public enum RollerState {INTAKE, EJECT, BUTTON}
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
-    private Ultrasonic cargoDistanceEcholocation;
     private Spark cargoIntakeMotor;
     private int intakecargoRollerPdpChannel = 1;
     private Solenoid hPSuctionCup;
@@ -92,8 +92,17 @@ public class Intake extends Subsystem {
         return pdp.getCurrent(intakecargoRollerPdpChannel);
     }
 
-    public void cargoRollers(double speed) {
-        cargoIntakeMotor.set(speed);
+    public void cargoRollers(double speed, RollerState state) {
+        
+        //POSITIVE IS EJECTING
+        if (state == RollerState.EJECT) {
+            cargoIntakeMotor.set(speed);
+        } else if (state == RollerState.INTAKE){
+            cargoIntakeMotor.set(-speed);
+        }
+        else {
+            cargoIntakeMotor.set(speed);
+        }
     }
 
     public boolean getCargoRollers(){

@@ -75,6 +75,9 @@ public class Drive extends Subsystem {
             right = addDevice("Right", new WPI_TalonSRX(2));
         }
         
+        //Inverted the already inverted right side
+
+        
         differentialDrive = new DifferentialDrive(left, right);
         addChild("Differential Drive",differentialDrive);
 

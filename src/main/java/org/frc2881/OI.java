@@ -52,6 +52,7 @@ import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Arm.WristState;
+import org.frc2881.subsystems.Intake.RollerState;
 import org.frc2881.subsystems.Intake.SuctionState;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -198,7 +199,7 @@ public class OI {
         SmartDashboard.putData("Arm To Height", new ArmToHeight(Arm.MEDIUM_GOAL_HEIGHT, true));
         SmartDashboard.putData("Cargo Control Rollers", new CargoControlRollers());
         SmartDashboard.putData("Cargo Loaded", new CargoPlace());
-        SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5));
+        SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5, RollerState.EJECT));
         SmartDashboard.putData("Cargo Intake", new CargoIntake());
         SmartDashboard.putData("Do Nothing", new DoNothing());
         SmartDashboard.putData("Drive Forward", new DriveForward());
