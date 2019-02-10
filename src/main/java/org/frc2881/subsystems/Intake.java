@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Intake extends Subsystem {
 
-    public enum GripperState {OPEN, CLOSED}
+    public enum GrabberState {GRAB, RELEASE, BUTTON}
     public enum SuctionState {OPEN, CLOSED, BUTTON}
     public enum RollerState {INTAKE, EJECT, BUTTON}
 
@@ -30,11 +30,12 @@ public class Intake extends Subsystem {
     private Spark cargoIntakeMotor;
     private int intakecargoRollerPdpChannel = 1;
     private Solenoid hPSuctionCup;
-    private Solenoid hPGripper;
+    private Solenoid hPGrabber;
     private Solenoid hPIntakePlanB;
     private Ultrasonic hPDistanceEcholocation;
     private Spark hPIntakeMotor;
 
+    public static double HP_DETECTED_SPEED = 0.2;
     private int intakeHPRollerPdpChannel = 1;
 
     public Intake() {
@@ -51,8 +52,8 @@ public class Intake extends Subsystem {
         hPSuctionCup = new Solenoid(11, 1);
         addChild("HP Suction Cup Solenoid",hPSuctionCup);
 
-        hPGripper = new Solenoid(11, 2);
-        addChild("HP Gripper Solenoid",hPGripper);
+        hPGrabber = new Solenoid(11, 2);
+        addChild("HP Grabber Solenoid",hPGrabber);
         
         
         hPIntakePlanB = new Solenoid(11, 3);
@@ -93,7 +94,6 @@ public class Intake extends Subsystem {
     }
 
     public void cargoRollers(double speed, RollerState state) {
-        
         //POSITIVE IS EJECTING
         if (state == RollerState.EJECT) {
             cargoIntakeMotor.set(speed);
@@ -118,8 +118,16 @@ public class Intake extends Subsystem {
         return pdp.getCurrent(intakeHPRollerPdpChannel);
     }
 
-    public void HPRollers(double speed) {
-        hPIntakeMotor.set(speed);
+    public void HPRollers(double speed, RollerState state) {
+        //POSITIVE IS EJECTING
+        if (state == RollerState.EJECT) {
+            hPIntakeMotor.set(speed);
+        } else if (state == RollerState.INTAKE){
+            hPIntakeMotor.set(-speed);
+        }
+        else {
+            hPIntakeMotor.set(speed);
+        }
     }
 
     public boolean getHPRollers(){
@@ -131,7 +139,12 @@ public class Intake extends Subsystem {
         hPIntakeMotor.set(0);
     }
 
-    public void setHPGripper(GripperState state) {
-        hPGripper.set(state == GripperState.CLOSED);
+    public void setHPGrabber(GrabberState state) {
+        if (state == GrabberState.BUTTON) {
+            hPSuctionCup.set(!hPSuctionCup.get());
+
+        } else {
+            hPSuctionCup.set(state == GrabberState.GRAB);
+        }
     }
 }

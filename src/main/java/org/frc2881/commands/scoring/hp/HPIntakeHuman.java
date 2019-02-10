@@ -11,7 +11,7 @@
 package org.frc2881.commands.scoring.hp;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import org.frc2881.subsystems.Intake.GripperState;
+import org.frc2881.subsystems.Intake.GrabberState;
 import org.frc2881.subsystems.Intake.SuctionState;
 
 /**
@@ -21,6 +21,6 @@ public class HPIntakeHuman extends CommandGroup {
 
     public HPIntakeHuman() {
         addSequential(new HPSuction(SuctionState.CLOSED));
-        addSequential(new HPGripper(GripperState.OPEN));
+        addSequential(new HPGrabber(GrabberState.GRAB));
     }
 }

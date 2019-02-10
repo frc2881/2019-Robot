@@ -14,10 +14,6 @@ import org.frc2881.commands.scoring.arm.ArmControl;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-
-import org.frc2881.commands.scoring.arm.ArmControl;
-
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -40,10 +36,11 @@ public class Arm extends PIDSubsystem {
     private static final double POTENTIOMETER_AT_HORIZONTAL = 0.463;
 
     public enum WristState {UP, DOWN, BUTTON}
-    public static double HIGH_GOAL_HEIGHT = 3;
-    public static double MEDIUM_GOAL_HEIGHT = 2;
-    public static double ILLEGAL_HEIGHT = 1.5;
-    public static double LOW_GOAL_HEIGHT = 1;
+    public static double HIGH_GOAL_HEIGHT = 75;
+    public static double MEDIUM_GOAL_HEIGHT = 60;
+    public static double ILLEGAL_HEIGHT = 45;
+    public static double LOW_GOAL_HEIGHT = 30;
+    public static double HP_RELEASE_HEIGHT = 15;
     public static double FLOOR = 0;
     
     private static final double topLimit = 7;
@@ -52,10 +49,10 @@ public class Arm extends PIDSubsystem {
     private static final double bottomThreshold = 3;
 
     private Spark armMotor;
-    private AnalogInput armPotentiometer;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
     private AnalogInput armPotentiometer;
+    private Encoder armEncoder;
 
     // Initialize your subsystem here
     public Arm() {
@@ -69,9 +66,10 @@ public class Arm extends PIDSubsystem {
         addChild("Arm Motor",armMotor);
         armMotor.setInverted(true);
         
-        armPotentiometer = new AnalogInput(1);
-        addChild("Arm Potentiometer", armPotentiometer);
-        armPotentiometer.setPIDSourceType(PIDSourceType.kRate);
+        armEncoder = new Encoder(6, 7, false, EncodingType.k4X);
+        addChild("Arm Encoder",armEncoder);
+        armEncoder.setDistancePerPulse(1.0);
+        armEncoder.setPIDSourceType(PIDSourceType.kRate);
         
         wristSolenoid = new Solenoid(11, 4);
         addChild("Wrist Solenoid",wristSolenoid);
@@ -96,7 +94,7 @@ public class Arm extends PIDSubsystem {
         isArmCalibrated = false;
         armMotor.setSafetyEnabled(false);  // wait for calibration before enabling motor safety
         getPIDController().reset();
-        armPotentiometer.resetAccumulator();
+        armEncoder.reset();
     }
             
     @Override
@@ -158,11 +156,11 @@ public class Arm extends PIDSubsystem {
     }
     
     public boolean isSpeedReallySmall() {
-        return Math.abs(armPotentiometer.pidGet()) < .05;
+        return Math.abs(armEncoder.getRate()) < .05;
     }
 
     public Double getArmRate(){
-        return armPotentiometer.pidGet();
+        return armEncoder.getRate();
     }
 
     public void setArmMotorSpeed(double speed) {

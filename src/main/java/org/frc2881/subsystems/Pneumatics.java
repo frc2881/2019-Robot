@@ -23,14 +23,14 @@ import edu.wpi.first.wpilibj.AnalogInput;
  */
 public class Pneumatics extends Subsystem {
 
-    //private final Compressor compressor;
+    private final Compressor compressor;
     private final AnalogInput compressorPressure;
     
 
     public Pneumatics() {
 
-        /*compressor = new Compressor(11);
-        addChild("Compressor",compressor);*/
+        compressor = new Compressor(11);
+        addChild("Compressor",compressor);
 
         compressorPressure = new AnalogInput(0);
         addChild("Compressor Pressure", compressorPressure);

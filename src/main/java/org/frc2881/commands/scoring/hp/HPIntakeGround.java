@@ -10,37 +10,45 @@
 
 package org.frc2881.commands.scoring.hp;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.StartCommand;
 
-import org.frc2881.Robot;
+import java.util.function.Supplier;
+
+import org.frc2881.OI;
+import org.frc2881.commands.basic.rumble.RumbleYes;
+import org.frc2881.commands.basic.wait.WaitForever;
+import org.frc2881.commands.scoring.arm.ArmToHeight;
+import org.frc2881.subsystems.Arm;
+import org.frc2881.subsystems.Intake;
+import org.frc2881.subsystems.Intake.GrabberState;
+import org.frc2881.subsystems.Intake.RollerState;
+import org.frc2881.subsystems.Intake.SuctionState;
 
 /**
  *
  */
-public class HPIntakeGround extends Command {
+public class HPIntakeGround extends CommandGroup {
 
-    public HPIntakeGround() {
+    public HPIntakeGround(Supplier<OI.TriggerButtons> function, XboxController manipulator) {
+        super("IntakeHPGround");
 
-    }
+        addSequential(new HPSetRollers(0.5, RollerState.INTAKE));
 
-    @Override
-    protected void initialize() {
-        Robot.logInitialize(this);
-    }
+        addSequential(new Command() {
+            @Override
+            protected boolean isFinished() {
+                return function.get() == OI.TriggerButtons.LIFT_HP;
+            }
+        });
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    protected void end() {
-        Robot.logEnd(this);
+        addSequential(new HPSetRollers(Intake.HP_DETECTED_SPEED, RollerState.INTAKE));
+        addSequential(new ArmToHeight(Arm.FLOOR, false));
+        addSequential(new HPSuction(SuctionState.CLOSED));
+        addSequential(new HPGrabber(GrabberState.GRAB));
+        addSequential(new StartCommand(new RumbleYes(manipulator)));
+        addSequential(new WaitForever());
     }
 }

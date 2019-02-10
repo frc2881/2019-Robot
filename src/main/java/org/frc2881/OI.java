@@ -10,6 +10,8 @@
 
 package org.frc2881;
 
+import java.util.function.Supplier;
+
 import org.frc2881.commands.basic.CameraSwitch;
 import org.frc2881.commands.basic.background.NavXReset;
 import org.frc2881.commands.basic.background.RobotPrep;
@@ -95,6 +97,7 @@ public class OI {
 
     public static final double DEADBAND = 0.06;
 
+    public enum TriggerButtons {WAIT_UNTIL_HP_DETECTED, LIFT_HP}
     public Button setIntakeFront;
     public Button setIntakeBack;
     public Button liftCrawler;
@@ -161,7 +164,7 @@ public class OI {
 
         //intakes HP from ground
         intakeHPFloor = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
-        intakeHPFloor.whenPressed(new HPIntakeGround());
+        intakeHPFloor.whileHeld(new HPIntakeGround(buttonFromAxisRange(manipulator, PS4.RIGHT_TRIGGER), manipulator));
 
         //intakes HP from human player
         intakeHPHuman = new JoystickButton(manipulator, PS4.RIGHT_BUMPER);
@@ -204,10 +207,10 @@ public class OI {
         SmartDashboard.putData("Do Nothing", new DoNothing());
         SmartDashboard.putData("Drive Forward", new DriveForward());
         SmartDashboard.putData("HP Loaded", new HPPlace());
-        SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5));
+        SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerState.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
-        SmartDashboard.putData("HP Intake Ground", new HPIntakeGround());
+        SmartDashboard.putData("HP Intake Ground", new HPIntakeGround(buttonFromAxisRange(manipulator, PS4.RIGHT_TRIGGER), manipulator));
         SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.LOW_PLATFORM_HEIGHT, true));
         SmartDashboard.putData("Lift Control", new LiftControl());
         SmartDashboard.putData("Lift Pin", new LiftPin());
@@ -273,6 +276,16 @@ public class OI {
         } else {
             return 0.0;
         }
+    }
+
+    private Supplier<TriggerButtons> buttonFromAxisRange(GenericHID controller, int axis) {
+        return () -> {
+            if (Math.abs(controller.getRawAxis(axis)) <= 0.5) {
+                return TriggerButtons.WAIT_UNTIL_HP_DETECTED;
+            }
+
+            return TriggerButtons.LIFT_HP;
+        };
     }
 
 }

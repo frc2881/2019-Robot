@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleNo;
 import org.frc2881.controllers.PS4;
+import org.frc2881.subsystems.Intake.RollerState;
 import org.frc2881.utils.AmpMonitor;
 
 /**
@@ -43,16 +44,16 @@ public class HPControlRollers extends Command {
     protected void execute() {
         if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
                 joystickValue + Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) >= 0.25)) {
-            Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER));
+            Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER), RollerState.INTAKE);
         }
 
         else if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
             joystickValue - Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER) >= 0.25)) {
-        Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER));
+        Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER), RollerState.EJECT);
          }
 
         else {
-            Robot.intake.HPRollers(speedCap);
+            Robot.intake.HPRollers(speedCap, RollerState.EJECT);
         }
 
         if (!monitoringAmps && timeSinceInitialized() > .2){
@@ -78,11 +79,11 @@ public class HPControlRollers extends Command {
             programTime = timeSinceInitialized();
 
             if (Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER) > 0) {
-                Robot.intake.HPRollers(speedCap);
+                Robot.intake.HPRollers(speedCap, RollerState.EJECT);
             }
 
             else if (Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) > 0 ){
-                Robot.intake.HPRollers(-speedCap);
+                Robot.intake.HPRollers(speedCap, RollerState.INTAKE);
             }
 
             new RumbleNo(Robot.oi.manipulator).start();

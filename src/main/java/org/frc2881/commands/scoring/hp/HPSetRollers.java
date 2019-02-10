@@ -11,6 +11,7 @@
 package org.frc2881.commands.scoring.hp;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Intake.RollerState;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -21,7 +22,7 @@ public class HPSetRollers extends Command {
 
     private double speed;
 
-    public HPSetRollers(double speed) {
+    public HPSetRollers(Double speed, RollerState state) {
         requires(Robot.intake);
         this.speed = speed;
     }
@@ -34,7 +35,7 @@ public class HPSetRollers extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intake.HPRollers(speed);
+        Robot.intake.HPRollers(speed, RollerState.BUTTON);
     }
 
     // Make this return true when this Command no longer needs to run execute()

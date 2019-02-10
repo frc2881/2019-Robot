@@ -11,19 +11,19 @@
 package org.frc2881.commands.scoring.hp;
 
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Intake.GripperState;
+import org.frc2881.subsystems.Intake.GrabberState;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class HPGripper extends InstantCommand {
-    private final GripperState state;
+public class HPGrabber extends InstantCommand {
+    private final GrabberState state;
 
-    public HPGripper(GripperState state) {
-        super("HPGripper" + (state == GripperState.OPEN ? "Open" : "Closed"));
-       // requires(Robot.intakeSubsystem); We don't need this because we need the rollers to run at the same time as the Gripper.
+    public HPGrabber(GrabberState state) {
+        super("HPGrabber" + (state == GrabberState.GRAB ? "Grab" : "Release"));
+       // requires(Robot.intakeSubsystem); We don't need this because we need the rollers to run at the same time as the Grabber.
         this.state = state;
     }
     
@@ -31,12 +31,12 @@ public class HPGripper extends InstantCommand {
     @Override
     protected void initialize() {
         //this turns the piston to true/extended
-        Robot.intake.setHPGripper(state);
+        Robot.intake.setHPGrabber(state);
     }
 
     @Override
     protected void end() {
-        Robot.log("Set HPGripper has ended: " + state);
+        Robot.log("Set HPGrabber has ended: " + state);
     }
 
 }
