@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.OI;
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Arm;
+import org.frc2881.subsystems.Arm.WristState;
 
 /**
  *
@@ -28,7 +30,7 @@ public class ArmControl extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.log("Arm control has started");
+        Robot.logInitialize(this);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,6 +38,9 @@ public class ArmControl extends Command {
     protected void execute() {
         double speed = -Robot.oi.manipulator.getY(Hand.kRight);
         Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)));
+        if (Robot.arm.getArmPosition() > Arm.ILLEGAL_HEIGHT){
+            new ArmWrist(WristState.UP).start();
+        }
     }
 
     @Override
@@ -46,7 +51,7 @@ public class ArmControl extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.log("Arm Control has ended");
+        Robot.logEnd(this);
     }
 
 }

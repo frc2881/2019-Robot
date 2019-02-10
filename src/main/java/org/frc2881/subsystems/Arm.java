@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 import org.frc2881.commands.scoring.arm.ArmControl;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -29,6 +30,7 @@ public class Arm extends PIDSubsystem {
     public enum WristState {UP, DOWN, BUTTON}
     public static double HIGH_GOAL_HEIGHT = 3;
     public static double MEDIUM_GOAL_HEIGHT = 2;
+    public static double ILLEGAL_HEIGHT = 1.5;
     public static double LOW_GOAL_HEIGHT = 1;
     public static double FLOOR = 0;
     
@@ -38,7 +40,7 @@ public class Arm extends PIDSubsystem {
     private static final double bottomThreshold = 3;
 
     private Spark armMotor;
-    private Encoder armEncoder;
+    private AnalogInput armPotentiometer;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
 
@@ -54,10 +56,9 @@ public class Arm extends PIDSubsystem {
         addChild("Arm Motor",armMotor);
         armMotor.setInverted(false);
         
-        armEncoder = new Encoder(6, 7, false, EncodingType.k4X);
-        addChild("Arm Encoder",armEncoder);
-        armEncoder.setDistancePerPulse(1.0);
-        armEncoder.setPIDSourceType(PIDSourceType.kRate);
+        armPotentiometer = new AnalogInput(1);
+        addChild("Arm Potentiometer", armPotentiometer);
+        armPotentiometer.setPIDSourceType(PIDSourceType.kRate);
         
         wristSolenoid = new Solenoid(11, 4);
         addChild("Wrist Solenoid",wristSolenoid);
@@ -71,7 +72,7 @@ public class Arm extends PIDSubsystem {
         isArmCalibrated = false;
         armMotor.setSafetyEnabled(false);  // wait for calibration before enabling motor safety
         getPIDController().reset();
-        armEncoder.reset();
+        armPotentiometer.resetAccumulator();
     }
             
     @Override
@@ -94,7 +95,7 @@ public class Arm extends PIDSubsystem {
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
 
-        return armEncoder.pidGet();
+        return armPotentiometer.pidGet();
 
     }
 
@@ -108,12 +109,17 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean isSpeedReallySmall() {
-        return Math.abs(armEncoder.getRate()) < .05;
+        return Math.abs(armPotentiometer.pidGet()) < .05;
     }
 
     public Double getArmRate(){
-        return armEncoder.getRate();
+        return armPotentiometer.pidGet();
     }
+
+    public Double getArmPosition(){
+        return armPotentiometer.pidGet();
+    }
+
     public void setArmMotorSpeed(double speed) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
         double min = getArmMotorMin();
@@ -129,7 +135,7 @@ public class Arm extends PIDSubsystem {
         armMotor.set(speed);
     }
     private double getArmMotorMin() {
-        double position = armEncoder.getDistance();
+        double position = armPotentiometer.pidGet();
         double min = -1;
        
             if (position <= bottomLimit) {
@@ -143,7 +149,7 @@ public class Arm extends PIDSubsystem {
     }
 
     private double getArmMotorMax() {
-        double position = armEncoder.getDistance();
+        double position = armPotentiometer.pidGet();
         double max = 1;
         if (!isArmCalibrated) {
             max = 0;
@@ -158,8 +164,8 @@ public class Arm extends PIDSubsystem {
         }
         return max;
     }
-    public void resetArmEncoder() {
-        armEncoder.reset();
+    public void resetArmPotentiometer() {
+        armPotentiometer.resetAccumulator();
         isArmCalibrated = true;
 //        armMotor.setExpiration(0.1);
 //        armMotor.setSafetyEnabled(true);
