@@ -179,7 +179,7 @@ public class OI {
         highGoal.whileHeld(new ArmToHeight(Arm.HIGH_GOAL_HEIGHT, true));
 
         //scores HP
-        loadHP = buttonFromAxis(manipulator, PS4.RED_CIRCLE);
+        loadHP = new JoystickButton(manipulator, PS4.RED_CIRCLE);
         loadHP.whenPressed(new HPPlace());
 
         //scores Cargo
@@ -189,6 +189,7 @@ public class OI {
         //toggles suction
         hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
         hPSuction.whenPressed(new HPSuction(SuctionState.BUTTON));
+
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
