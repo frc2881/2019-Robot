@@ -95,7 +95,7 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-    public static final double DEADBAND = 0.06;
+    public static final double DEADBAND = 0; // 0.06;
 
     public enum TriggerButtons {WAIT_UNTIL_HP_DETECTED, LIFT_HP}
     public Button setIntakeFront;
@@ -183,7 +183,7 @@ public class OI {
         highGoal.whileHeld(new ArmToHeight(Arm.HIGH_GOAL_HEIGHT, true));
 
         //scores HP
-        loadHP = buttonFromAxis(manipulator, PS4.RED_CIRCLE);
+        loadHP = new JoystickButton(manipulator, PS4.RED_CIRCLE);
         loadHP.whenPressed(new HPPlace());
 
         //scores Cargo

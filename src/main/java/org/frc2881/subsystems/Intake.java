@@ -141,10 +141,10 @@ public class Intake extends Subsystem {
 
     public void setHPGrabber(GrabberState state) {
         if (state == GrabberState.BUTTON) {
-            hPSuctionCup.set(!hPSuctionCup.get());
+            hPGrabber.set(!hPGrabber.get());
 
         } else {
-            hPSuctionCup.set(state == GrabberState.GRAB);
+            hPGrabber.set(state == GrabberState.GRAB);
         }
     }
 }

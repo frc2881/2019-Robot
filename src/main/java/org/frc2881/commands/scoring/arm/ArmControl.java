@@ -39,7 +39,7 @@ public class ArmControl extends Command {
         double speed = -Robot.oi.manipulator.getY(Hand.kRight);
         Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)));
         if (Robot.arm.getArmHeight() > Arm.ILLEGAL_HEIGHT){
-            new ArmWrist(WristState.UP).start();
+            Robot.arm.moveWrist(WristState.UP);
         }
     }
 
