@@ -107,7 +107,7 @@ public class Arm extends PIDSubsystem {
             wristSolenoid.set(!wristSolenoid.get());
 
         } else {
-            wristSolenoid.set(state == WristState.UP);
+            wristSolenoid.set(state == WristState.DOWN);
         }
     }
 
