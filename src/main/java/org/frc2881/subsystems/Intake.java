@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  *
@@ -33,6 +34,7 @@ public class Intake extends Subsystem {
     private Solenoid hPGrabber;
     private Spark hPIntakeMotor;
     private Solenoid intakeEndgame;
+    private DigitalInput hPDetector;
 
     public static double HP_DETECTED_SPEED = 0.2;
     private int intakeHPRollerPdpChannel = 1;
@@ -56,6 +58,9 @@ public class Intake extends Subsystem {
         hPIntakeMotor = new Spark(3);
         addChild("HP Intake Motor",hPIntakeMotor);
         hPIntakeMotor.setInverted(false);
+
+        hPDetector = new DigitalInput(0);
+        addChild("HP Infrared Detector", hPDetector);
     }
 
     @Override
@@ -81,7 +86,7 @@ public class Intake extends Subsystem {
     public double getCargoRollerCurrent(){
         return pdp.getCurrent(intakecargoRollerPdpChannel);
     }
-
+    
     public void cargoRollers(double speed, RollerState state) {
         //POSITIVE IS EJECTING
         if (state == RollerState.EJECT) {
