@@ -9,13 +9,9 @@
 // it from being updated in the future.
 
 package org.frc2881.commands.basic.wait;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Compressor;
 import org.frc2881.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-
-import org.frc2881.Robot;
 
 /**
  *
