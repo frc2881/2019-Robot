@@ -10,6 +10,10 @@
 
 package org.frc2881.commands.scoring.arm;
 
+import java.awt.Robot;
+
+import org.frc2881.subsystems.Arm;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.Robot;
