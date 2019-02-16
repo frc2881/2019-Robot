@@ -41,11 +41,11 @@ public class CargoControlRollers extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kRight), RollerDirection.BUTTON);
+        Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kLeft), RollerDirection.BUTTON);
 
         /*if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
-                joystickValue - Robot.oi.manipulator.getY(GenericHID.Hand.kRight) >= 0.25)) {
-            Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kRight), RollerDirection.BUTTON);
+                joystickValue - Robot.oi.manipulator.getY(GenericHID.Hand.kLeft) >= 0.25)) {
+            Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kLeft), RollerDirection.BUTTON);
         }
 
         else {
@@ -61,22 +61,22 @@ public class CargoControlRollers extends Command {
             Robot.log("Cargo Roller current limit exceeded");
 
             speedCap = 0.2;
-            joystickValue = Robot.oi.manipulator.getY(GenericHID.Hand.kRight);
+            joystickValue = Robot.oi.manipulator.getY(GenericHID.Hand.kLeft);
             programTime = timeSinceInitialized();
 
-            if (Math.abs(Robot.oi.manipulator.getX(GenericHID.Hand.kRight)) <= 0.15 &&
-                    Robot.oi.manipulator.getY(GenericHID.Hand.kRight) > 0) {
+            if (Math.abs(Robot.oi.manipulator.getX(GenericHID.Hand.kLeft)) <= 0.15 &&
+                    Robot.oi.manipulator.getY(GenericHID.Hand.kLeft) > 0) {
                 Robot.intake.cargoRollers(speedCap, RollerDirection.INTAKE);
             }
 
-            else if (Math.abs(Robot.oi.manipulator.getX(GenericHID.Hand.kRight)) <= 0.15 &&
-                    Robot.oi.manipulator.getY(GenericHID.Hand.kRight) < 0 ){
+            else if (Math.abs(Robot.oi.manipulator.getX(GenericHID.Hand.kLeft)) <= 0.15 &&
+                    Robot.oi.manipulator.getY(GenericHID.Hand.kLeft) < 0 ){
                 Robot.intake.cargoRollers(speedCap, RollerDirection.EJECT);
             }
 
             new RumbleNo(Robot.oi.manipulator).start();
         }*/
-}
+    }
 
   
 
