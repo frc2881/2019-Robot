@@ -41,7 +41,9 @@ public class CargoControlRollers extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
+        Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kRight), RollerDirection.BUTTON);
+
+        /*if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
                 joystickValue - Robot.oi.manipulator.getY(GenericHID.Hand.kRight) >= 0.25)) {
             Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kRight), RollerDirection.BUTTON);
         }
@@ -73,7 +75,7 @@ public class CargoControlRollers extends Command {
             }
 
             new RumbleNo(Robot.oi.manipulator).start();
-        }
+        }*/
 }
 
   
