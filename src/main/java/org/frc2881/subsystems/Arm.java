@@ -13,6 +13,7 @@ package org.frc2881.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.frc2881.RobotType;
 import org.frc2881.commands.scoring.arm.ArmControl;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -53,7 +55,7 @@ public class Arm extends PIDSubsystem {
     private static final double topThreshold = 5;
     private static final double bottomThreshold = 3;
 
-    private CANSparkMax armMotor;
+    private SpeedController armMotor;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
     private AnalogInput armPotentiometer;
@@ -67,9 +69,13 @@ public class Arm extends PIDSubsystem {
         getPIDController().setName("Arm", "PIDSubsystem Controller");
         LiveWindow.add(getPIDController());
 
-        armMotor = new CANSparkMax(5, MotorType.kBrushless);
-        addDevice("Arm Motor",armMotor);
+        if (RobotType.get() == RobotType.COMPETITION_BOT) {
+            armMotor = addDevice ("Arm Motor", new CANSparkMax(5, MotorType.kBrushless));
+        } else {
+            armMotor = addDevice ("Arm Motor", new Spark(0));
+        }
         armMotor.setInverted(true);
+
         
         armEncoder = new Encoder(6, 7, false, EncodingType.k4X);
         addChild("Arm Encoder",armEncoder);
