@@ -51,7 +51,6 @@ public class Drive extends Subsystem {
         SpeedController right;
         navX = new NavX(SPI.Port.kMXP);
         addChild("NavX",navX);
-
     
 
         if (RobotType.get() == RobotType.COMPETITION_BOT) {
@@ -90,7 +89,6 @@ public class Drive extends Subsystem {
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
         // Use 'squaredInputs' to get better control at low speed
-        differentialDrive.setDeadband(OI.DEADBAND);
         if (intakeLocation == IntakeLocation.FRONT) {
             differentialDrive.tankDrive(leftSpeed, rightSpeed, true);
         } else {
@@ -102,18 +100,6 @@ public class Drive extends Subsystem {
         this.intakeLocation = intakeLocation;
     }
 
-    public void tankDrive(double leftSpeed, double rightSpeed, boolean b) {
-        // Use 'squaredInputs' to get better control at low speed
-        differentialDrive.setDeadband(OI.DEADBAND);
-        if (intakeLocation == IntakeLocation.FRONT) {
-            differentialDrive.tankDrive(leftSpeed, rightSpeed, true);
-        } else {
-            differentialDrive.tankDrive(-rightSpeed, -leftSpeed, true);
-        }
-    }
-
-  
-    
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new DriveWithJoysticks());
