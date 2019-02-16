@@ -106,6 +106,7 @@ public class OI {
     public Button manipulatorBlueX;
     public Button liftControl;
     public Button placeCargo;
+    public Button intakeCargo;
     public Button placeHP;
     public Button lowGoal;
     public Button mediumGoal;
@@ -153,7 +154,7 @@ public class OI {
         //MANIPULATOR
         
         //moves wrist to opposite state
-        moveWrist = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        moveWrist = new JoystickButton(manipulator, PS4.BLUE_X);
         moveWrist.whenPressed(new ArmWrist(WristState.BUTTON));
 
         //intakes HP from ground
@@ -177,20 +178,20 @@ public class OI {
         highGoal.whileHeld(new ArmToHeight(Arm.HIGH_GOAL_HEIGHT, true));
 
         //scores HP
-        placeHP = new JoystickButton(manipulator, PS4.RED_CIRCLE);
-        placeHP.whenPressed(new HPPlace());
+        placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        placeHP.whileHeld(new HPPlace());
 
         //controls lift
         liftControl = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
         liftControl.whileHeld(new LiftControl());
 
         //scores Cargo
-        placeCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
-        placeCargo.whenPressed(new CargoPlace());
+        placeCargo = new JoystickButton(manipulator, PS4.RED_CIRCLE);
+        placeCargo.whileHeld(new CargoPlace());
 
-        //toggles suction
-        hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
-        hPSuction.whenPressed(new HPSuction(SuctionState.BUTTON));
+        //scores Cargo
+        intakeCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
+        intakeCargo.whileHeld(new CargoPlace());
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
