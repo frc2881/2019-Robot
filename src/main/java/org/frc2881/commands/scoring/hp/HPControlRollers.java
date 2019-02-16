@@ -31,7 +31,7 @@ public class HPControlRollers extends Command {
 
     public HPControlRollers() {
         requires(Robot.intake);
-}
+    }
 
     @Override
     protected void initialize() {
@@ -42,6 +42,7 @@ public class HPControlRollers extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+
         Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER), RollerDirection.INTAKE);
 
         /*if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
@@ -78,8 +79,15 @@ public class HPControlRollers extends Command {
                 Robot.intake.HPRollers(speedCap, RollerDirection.INTAKE);
             }
             new RumbleNo(Robot.oi.manipulator).start();
+
         }*/
     }
+
+
+        }*/
+    }
+
+
 
     // Make this return true when this Command no longer needs to run execute()
     @Override

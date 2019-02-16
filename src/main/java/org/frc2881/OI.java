@@ -186,12 +186,14 @@ public class OI {
         liftControl.whileHeld(new LiftControl());
 
         //scores Cargo
+
         placeCargo = new JoystickButton(manipulator, PS4.RED_CIRCLE);
         placeCargo.whileHeld(new CargoPlace());
 
         //scores Cargo
         intakeCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
         intakeCargo.whileHeld(new CargoPlace());
+
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
@@ -258,7 +260,7 @@ public class OI {
         };
     }
 
-    public static double squareInput(double speed) {
+        public static double squareInput(double speed) {
         return Math.copySign(speed * speed, speed);
     }
 

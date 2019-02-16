@@ -12,8 +12,11 @@ package org.frc2881.commands.basic.rumble;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.TimedCommand;
+import edu.wpi.first.wpilibj.GenericHID;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.PrettyLights;
+
 
 /**
  *
@@ -24,6 +27,7 @@ public class RumbleNo extends TimedCommand {
 
     public RumbleNo(XboxController controller) {
         super(.6);
+        requires(Robot.prettyLights);
         this.controller = controller;
 
     }
@@ -31,21 +35,30 @@ public class RumbleNo extends TimedCommand {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
+        controller.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-    }
+        Robot.prettyLights.setColor(PrettyLights.orange);
 
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
+        double time = timeSinceInitialized();
+        if (time <= 0.2) {
+            controller.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
+        } else if (time > 0.2 && time < 0.4) {
+            controller.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
+        } else if (time > 0.4 && time <= 0.6) {
+         
+            controller.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
+        }
+
+
     }
 
     @Override
     protected void end() {
+        controller.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
         Robot.logEnd(this);
     }
 }
