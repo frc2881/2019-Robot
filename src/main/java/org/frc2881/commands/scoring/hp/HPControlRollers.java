@@ -31,7 +31,7 @@ public class HPControlRollers extends Command {
 
     public HPControlRollers() {
         requires(Robot.intake);
-}
+    }
 
     @Override
     protected void initialize() {
@@ -78,8 +78,10 @@ public class HPControlRollers extends Command {
                 Robot.intake.HPRollers(speedCap, RollerState.INTAKE);
             }
             new RumbleNo(Robot.oi.manipulator).start();
+
         }*/
     }
+
 
     // Make this return true when this Command no longer needs to run execute()
     @Override

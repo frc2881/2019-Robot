@@ -10,37 +10,31 @@
 
 package org.frc2881.commands.basic.rumble;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 import org.frc2881.Robot;
+import edu.wpi.first.wpilibj.GenericHID;
 
 /**
  *
  */
-public class RumbleJoysticks extends Command {
-
+public class RumbleJoysticks extends TimedCommand {
     public RumbleJoysticks() {
-
+        super(.75);
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
+        // Rumble things CODE
+        Robot.oi.driver.setRumble(GenericHID.RumbleType.kRightRumble, .7);
+        Robot.oi.driver.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
     }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
-
+    
     @Override
     protected void end() {
         Robot.logEnd(this);
+        Robot.oi.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0);
+        Robot.oi.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
     }
 }

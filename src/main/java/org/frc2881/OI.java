@@ -192,6 +192,7 @@ public class OI {
         hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
         hPSuction.whenPressed(new HPSuction(SuctionState.BUTTON));
 
+
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("Drive With Joysticks", new DriveWithJoysticks());
@@ -257,7 +258,7 @@ public class OI {
         };
     }
 
-    public static double squareInput(double speed) {
+        public static double squareInput(double speed) {
         return Math.copySign(speed * speed, speed);
     }
 
