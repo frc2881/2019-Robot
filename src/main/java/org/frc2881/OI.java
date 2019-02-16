@@ -178,7 +178,7 @@ public class OI {
 
         //scores HP
         placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
-        placeHP.whileHeld(new HPPlace());
+        placeHP.whenPressed(new HPPlace());
 
         //controls lift
         liftControl = buttonFromAxis(manipulator, PS4.LEFT_JOYSTICK_VERTICAL);
@@ -188,9 +188,9 @@ public class OI {
         placeCargo = new JoystickButton(manipulator, PS4.LEFT_BUMPER);
         placeCargo.whileHeld(new CargoPlace());
 
-        //scores Cargo
+        //intake Cargo
         intakeCargo = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
-        intakeCargo.whileHeld(new CargoPlace());
+        intakeCargo.whileHeld(new CargoIntake());
 
 
         // SmartDashboard Buttons

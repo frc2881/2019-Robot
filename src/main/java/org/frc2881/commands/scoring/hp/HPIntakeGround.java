@@ -47,6 +47,7 @@ public class HPIntakeGround extends CommandGroup {
         addSequential(new HPSetRollers(Intake.HP_DETECTED_SPEED, RollerDirection.INTAKE));
         addSequential(new ArmToHeight(Arm.FLOOR, false));
         addSequential(new HPSuction(SuctionState.CLOSED));
+        addSequential(new HPSetRollers(0.0, RollerState.INTAKE));
         addSequential(new HPGrabber(GrabberState.GRAB));
         addSequential(new StartCommand(new RumbleYes(manipulator)));
         addSequential(new WaitForever());
