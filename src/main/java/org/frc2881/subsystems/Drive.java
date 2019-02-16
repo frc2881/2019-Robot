@@ -50,6 +50,8 @@ public class Drive extends Subsystem {
         SpeedController left;
         SpeedController right;
         navX = new NavX(SPI.Port.kMXP);
+        addChild("NavX",navX);
+
     
 
         if (RobotType.get() == RobotType.COMPETITION_BOT) {

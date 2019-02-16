@@ -58,8 +58,9 @@ public class Intake extends Subsystem {
         hPIntakeMotor = new Spark(3);
         addChild("HP Intake Motor",hPIntakeMotor);
         hPIntakeMotor.setInverted(false);
-
-        hPDetector = new DigitalInput(0);
+        
+        //on is unblocked, off is blocked
+        hPDetector = new DigitalInput(5);
         addChild("HP Infrared Detector", hPDetector);
     }
 
@@ -83,10 +84,13 @@ public class Intake extends Subsystem {
 
     }
 
+    public boolean isHPDetected(){
+        return !hPDetector.get();
+    }
     public double getCargoRollerCurrent(){
         return pdp.getCurrent(intakecargoRollerPdpChannel);
     }
-    
+
     public void cargoRollers(double speed, RollerState state) {
         //POSITIVE IS EJECTING
         if (state == RollerState.EJECT) {
