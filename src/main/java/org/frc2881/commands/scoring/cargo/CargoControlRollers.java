@@ -12,7 +12,7 @@ package org.frc2881.commands.scoring.cargo;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleNo;
-import org.frc2881.subsystems.Intake.RollerState;
+import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.utils.AmpMonitor;
 import edu.wpi.first.wpilibj.GenericHID;
 
@@ -43,11 +43,11 @@ public class CargoControlRollers extends Command {
     protected void execute() {
         if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
                 joystickValue - Robot.oi.manipulator.getY(GenericHID.Hand.kRight) >= 0.25)) {
-            Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kRight), RollerState.BUTTON);
+            Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kRight), RollerDirection.BUTTON);
         }
 
         else {
-            Robot.intake.cargoRollers(speedCap, RollerState.EJECT);
+            Robot.intake.cargoRollers(speedCap, RollerDirection.EJECT);
         }
 
         if (!monitoringAmps && timeSinceInitialized() > .2){
@@ -64,12 +64,12 @@ public class CargoControlRollers extends Command {
 
             if (Math.abs(Robot.oi.manipulator.getX(GenericHID.Hand.kRight)) <= 0.15 &&
                     Robot.oi.manipulator.getY(GenericHID.Hand.kRight) > 0) {
-                Robot.intake.cargoRollers(speedCap, RollerState.INTAKE);
+                Robot.intake.cargoRollers(speedCap, RollerDirection.INTAKE);
             }
 
             else if (Math.abs(Robot.oi.manipulator.getX(GenericHID.Hand.kRight)) <= 0.15 &&
                     Robot.oi.manipulator.getY(GenericHID.Hand.kRight) < 0 ){
-                Robot.intake.cargoRollers(speedCap, RollerState.EJECT);
+                Robot.intake.cargoRollers(speedCap, RollerDirection.EJECT);
             }
 
             new RumbleNo(Robot.oi.manipulator).start();

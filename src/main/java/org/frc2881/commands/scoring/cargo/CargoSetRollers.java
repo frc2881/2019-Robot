@@ -11,7 +11,7 @@
 package org.frc2881.commands.scoring.cargo;
 
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Intake.RollerState;
+import org.frc2881.subsystems.Intake.RollerDirection;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -21,9 +21,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CargoSetRollers extends Command {
 
     private double speed;
-    private RollerState state;
+    private RollerDirection state;
 
-    public CargoSetRollers(Double speed, RollerState state) {
+    public CargoSetRollers(Double speed, RollerDirection state) {
         requires(Robot.intake);
         this.speed = speed;
         this.state = state;

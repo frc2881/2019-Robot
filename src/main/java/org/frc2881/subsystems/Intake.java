@@ -14,7 +14,6 @@ import org.frc2881.commands.scoring.cargo.CargoIntake;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -25,7 +24,7 @@ public class Intake extends Subsystem {
 
     public enum GrabberState {GRAB, RELEASE, BUTTON}
     public enum SuctionState {OPEN, CLOSED, BUTTON}
-    public enum RollerState {INTAKE, EJECT, BUTTON}
+    public enum RollerDirection {INTAKE, EJECT, BUTTON}
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Spark cargoIntakeMotor;
@@ -91,11 +90,11 @@ public class Intake extends Subsystem {
         return pdp.getCurrent(intakecargoRollerPdpChannel);
     }
 
-    public void cargoRollers(double speed, RollerState state) {
+    public void cargoRollers(double speed, RollerDirection state) {
         //POSITIVE IS EJECTING
-        if (state == RollerState.EJECT) {
+        if (state == RollerDirection.EJECT) {
             cargoIntakeMotor.set(speed);
-        } else if (state == RollerState.INTAKE){
+        } else if (state == RollerDirection.INTAKE){
             cargoIntakeMotor.set(-speed);
         }
         else {
@@ -116,11 +115,11 @@ public class Intake extends Subsystem {
         return pdp.getCurrent(intakeHPRollerPdpChannel);
     }
 
-    public void HPRollers(double speed, RollerState state) {
+    public void HPRollers(double speed, RollerDirection state) {
         //POSITIVE IS EJECTING
-        if (state == RollerState.EJECT) {
+        if (state == RollerDirection.EJECT) {
             hPIntakeMotor.set(speed);
-        } else if (state == RollerState.INTAKE){
+        } else if (state == RollerDirection.INTAKE){
             hPIntakeMotor.set(-speed);
         }
         else {

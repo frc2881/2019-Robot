@@ -51,7 +51,7 @@ import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Arm.WristState;
-import org.frc2881.subsystems.Intake.RollerState;
+import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.SuctionState;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -200,12 +200,12 @@ public class OI {
         SmartDashboard.putData("Arm To Height", new ArmToHeight(Arm.MEDIUM_GOAL_HEIGHT, true));
         SmartDashboard.putData("Cargo Control Rollers", new CargoControlRollers());
         SmartDashboard.putData("Cargo Placed", new CargoPlace());
-        SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5, RollerState.EJECT));
+        SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("Cargo Intake", new CargoIntake());
         SmartDashboard.putData("Do Nothing", new DoNothing());
         SmartDashboard.putData("Drive Forward", new DriveForward());
         SmartDashboard.putData("HP Placed", new HPPlace());
-        SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerState.EJECT));
+        SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
         SmartDashboard.putData("HP Intake Ground", new HPIntakeGround(buttonFromAxisRange(manipulator, PS4.RIGHT_TRIGGER), manipulator));
