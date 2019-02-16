@@ -10,6 +10,9 @@
 
 package org.frc2881.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import org.frc2881.commands.scoring.arm.ArmControl;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -17,6 +20,8 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -48,7 +53,7 @@ public class Arm extends PIDSubsystem {
     private static final double topThreshold = 5;
     private static final double bottomThreshold = 3;
 
-    private Spark armMotor;
+    private CANSparkMax armMotor;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
     private AnalogInput armPotentiometer;
@@ -62,8 +67,8 @@ public class Arm extends PIDSubsystem {
         getPIDController().setName("Arm", "PIDSubsystem Controller");
         LiveWindow.add(getPIDController());
 
-        armMotor = new Spark(0);
-        addChild("Arm Motor",armMotor);
+        armMotor = new CANSparkMax(5, MotorType.kBrushless);
+        addDevice("Arm Motor",armMotor);
         armMotor.setInverted(true);
         
         armEncoder = new Encoder(6, 7, false, EncodingType.k4X);
@@ -88,13 +93,6 @@ public class Arm extends PIDSubsystem {
         super.initSendable(builder);
         builder.addDoubleProperty("Height", this::getArmHeight, null);
         builder.addDoubleProperty("Angle", this::getArmAngleDegrees, null);
-    }
-
-    public void reset() {
-        isArmCalibrated = false;
-        armMotor.setSafetyEnabled(false);  // wait for calibration before enabling motor safety
-        getPIDController().reset();
-        armEncoder.reset();
     }
             
     @Override
@@ -219,6 +217,24 @@ public class Arm extends PIDSubsystem {
         isArmCalibrated = true;
 //        armMotor.setExpiration(0.1);
 //        armMotor.setSafetyEnabled(true);
+    }
+
+    private <T extends Sendable> T addDevice(String name, T device) {
+        super.addChild(name, device);
+        return device;
+    }
+
+
+    private CANSparkMax addDevice(String name, CANSparkMax spark) {
+        addDevice(name, new SendableBase() {
+            public void initSendable(SendableBuilder builder) {
+                builder.setSmartDashboardType("Speed Controller");
+                builder.setActuator(true);
+                builder.setSafeState(spark::disable);
+                builder.addDoubleProperty("Value", spark::get, spark::set);
+            }
+        });
+        return spark;
     }
 
 }
