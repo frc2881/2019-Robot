@@ -34,7 +34,6 @@ public class Lift extends PIDSubsystem {
     private Spark liftMotorLeft;
     private Spark liftMotorRight;
     private Spark liftCrawler;
-    private Solenoid liftPin;
 
     // Initialize your subsystem here
     public Lift() {
@@ -65,11 +64,6 @@ public class Lift extends PIDSubsystem {
         liftCrawler = new Spark(5);
         addChild("Lift Crawler",liftCrawler);
         liftCrawler.setInverted(false);
-        
-        liftPin = new Solenoid(11, 0);
-        addChild("Lift Pin",liftPin);
-        
-        
 
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
@@ -107,10 +101,6 @@ public class Lift extends PIDSubsystem {
     
     public void setLiftRight(double speed){
         liftMotorRight.setSpeed(speed);
-    }
-
-    public void setLiftPin(boolean state){
-        liftPin.set(state);
     }
 
 	public void setLiftCrawler(double speed) {

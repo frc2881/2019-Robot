@@ -31,19 +31,14 @@ public class Intake extends Subsystem {
     private int intakecargoRollerPdpChannel = 1;
     private Solenoid hPSuctionCup;
     private Solenoid hPGrabber;
-    private Solenoid hPIntakePlanB;
-    private Ultrasonic hPDistanceEcholocation;
     private Spark hPIntakeMotor;
+    private Solenoid intakeEndgame;
 
     public static double HP_DETECTED_SPEED = 0.2;
     private int intakeHPRollerPdpChannel = 1;
 
     public Intake() {
         
-//        cargoDistanceEcholocation = new Ultrasonic(4, 5);
-//        addChild("cargo Distance Echolocation",cargoDistanceEcholocation);
-
-
         cargoIntakeMotor = new Spark(4);
         addChild("Cargo Intake Motor",cargoIntakeMotor);
         cargoIntakeMotor.setInverted(false);
@@ -55,14 +50,8 @@ public class Intake extends Subsystem {
         hPGrabber = new Solenoid(11, 2);
         addChild("HP Grabber Solenoid",hPGrabber);
         
-        
-        hPIntakePlanB = new Solenoid(11, 3);
-        addChild("HP Intake Plan B Solenoid",hPIntakePlanB);
-
-
-//        hPDistanceEcholocation = new Ultrasonic(4, 5);
-//        addChild("HP Distance Echolocation",hPDistanceEcholocation);
-        
+        intakeEndgame = new Solenoid(11, 0);
+        addChild("Intake Endgame Solenoid",intakeEndgame);
         
         hPIntakeMotor = new Spark(3);
         addChild("HP Intake Motor",hPIntakeMotor);
@@ -146,5 +135,9 @@ public class Intake extends Subsystem {
         } else {
             hPGrabber.set(state == GrabberState.GRAB);
         }
+    }
+
+    public void intakeEndgame(boolean state){
+        intakeEndgame.set(state);
     }
 }

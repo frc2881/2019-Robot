@@ -22,7 +22,7 @@ public class LiftPin extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        Robot.lift.setLiftPin(true);
+        Robot.intake.intakeEndgame(true);
     }
 
 }
