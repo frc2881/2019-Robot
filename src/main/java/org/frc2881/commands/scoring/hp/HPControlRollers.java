@@ -42,53 +42,44 @@ public class HPControlRollers extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
+        Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER), RollerState.INTAKE);
+
+        /*if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
                 joystickValue + Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) >= 0.25)) {
             Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER), RollerState.INTAKE);
         }
-
         else if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
             joystickValue - Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER) >= 0.25)) {
         Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER), RollerState.EJECT);
          }
-
         else {
             Robot.intake.HPRollers(speedCap, RollerState.EJECT);
         }
-
         if (!monitoringAmps && timeSinceInitialized() > .2){
             ampMonitor.reset();
             monitoringAmps = true;
         }
-
         if (monitoringAmps && ampMonitor.isTriggered()) {
             Robot.log("HP Roller current limit exceeded");
-
             speedCap = 0.2;
-
             //Makes joystick value the trigger that is being pressed
             if (Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER) <= 0.15 &&
                  Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) > 0){
                 joystickValue = Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER);
             }   
-
             else {
                 joystickValue = Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER);
             }
-
             programTime = timeSinceInitialized();
-
             if (Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER) > 0) {
                 Robot.intake.HPRollers(speedCap, RollerState.EJECT);
             }
-
             else if (Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) > 0 ){
                 Robot.intake.HPRollers(speedCap, RollerState.INTAKE);
             }
-
             new RumbleNo(Robot.oi.manipulator).start();
-        }
-}
+        }*/
+    }
 
   
 

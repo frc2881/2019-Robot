@@ -92,7 +92,7 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-    public static final double DEADBAND = 0; // 0.06;
+    public static final double DEADBAND = 0.06; // 0.06;
 
     public enum TriggerButtons {WAIT_UNTIL_HP_DETECTED, LIFT_HP}
     public Button setIntakeFront;
@@ -104,8 +104,9 @@ public class OI {
     public Button switchCamera;
     public Button manipulatorGreenTriangle;
     public Button manipulatorBlueX;
-    public Button loadCargo;
-    public Button loadHP;
+    public Button liftControl;
+    public Button placeCargo;
+    public Button placeHP;
     public Button lowGoal;
     public Button mediumGoal;
     public Button highGoal;
@@ -176,12 +177,16 @@ public class OI {
         highGoal.whileHeld(new ArmToHeight(Arm.HIGH_GOAL_HEIGHT, true));
 
         //scores HP
-        loadHP = new JoystickButton(manipulator, PS4.RED_CIRCLE);
-        loadHP.whenPressed(new HPPlace());
+        placeHP = new JoystickButton(manipulator, PS4.RED_CIRCLE);
+        placeHP.whenPressed(new HPPlace());
+
+        //controls lift
+        liftControl = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
+        liftControl.whileHeld(new LiftControl());
 
         //scores Cargo
-        loadCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
-        loadCargo.whenPressed(new CargoPlace());
+        placeCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
+        placeCargo.whenPressed(new CargoPlace());
 
         //toggles suction
         hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
@@ -194,12 +199,12 @@ public class OI {
         SmartDashboard.putData("Arm Control", new ArmControl());
         SmartDashboard.putData("Arm To Height", new ArmToHeight(Arm.MEDIUM_GOAL_HEIGHT, true));
         SmartDashboard.putData("Cargo Control Rollers", new CargoControlRollers());
-        SmartDashboard.putData("Cargo Loaded", new CargoPlace());
+        SmartDashboard.putData("Cargo Placed", new CargoPlace());
         SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5, RollerState.EJECT));
         SmartDashboard.putData("Cargo Intake", new CargoIntake());
         SmartDashboard.putData("Do Nothing", new DoNothing());
         SmartDashboard.putData("Drive Forward", new DriveForward());
-        SmartDashboard.putData("HP Loaded", new HPPlace());
+        SmartDashboard.putData("HP Placed", new HPPlace());
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerState.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
@@ -247,7 +252,7 @@ public class OI {
         return new Button() {
             @Override
             public boolean get() {
-                return Math.abs(controller.getRawAxis(axis)) > 0.05;
+                return Math.abs(controller.getRawAxis(axis)) > DEADBAND;
             }
         };
     }
