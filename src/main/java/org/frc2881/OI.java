@@ -188,7 +188,7 @@ public class OI {
 
         //scores Cargo
         loadCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
-        loadCargo.whenPressed(new CargoPlace());
+        loadCargo.whileHeld (new CargoSetRollers(1.0, RollerState.EJECT));
 
         //toggles suction
         hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
