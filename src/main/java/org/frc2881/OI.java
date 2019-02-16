@@ -51,7 +51,7 @@ import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Arm.WristState;
-import org.frc2881.subsystems.Intake.RollerState;
+import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.SuctionState;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -106,6 +106,7 @@ public class OI {
     public Button manipulatorBlueX;
     public Button liftControl;
     public Button placeCargo;
+    public Button intakeCargo;
     public Button placeHP;
     public Button lowGoal;
     public Button mediumGoal;
@@ -153,7 +154,7 @@ public class OI {
         //MANIPULATOR
         
         //moves wrist to opposite state
-        moveWrist = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        moveWrist = new JoystickButton(manipulator, PS4.BLUE_X);
         moveWrist.whenPressed(new ArmWrist(WristState.BUTTON));
 
         //intakes HP from ground
@@ -177,20 +178,21 @@ public class OI {
         highGoal.whileHeld(new ArmToHeight(Arm.HIGH_GOAL_HEIGHT, true));
 
         //scores HP
-        placeHP = new JoystickButton(manipulator, PS4.RED_CIRCLE);
-        placeHP.whenPressed(new HPPlace());
+        placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        placeHP.whileHeld(new HPPlace());
 
         //controls lift
         liftControl = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
         liftControl.whileHeld(new LiftControl());
 
         //scores Cargo
-        placeCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
-        placeCargo.whenPressed(new CargoPlace());
 
-        //toggles suction
-        hPSuction = new JoystickButton(manipulator, PS4.BLUE_X);
-        hPSuction.whenPressed(new HPSuction(SuctionState.BUTTON));
+        placeCargo = new JoystickButton(manipulator, PS4.RED_CIRCLE);
+        placeCargo.whileHeld(new CargoPlace());
+
+        //scores Cargo
+        intakeCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
+        intakeCargo.whileHeld(new CargoPlace());
 
 
         // SmartDashboard Buttons
@@ -201,12 +203,12 @@ public class OI {
         SmartDashboard.putData("Arm To Height", new ArmToHeight(Arm.MEDIUM_GOAL_HEIGHT, true));
         SmartDashboard.putData("Cargo Control Rollers", new CargoControlRollers());
         SmartDashboard.putData("Cargo Placed", new CargoPlace());
-        SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5, RollerState.EJECT));
+        SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("Cargo Intake", new CargoIntake());
         SmartDashboard.putData("Do Nothing", new DoNothing());
         SmartDashboard.putData("Drive Forward", new DriveForward());
         SmartDashboard.putData("HP Placed", new HPPlace());
-        SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerState.EJECT));
+        SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
         SmartDashboard.putData("HP Intake Ground", new HPIntakeGround(buttonFromAxisRange(manipulator, PS4.RIGHT_TRIGGER), manipulator));
