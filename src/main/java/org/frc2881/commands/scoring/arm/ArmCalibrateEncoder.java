@@ -31,10 +31,8 @@ public class ArmCalibrateEncoder extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        //sets motor speed to -0.3
-        //if (!autonomous) {
-          //  Robot.arm.setMotorForCalibration();
-        //}
+        
+        //Robot.arm.setMotorForCalibration();
     }
 
     @Override

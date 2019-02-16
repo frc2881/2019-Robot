@@ -27,7 +27,6 @@ import org.frc2881.commands.basic.rumble.RumbleYes;
 import org.frc2881.commands.basic.wait.DoNothing;
 import org.frc2881.commands.basic.wait.WaitForPressure;
 import org.frc2881.commands.basic.wait.WaitForever;
-import org.frc2881.commands.basic.wait.WaitUntilCargoDetected;
 import org.frc2881.commands.basic.wait.WaitUntilHPDetected;
 import org.frc2881.commands.basic.wait.WaitUntilNavXDetected;
 import org.frc2881.commands.scoring.AutonomousCommand;
@@ -47,8 +46,6 @@ import org.frc2881.commands.scoring.cargo.CargoPlace;
 import org.frc2881.commands.scoring.cargo.CargoSetRollers;
 import org.frc2881.commands.scoring.lift.LiftControl;
 import org.frc2881.commands.scoring.lift.LiftCrawler;
-import org.frc2881.commands.scoring.lift.LiftPin;
-import org.frc2881.commands.scoring.lift.LiftSetScrew;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
@@ -140,10 +137,6 @@ public class OI {
         highLift = buttonFromPOV(driver, 0);
         highLift.whileHeld(new LiftToHeight(Lift.LOW_PLATFORM_HEIGHT, true));
 
-        //lifts lift wheels up
-        liftPin = new JoystickButton(driver, PS4.RED_CIRCLE);
-        liftPin.whenPressed(new LiftPin());
-
         //drives lift wheels forward
         liftCrawler = new JoystickButton(driver, PS4.PINK_SQUARE);
         liftCrawler.whileHeld(new LiftCrawler());
@@ -214,8 +207,6 @@ public class OI {
         SmartDashboard.putData("HP Intake Ground", new HPIntakeGround(buttonFromAxisRange(manipulator, PS4.RIGHT_TRIGGER), manipulator));
         SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.LOW_PLATFORM_HEIGHT, true));
         SmartDashboard.putData("Lift Control", new LiftControl());
-        SmartDashboard.putData("Lift Pin", new LiftPin());
-        SmartDashboard.putData("Lift Set Screw", new LiftSetScrew());
         SmartDashboard.putData("Lift Crawler", new LiftCrawler());
         SmartDashboard.putData("Robot Prep", new RobotPrep());
         SmartDashboard.putData("NavX Reset", new NavXReset());
@@ -229,7 +220,6 @@ public class OI {
         SmartDashboard.putData("Wait Forever", new WaitForever());
         SmartDashboard.putData("Wait For Pressure", new WaitForPressure());
         SmartDashboard.putData("Wait Until HP Detected", new WaitUntilHPDetected());
-        SmartDashboard.putData("Wait Until Cargo Detected", new WaitUntilCargoDetected());
         SmartDashboard.putData("Wait Until NavX Detected", new WaitUntilNavXDetected());
         SmartDashboard.putData("Camera Switch", new CameraSwitch());
 
