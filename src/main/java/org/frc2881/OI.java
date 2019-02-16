@@ -35,7 +35,6 @@ import org.frc2881.commands.scoring.hp.HPIntakeGround;
 import org.frc2881.commands.scoring.hp.HPIntakeHuman;
 import org.frc2881.commands.scoring.hp.HPPlace;
 import org.frc2881.commands.scoring.hp.HPSetRollers;
-import org.frc2881.commands.scoring.hp.HPSuction;
 import org.frc2881.commands.scoring.arm.ArmCalibrateEncoder;
 import org.frc2881.commands.scoring.arm.ArmControl;
 import org.frc2881.commands.scoring.arm.ArmToHeight;
@@ -182,16 +181,15 @@ public class OI {
         placeHP.whileHeld(new HPPlace());
 
         //controls lift
-        liftControl = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
+        liftControl = buttonFromAxis(manipulator, PS4.LEFT_JOYSTICK_VERTICAL);
         liftControl.whileHeld(new LiftControl());
 
         //scores Cargo
-
-        placeCargo = new JoystickButton(manipulator, PS4.RED_CIRCLE);
+        placeCargo = new JoystickButton(manipulator, PS4.LEFT_BUMPER);
         placeCargo.whileHeld(new CargoPlace());
 
         //scores Cargo
-        intakeCargo = new JoystickButton(manipulator, PS4.PINK_SQUARE);
+        intakeCargo = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
         intakeCargo.whileHeld(new CargoPlace());
 
 
