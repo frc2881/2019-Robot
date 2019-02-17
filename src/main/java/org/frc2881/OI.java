@@ -142,6 +142,10 @@ public class OI {
         liftCrawler = new JoystickButton(driver, PS4.PINK_SQUARE);
         liftCrawler.whileHeld(new LiftCrawler());
 
+        //controls lift
+        liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
+        liftControl.whileHeld(new LiftControl());
+
         //sets intake as back
         setIntakeBack = new JoystickButton(driver, PS4.BLUE_X);
         setIntakeBack.whenPressed(new IntakeSetAsBack());
@@ -178,19 +182,15 @@ public class OI {
 
         //scores HP
         placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
-        placeHP.whileHeld(new HPPlace());
-
-        //controls lift
-        liftControl = buttonFromAxis(manipulator, PS4.LEFT_JOYSTICK_VERTICAL);
-        liftControl.whileHeld(new LiftControl());
+        placeHP.whenPressed(new HPPlace());
 
         //scores Cargo
         placeCargo = new JoystickButton(manipulator, PS4.LEFT_BUMPER);
         placeCargo.whileHeld(new CargoPlace());
 
-        //scores Cargo
+        //intake Cargo
         intakeCargo = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
-        intakeCargo.whileHeld(new CargoPlace());
+        intakeCargo.whileHeld(new CargoIntake());
 
 
         // SmartDashboard Buttons

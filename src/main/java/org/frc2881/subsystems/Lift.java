@@ -12,19 +12,14 @@ package org.frc2881.subsystems;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
-import org.frc2881.commands.scoring.lift.LiftControl;
-
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *
  */
-public class Lift extends PIDSubsystem {
+public class Lift extends Subsystem {
 
     public static double LOW_PLATFORM_HEIGHT = 1;
     public static double HIGH_PLATFORM_HEIGHT = 2;
@@ -37,21 +32,14 @@ public class Lift extends PIDSubsystem {
 
     // Initialize your subsystem here
     public Lift() {
-        super("Lift", 1.0, 0.0, 0.0);
-        setAbsoluteTolerance(0.2);
-        getPIDController().setContinuous(false);
-        getPIDController().setName("Lift", "PIDSubsystem Controller");
-        LiveWindow.add(getPIDController());
 
         liftEncoderLeft = new Encoder(0, 1, false, EncodingType.k4X);
         addChild("Lift Encoder Left",liftEncoderLeft);
         liftEncoderLeft.setDistancePerPulse(1.0);
-        liftEncoderLeft.setPIDSourceType(PIDSourceType.kRate);
         
         liftEncoderRight = new Encoder(2, 3, false, EncodingType.k4X);
         addChild("Lift Encoder Right",liftEncoderRight);
         liftEncoderRight.setDistancePerPulse(1.0);
-        liftEncoderRight.setPIDSourceType(PIDSourceType.kRate);
         
         liftMotorLeft = new Spark(2);
         addChild("Lift Motor Left",liftMotorLeft);
@@ -71,30 +59,6 @@ public class Lift extends PIDSubsystem {
         // enable() - Enables the PID controller.
     }
 
-    @Override
-    public void initDefaultCommand() {
-        
-    }
-
-    @Override
-    protected double returnPIDInput() {
-        // Return your input value for the PID loop
-        // e.g. a sensor, like a potentiometer:
-        // yourPot.getAverageVoltage() / kYourMaxVoltage;
-
-        return liftEncoderLeft.pidGet();
-
-    }
-
-    @Override
-    protected void usePIDOutput(double output) {
-        // Use output to drive your system, like a motor
-        // e.g. yourMotor.set(output);
-
-        liftMotorLeft.pidWrite(output);
-
-    }
-
     public void setLiftLeft(double speed){
         liftMotorLeft.setSpeed(speed);
     }
@@ -105,5 +69,10 @@ public class Lift extends PIDSubsystem {
 
 	public void setLiftCrawler(double speed) {
         liftCrawler.set(speed);
-	}
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+
+    }
 }

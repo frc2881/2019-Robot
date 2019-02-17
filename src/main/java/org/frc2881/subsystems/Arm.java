@@ -55,7 +55,7 @@ public class Arm extends PIDSubsystem {
     private static final double topThreshold = 5;
     private static final double bottomThreshold = 3;
 
-    private SpeedController armMotor;
+    public SpeedController armMotor;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
     private AnalogInput armPotentiometer;
@@ -121,7 +121,6 @@ public class Arm extends PIDSubsystem {
         // e.g. a sensor, like a potentiometer:
       
         return getArmAngleRadians();
-
     }
 
     @Override

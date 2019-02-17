@@ -10,12 +10,7 @@
 
 package org.frc2881.commands.scoring.arm;
 
-
-
-import org.frc2881.subsystems.Arm;
-
 import edu.wpi.first.wpilibj.command.Command;
-
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleYes;
 
@@ -28,7 +23,7 @@ public class ArmToHeight extends Command {
     private boolean rumble;
 
     public ArmToHeight(double height, boolean rumble) {
-        requires (Robot.arm);
+        requires(Robot.arm);
         this.height = height;
         this.rumble = rumble;
     }

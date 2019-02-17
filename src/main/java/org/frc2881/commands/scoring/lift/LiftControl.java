@@ -13,15 +13,28 @@ package org.frc2881.commands.scoring.lift;
 import org.frc2881.Robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.PIDCommand;
 
 /**
  *
  */
-public class LiftControl extends Command {
+public class LiftControl extends PIDCommand {
+
+    private double joystickMultiplier;
+
+    //lift motor needs proportional input from joystick + pid input
+    //pid setpoint is navX (yaw) angle
+    //joystick controls back motors
+    //feedforward instead of feedback
 
     public LiftControl() {
+        super("LiftControl", 1.0, 0.0, 0.0);
+        //change according to navX
+        setSetpoint(2);
         requires(Robot.lift);
+        requires(Robot.arm);
+
+        joystickMultiplier = 0.5;
     }
 
     @Override
@@ -32,9 +45,9 @@ public class LiftControl extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.lift.setLiftLeft(Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft));
-        Robot.lift.setLiftRight(Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft));
-
+        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        Robot.lift.setLiftLeft(speed);
+        Robot.lift.setLiftRight(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -48,5 +61,16 @@ public class LiftControl extends Command {
         Robot.lift.setLiftLeft(0);
         Robot.lift.setLiftRight(0);
         Robot.logEnd(this);
+    }
+
+    @Override
+    protected double returnPIDInput() {
+        return Robot.drive.navX.getRoll();
+    }
+
+    @Override
+    protected void usePIDOutput(double output) {
+        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        Robot.arm.armMotor.set(output + speed * joystickMultiplier);
     }
 }
