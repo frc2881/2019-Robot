@@ -45,6 +45,7 @@ import org.frc2881.commands.scoring.cargo.CargoPlace;
 import org.frc2881.commands.scoring.cargo.CargoSetRollers;
 import org.frc2881.commands.scoring.lift.LiftControl;
 import org.frc2881.commands.scoring.lift.LiftControlBack;
+import org.frc2881.commands.scoring.lift.LiftControlForward;
 import org.frc2881.commands.scoring.lift.LiftCrawler;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
@@ -117,6 +118,7 @@ public class OI {
     public Button hPSuction;
     public Button moveWrist;
     public Button backLift;
+    public Button liftControlForward;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -158,6 +160,10 @@ public class OI {
         //sets intake as front
         setIntakeFront = new JoystickButton(driver, PS4.GREEN_TRIANGLE);
         setIntakeFront.whenPressed(new IntakeSetAsFront());
+
+        //controls lift, but backwards
+        liftControlForward = new JoystickButton(driver, PS4.SHARE_BUTTON);
+        liftControlForward.whenPressed(new LiftControlForward());
 
         //MANIPULATOR
         
