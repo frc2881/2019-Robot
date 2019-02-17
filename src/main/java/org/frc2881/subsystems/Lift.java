@@ -13,7 +13,9 @@ package org.frc2881.subsystems;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -24,8 +26,10 @@ public class Lift extends Subsystem {
     public static double LOW_PLATFORM_HEIGHT = 1;
     public static double HIGH_PLATFORM_HEIGHT = 2;
 
+    private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Encoder liftEncoderLeft;
     private Encoder liftEncoderRight;
+    private SpeedControllerGroup liftMotors;
     private Spark liftMotorLeft;
     private Spark liftMotorRight;
     private Spark liftCrawler;
@@ -40,14 +44,16 @@ public class Lift extends Subsystem {
         liftEncoderRight = new Encoder(2, 3, false, EncodingType.k4X);
         addChild("Lift Encoder Right",liftEncoderRight);
         liftEncoderRight.setDistancePerPulse(1.0);
-        
+
         liftMotorLeft = new Spark(2);
         addChild("Lift Motor Left",liftMotorLeft);
-        liftMotorLeft.setInverted(false);
         
         liftMotorRight = new Spark(1);
         addChild("Lift Motor Right",liftMotorRight);
-        liftMotorRight.setInverted(false);
+
+        liftMotors = new SpeedControllerGroup(liftMotorLeft, liftMotorRight);
+        addChild("Lift Motors",liftMotors);
+        liftMotors.setInverted(false);
         
         liftCrawler = new Spark(5);
         addChild("Lift Crawler",liftCrawler);
@@ -69,6 +75,14 @@ public class Lift extends Subsystem {
 
 	public void setLiftCrawler(double speed) {
         liftCrawler.set(speed);
+    }
+
+    public void setLiftMotors(double speed) {
+        liftMotors.set(speed);
+    }
+
+    public double getLiftMotorCurrent(){
+        return Math.max(pdp.getCurrent(2), pdp.getCurrent(1)) ;
     }
 
     @Override

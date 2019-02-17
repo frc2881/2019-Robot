@@ -44,6 +44,7 @@ import org.frc2881.commands.scoring.cargo.CargoIntake;
 import org.frc2881.commands.scoring.cargo.CargoPlace;
 import org.frc2881.commands.scoring.cargo.CargoSetRollers;
 import org.frc2881.commands.scoring.lift.LiftControl;
+import org.frc2881.commands.scoring.lift.LiftControlBack;
 import org.frc2881.commands.scoring.lift.LiftCrawler;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
@@ -115,6 +116,7 @@ public class OI {
     public Button intakeHPFloor;
     public Button hPSuction;
     public Button moveWrist;
+    public Button backLift;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -129,6 +131,9 @@ public class OI {
         //switches camera front to back & vice versa
         switchCamera = new JoystickButton(driver, PS4.RIGHT_BUMPER);
         switchCamera.whenPressed(new CameraSwitch());
+
+        backLift = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
+        backLift.whileHeld(new LiftControlBack());
 
         //Climbs to high platform
         lowLift = buttonFromPOV(driver, 180);
@@ -182,7 +187,7 @@ public class OI {
 
         //scores HP
         placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
-        placeHP.whenPressed(new HPPlace());
+        placeHP.whileHeld(new HPPlace());
 
         //scores Cargo
         placeCargo = new JoystickButton(manipulator, PS4.LEFT_BUMPER);

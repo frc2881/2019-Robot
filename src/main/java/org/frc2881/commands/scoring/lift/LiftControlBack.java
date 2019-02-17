@@ -11,35 +11,46 @@
 package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
-
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.command.PIDCommand;
+import org.frc2881.commands.basic.rumble.RumbleNo;
+import org.frc2881.utils.AmpMonitor;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class LiftControl extends PIDCommand {
+public class LiftControlBack extends Command {
 
     private static final double joystickMultiplier = 0.25;
+    private AmpMonitor ampMonitor = new AmpMonitor(20, () -> Robot.lift.getLiftMotorCurrent());
+    private boolean rumbled;
 
-    public LiftControl() {
-        super("LiftControl", 1.0, 0.0, 0.0);
-        //change according to navX
-        setSetpoint(2);
+    public LiftControlBack() {
         requires(Robot.lift);
-        requires(Robot.arm);
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
+        ampMonitor.reset();
+        rumbled = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        double speed = (-0.5);
         Robot.lift.setLiftMotors(speed);
+
+        if (ampMonitor.isTriggered()) {
+            
+            if (!rumbled) {         
+                new RumbleNo(Robot.oi.manipulator).start();
+                Robot.log("Lift current limit exceeded");
+                rumbled = true;
+            }
+
+            Robot.lift.setLiftMotors(0);   
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -55,14 +66,4 @@ public class LiftControl extends PIDCommand {
         Robot.logEnd(this);
     }
 
-    @Override
-    protected double returnPIDInput() {
-        return Robot.drive.navX.getRoll();
-    }
-
-    @Override
-    protected void usePIDOutput(double output) {
-        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
-        Robot.arm.armMotor.set(output + speed * joystickMultiplier);
-    }
 }
