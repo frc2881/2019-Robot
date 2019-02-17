@@ -12,6 +12,7 @@ package org.frc2881.commands.basic.drive;
 
 import org.frc2881.Robot;
 import org.frc2881.subsystems.Drive;
+import org.frc2881.utils.NTValue;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
@@ -24,8 +25,10 @@ public class IntakeSetAsBack extends InstantCommand {
     protected void initialize() {
         Robot.logInitialize(this);
         Robot.drive.setIntakeLocation(Drive.IntakeLocation.BACK);
+        NTValue.setCameraForward(false);
         //Prints in the driver station
         Robot.log("Intake has been set to BACK.");
         Robot.log("Meaning the BACK of the robot is now the FRONT");
+        Robot.log("The Driver Camera has been switched to BACKWARDS");
     }
 }

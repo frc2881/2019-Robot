@@ -11,6 +11,7 @@
 package org.frc2881.commands.basic;
 
 import org.frc2881.Robot;
+import org.frc2881.utils.NTValue;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
@@ -22,7 +23,7 @@ public class CameraSwitch extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        //TODO
-    }
+        NTValue.setCameraForward(!NTValue.getCameraForward());
+    } 
 
 }
