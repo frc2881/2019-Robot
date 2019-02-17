@@ -45,8 +45,9 @@ public class LiftControl extends PIDCommand {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.lift.setLiftLeft(Robot.oi.driver.getY(GenericHID.Hand.kLeft));
-        Robot.lift.setLiftRight(Robot.oi.driver.getY(GenericHID.Hand.kLeft));
+        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        Robot.lift.setLiftLeft(speed);
+        Robot.lift.setLiftRight(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -69,6 +70,7 @@ public class LiftControl extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
-        Robot.arm.armMotor.set(output + Robot.oi.driver.getY(GenericHID.Hand.kLeft) * joystickMultiplier);
+        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        Robot.arm.armMotor.set(output + speed * joystickMultiplier);
     }
 }
