@@ -65,7 +65,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new CargoIntake());
+        
     }
 
     public void suction(SuctionState state) {

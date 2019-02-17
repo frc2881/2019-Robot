@@ -73,7 +73,7 @@ public class Lift extends PIDSubsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new LiftControl());
+        
     }
 
     @Override
