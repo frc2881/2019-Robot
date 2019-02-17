@@ -82,7 +82,7 @@ public class Lift extends Subsystem {
     }
 
     public double getLiftMotorCurrent(){
-        return Math.max(pdp.getCurrent(1), pdp.getCurrent(0)) ;
+        return Math.max(pdp.getCurrent(2), pdp.getCurrent(1)) ;
     }
 
     @Override

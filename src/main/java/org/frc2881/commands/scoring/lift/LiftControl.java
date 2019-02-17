@@ -27,7 +27,7 @@ public class LiftControl extends PIDCommand {
         //change according to navX
         setSetpoint(2);
         requires(Robot.lift);
-        //requires(Robot.arm);
+        requires(Robot.arm);
     }
 
     @Override
@@ -63,6 +63,6 @@ public class LiftControl extends PIDCommand {
     @Override
     protected void usePIDOutput(double output) {
         double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
-        //Robot.arm.armMotor.set(output + speed * joystickMultiplier);
+        Robot.arm.armMotor.set(output + speed * joystickMultiplier);
     }
 }
