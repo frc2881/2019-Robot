@@ -35,7 +35,7 @@ public class HPIntakeGround extends CommandGroup {
     public HPIntakeGround(Supplier<OI.TriggerButtons> function, XboxController manipulator) {
         super("IntakeHPGround");
 
-        addSequential(new HPSetRollers(0.5, RollerDirection.INTAKE));
+        addSequential(new HPSetRollers(1.0, RollerDirection.INTAKE));
 
         addSequential(new Command() {
             @Override

@@ -86,6 +86,7 @@ public class Intake extends Subsystem {
     public boolean isHPDetected(){
         return !hPDetector.get();
     }
+    
     public double getCargoRollerCurrent(){
         return pdp.getCurrent(intakecargoRollerPdpChannel);
     }
@@ -120,10 +121,10 @@ public class Intake extends Subsystem {
         if (state == RollerDirection.EJECT) {
             hPIntakeMotor.set(speed);
         } else if (state == RollerDirection.INTAKE){
-            hPIntakeMotor.set(-speed);
+            hPIntakeMotor.set(speed);
         }
         else {
-            hPIntakeMotor.set(speed);
+            hPIntakeMotor.set(-speed);
         }
     }
 
@@ -141,7 +142,7 @@ public class Intake extends Subsystem {
             hPGrabber.set(!hPGrabber.get());
 
         } else {
-            hPGrabber.set(state == GrabberState.GRAB);
+            hPGrabber.set(state == GrabberState.RELEASE);
         }
     }
 
