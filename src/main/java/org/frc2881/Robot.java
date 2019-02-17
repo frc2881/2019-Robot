@@ -10,6 +10,8 @@
 
 package org.frc2881;
 
+import static java.util.stream.Collectors.joining;
+
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -21,6 +23,7 @@ import org.frc2881.subsystems.Intake;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Pneumatics;
 import org.frc2881.subsystems.PrettyLights;
+import org.frc2881.utils.NTValue;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -29,19 +32,17 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import static java.util.stream.Collectors.joining;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in 
- * the project.
+ * creating this project, you must also update the build.properties file in the
+ * project.
  */
 public class Robot extends TimedRobot {
 
-	public static final String otherFancyLights = null;
-	Command autonomousCommand;
+    public static final String otherFancyLights = null;
+    Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
     public static OI oi;
@@ -90,6 +91,7 @@ public class Robot extends TimedRobot {
             Robot.log("Resetting robot sensors");
             pneumatics.reset();
             arm.resetArmEncoder();
+            NTValue.setCameraForward(true);
             resetRobot = false;
         }
     }
