@@ -10,9 +10,12 @@
 
 package org.frc2881.commands.scoring.cargo;
 
+
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Intake.RollerState;
+
 
 /**
  *
@@ -26,11 +29,13 @@ public class CargoPlace extends Command {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.intake.cargoRollers(1, RollerState.EJECT);
     }
 
     // Make this return true when this Command no longer needs to run execute()
