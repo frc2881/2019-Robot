@@ -44,8 +44,7 @@ import org.frc2881.commands.scoring.cargo.CargoIntake;
 import org.frc2881.commands.scoring.cargo.CargoPlace;
 import org.frc2881.commands.scoring.cargo.CargoSetRollers;
 import org.frc2881.commands.scoring.lift.LiftControl;
-import org.frc2881.commands.scoring.lift.LiftControlBack;
-import org.frc2881.commands.scoring.lift.LiftControlForward;
+import org.frc2881.commands.scoring.lift.LiftSet;
 import org.frc2881.commands.scoring.lift.LiftCrawler;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
@@ -118,7 +117,7 @@ public class OI {
     public Button hPSuction;
     public Button moveWrist;
     public Button backLift;
-    public Button liftControlForward;
+    public Button forwardLift;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -134,8 +133,11 @@ public class OI {
         switchCamera = new JoystickButton(driver, PS4.RIGHT_BUMPER);
         switchCamera.whenPressed(new CameraSwitch());
 
-        backLift = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
-        backLift.whileHeld(new LiftControlBack());
+        forwardLift = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
+        forwardLift.whileHeld(new LiftSet(true));
+        
+        backLift = new JoystickButton(driver, PS4.SHARE_BUTTON);
+        backLift.whileHeld(new LiftSet(false));
 
         //Climbs to high platform
         lowLift = buttonFromPOV(driver, 180);
@@ -160,10 +162,6 @@ public class OI {
         //sets intake as front
         setIntakeFront = new JoystickButton(driver, PS4.GREEN_TRIANGLE);
         setIntakeFront.whenPressed(new IntakeSetAsFront());
-
-        //controls lift, but backwards
-        liftControlForward = new JoystickButton(driver, PS4.SHARE_BUTTON);
-        liftControlForward.whenPressed(new LiftControlForward());
 
         //MANIPULATOR
         
@@ -193,7 +191,7 @@ public class OI {
 
         //scores HP
         placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
-        placeHP.whileHeld(new HPPlace());
+        placeHP.whenPressed(new HPPlace());
 
         //scores Cargo
         placeCargo = new JoystickButton(manipulator, PS4.LEFT_BUMPER);
