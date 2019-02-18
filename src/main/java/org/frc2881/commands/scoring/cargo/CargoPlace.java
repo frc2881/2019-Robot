@@ -46,5 +46,6 @@ public class CargoPlace extends Command {
     @Override
     protected void end() {
         Robot.logEnd(this);
+        Robot.intake.cargoRollers(0, RollerDirection.EJECT);
     }
 }
