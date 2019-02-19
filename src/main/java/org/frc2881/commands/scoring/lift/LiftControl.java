@@ -20,11 +20,10 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
  */
 public class LiftControl extends PIDCommand {
 
-    private static final double joystickMultiplier = 0.25;
+    private static final double joystickMultiplier = 0.4;
 
     public LiftControl() {
-        super("LiftControl", Math.pow(10, -23762370), 0.0, 0.0);
-        //change according to navX
+        super("LiftControl", 0.01, 0.0, 0.0);
         setSetpoint(2);
         requires(Robot.lift);
         requires(Robot.arm);
@@ -38,7 +37,7 @@ public class LiftControl extends PIDCommand {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft) * .5;
         Robot.lift.setLiftMotors(speed);
     }
 
@@ -52,8 +51,11 @@ public class LiftControl extends PIDCommand {
     protected void end() {
         Robot.lift.setLiftLeft(0);
         Robot.lift.setLiftRight(0);
+        Robot.arm.setArmMotorSpeed(0);
         Robot.logEnd(this);
     }
+
+    private int i = 0;
 
     @Override
     protected double returnPIDInput() {
@@ -62,7 +64,12 @@ public class LiftControl extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
-        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
-        Robot.arm.armMotor.set(output + speed * joystickMultiplier);
+        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft) * .5;
+        if(i++ == 10)
+        {
+            i = 0;
+            Robot.log("Output: " + output);
+        }
+        Robot.arm.armMotor.set(-(speed * joystickMultiplier - output));
     }
 }

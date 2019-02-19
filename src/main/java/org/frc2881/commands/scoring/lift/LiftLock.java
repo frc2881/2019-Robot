@@ -8,49 +8,44 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands.scoring.arm;
+package org.frc2881.commands.scoring.lift;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.frc2881.OI;
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Drive.LiftLockState;
 
 /**
  *
  */
-public class ArmControl extends Command {
+public class LiftLock extends Command {
 
-    public ArmControl() {
-        requires(Robot.arm);
+    private LiftLockState state;
+
+    public LiftLock(LiftLockState state) {
+        this.state = state;
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.log("Arm control has started");
+        Robot.logInitialize(this);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = -Robot.oi.manipulator.getY(Hand.kRight);
-        Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)));
-        /*if (Robot.arm.getArmHeight() > Arm.ILLEGAL_HEIGHT){
-            Robot.arm.moveWrist(WristState.UP);
-        }*/
+        Robot.drive.setLiftLock(state);
     }
 
+
+    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.log("Arm Control has ended");
+        Robot.logEnd(this);
     }
-
 }
-

@@ -44,15 +44,18 @@ import org.frc2881.commands.scoring.cargo.CargoIntake;
 import org.frc2881.commands.scoring.cargo.CargoPlace;
 import org.frc2881.commands.scoring.cargo.CargoSetRollers;
 import org.frc2881.commands.scoring.lift.LiftControl;
+import org.frc2881.commands.scoring.lift.LiftControlBack;
+import org.frc2881.commands.scoring.lift.LiftControlForward;
 import org.frc2881.commands.scoring.lift.LiftSet;
 import org.frc2881.commands.scoring.lift.LiftCrawler;
+import org.frc2881.commands.scoring.lift.LiftLock;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Arm.WristState;
 import org.frc2881.subsystems.Intake.RollerDirection;
-import org.frc2881.subsystems.Intake.SuctionState;
+import org.frc2881.subsystems.Drive.LiftLockState;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -102,8 +105,6 @@ public class OI {
     public Button lowLift;
     public Button highLift;
     public Button switchCamera;
-    public Button manipulatorGreenTriangle;
-    public Button manipulatorBlueX;
     public Button liftControl;
     public Button placeCargo;
     public Button intakeCargo;
@@ -111,13 +112,13 @@ public class OI {
     public Button lowGoal;
     public Button mediumGoal;
     public Button highGoal;
-    public Button manipulatorOption;
     public Button intakeHPHuman;
     public Button intakeHPFloor;
     public Button hPSuction;
     public Button moveWrist;
     public Button backLift;
     public Button forwardLift;
+    public Button setLiftLock;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -134,10 +135,10 @@ public class OI {
         switchCamera.whenPressed(new CameraSwitch());
 
         forwardLift = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
-        forwardLift.whileHeld(new LiftSet(true));
+        forwardLift.whileHeld(new LiftControlForward());
         
         backLift = new JoystickButton(driver, PS4.SHARE_BUTTON);
-        backLift.whileHeld(new LiftSet(false));
+        backLift.whileHeld(new LiftControlBack());
 
         //Climbs to high platform
         lowLift = buttonFromPOV(driver, 180);
@@ -150,6 +151,9 @@ public class OI {
         //drives lift wheels forward
         liftCrawler = new JoystickButton(driver, PS4.PINK_SQUARE);
         liftCrawler.whileHeld(new LiftCrawler());
+
+        setLiftLock = new JoystickButton(driver, PS4.RED_CIRCLE);
+        setLiftLock.whenPressed(new LiftLock(LiftLockState.BUTTON));
 
         //controls lift
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);

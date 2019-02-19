@@ -34,7 +34,7 @@ public class CargoPlace extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intake.cargoRollers(1, RollerDirection.EJECT);
+        Robot.intake.cargoRollers(0.75, RollerDirection.EJECT);
     }
 
     // Make this return true when this Command no longer needs to run execute()

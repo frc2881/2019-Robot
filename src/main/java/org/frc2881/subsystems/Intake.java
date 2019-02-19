@@ -32,7 +32,6 @@ public class Intake extends Subsystem {
     private Solenoid hPSuctionCup;
     private Solenoid hPGrabber;
     private Spark hPIntakeMotor;
-    private Solenoid intakeEndgame;
     private DigitalInput hPDetector;
 
     public static double HP_DETECTED_SPEED = 0.2;
@@ -50,9 +49,6 @@ public class Intake extends Subsystem {
 
         hPGrabber = new Solenoid(11, 2);
         addChild("HP Grabber Solenoid",hPGrabber);
-        
-        intakeEndgame = new Solenoid(11, 0);
-        addChild("Intake Endgame Solenoid",intakeEndgame);
         
         hPIntakeMotor = new Spark(3);
         addChild("HP Intake Motor",hPIntakeMotor);
@@ -84,6 +80,7 @@ public class Intake extends Subsystem {
     }
 
     public boolean isHPDetected(){
+        //true is not detected (no hatch panel)
         return !hPDetector.get();
     }
     
@@ -144,9 +141,5 @@ public class Intake extends Subsystem {
         } else {
             hPGrabber.set(state == GrabberState.RELEASE);
         }
-    }
-
-    public void intakeEndgame(boolean state){
-        intakeEndgame.set(state);
     }
 }

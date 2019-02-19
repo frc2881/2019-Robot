@@ -19,6 +19,12 @@ import org.frc2881.commands.basic.rumble.RumbleYes;
  */
 public class ArmToHeight extends Command {
 
+    //Code something that doesn't use pid controller and mannually ramps motor speed and compares to potentiometer/encoder value with speed min
+    
+    //HP Middle Score 45.1, -6.3
+    //Cargo Middle Score 
+    //HP High Score 76.2, 36.7 
+    //Cargo High Score 61.2, 14.4; 60.9, 12.6
     private double height;
     private boolean rumble;
 

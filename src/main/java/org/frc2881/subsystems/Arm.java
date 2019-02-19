@@ -50,7 +50,7 @@ public class Arm extends PIDSubsystem {
     public enum WristState {UP, DOWN, BUTTON}
     public static double HIGH_GOAL_HEIGHT = 73.8;
     public static double MEDIUM_GOAL_HEIGHT = 44.5;
-    public static double ILLEGAL_HEIGHT = 18;
+    public static double ILLEGAL_HEIGHT = 13;
     public static double LOW_GOAL_HEIGHT = 14.2;
     public static double FLOOR = 11.71;
     
@@ -77,6 +77,7 @@ public class Arm extends PIDSubsystem {
 
         if (RobotType.get() == RobotType.COMPETITION_BOT) {
             armMotor = addDevice ("Arm Motor", new CANSparkMax(5, MotorType.kBrushless));
+            ((CANSparkMax) armMotor).setRampRate(0.5);
         } else {
             armMotor = addDevice ("Arm Motor", new Spark(0));
         }

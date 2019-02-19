@@ -31,7 +31,7 @@ public class LiftCrawler extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.lift.setLiftCrawler(1);
+        Robot.drive.setLiftCrawler(1);
     }
 
 
@@ -43,7 +43,7 @@ public class LiftCrawler extends Command {
 
     @Override
     protected void end() {
-        Robot.lift.setLiftCrawler(0);
+        Robot.drive.setLiftCrawler(0);
         Robot.logEnd(this);
     }
 }
