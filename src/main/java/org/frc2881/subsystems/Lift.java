@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -33,6 +34,7 @@ public class Lift extends Subsystem {
     private Spark liftMotorLeft;
     private Spark liftMotorRight;
     private Spark liftCrawler;
+    private Solenoid liftLock;
 
     // Initialize your subsystem here
     public Lift() {
@@ -59,6 +61,9 @@ public class Lift extends Subsystem {
         addChild("Lift Crawler",liftCrawler);
         liftCrawler.setInverted(false);
 
+        liftLock = new Solenoid(0);
+        addChild("Wrist Lock",liftLock);
+
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
@@ -83,6 +88,10 @@ public class Lift extends Subsystem {
 
     public double getLiftMotorCurrent(){
         return Math.max(pdp.getCurrent(2), pdp.getCurrent(1)) ;
+    }
+
+    public boolean getLiftLockState(){
+        return liftLock.get();
     }
 
     @Override
