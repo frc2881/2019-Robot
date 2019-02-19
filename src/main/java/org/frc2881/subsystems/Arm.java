@@ -42,13 +42,17 @@ public class Arm extends PIDSubsystem {
     /** The potentiometer reads about v_in/vcc=0.463 when the arm is horizontal. */
     private static final double POTENTIOMETER_AT_HORIZONTAL = 0.463;
 
+//ground: angle: -60.3 read: 11.71, actual: 14.5
+//low: -54.6, 14.2, 18.3
+//middle: -7.1, 44.5, 46.3
+//high: 32.7, 73.8, 74.3
+
     public enum WristState {UP, DOWN, BUTTON}
-    public static double HIGH_GOAL_HEIGHT = 75;
-    public static double MEDIUM_GOAL_HEIGHT = 60;
-    public static double ILLEGAL_HEIGHT = 45;
-    public static double LOW_GOAL_HEIGHT = 30;
-    public static double HP_RELEASE_HEIGHT = 15;
-    public static double FLOOR = 0;
+    public static double HIGH_GOAL_HEIGHT = 73.8;
+    public static double MEDIUM_GOAL_HEIGHT = 44.5;
+    public static double ILLEGAL_HEIGHT = 18;
+    public static double LOW_GOAL_HEIGHT = 14.2;
+    public static double FLOOR = 11.71;
     
     private static final double topLimit = 7;
     private static final double bottomLimit = 0;
@@ -63,8 +67,10 @@ public class Arm extends PIDSubsystem {
 
     // Initialize your subsystem here
     public Arm() {
-        super("Arm", 1.0, 0.0, 0.0);
-        setAbsoluteTolerance(0.2);
+        //NEED TO ADD ENCODER INTEGRATION B/C ARM WILL DRIFT WHEN ARMTOMIDDLE AND POT WILL NOT READ CHANGES IN ANGLE UNTIL ~6IN
+        super("Arm", 1.0, 0.05, 0.0);
+        setAbsoluteTolerance(0.05);
+        setInputRange(Math.toRadians(-65), Math.toRadians(35));
         getPIDController().setContinuous(false);
         getPIDController().setName("Arm", "PIDSubsystem Controller");
         LiveWindow.add(getPIDController());
@@ -119,7 +125,6 @@ public class Arm extends PIDSubsystem {
     protected double returnPIDInput() {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
-      
         return getArmAngleRadians();
     }
 
