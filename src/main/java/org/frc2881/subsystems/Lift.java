@@ -12,6 +12,8 @@ package org.frc2881.subsystems;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
+import org.frc2881.utils.frc4048.Logging;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Spark;
@@ -71,6 +73,14 @@ public class Lift extends Subsystem {
         //                  to
         // enable() - Enables the PID controller.
     }
+
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.INTAKE) {
+
+        @Override
+        protected void addAll() {
+            
+        }
+    };
 
     public void setLiftLeft(double speed){
         liftMotorLeft.setSpeed(speed);

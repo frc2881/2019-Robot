@@ -17,7 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import org.frc2881.RobotType;
 import org.frc2881.commands.basic.background.NavX;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
-
+import org.frc2881.utils.frc4048.Logging;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
@@ -48,10 +48,10 @@ public class Drive extends Subsystem {
     private IntakeLocation intakeLocation = IntakeLocation.FRONT;
     private Spark liftCrawler;
     private Solenoid liftLock;
+    private SpeedController left;
+    private SpeedController right;
 
     public Drive() {
-        SpeedController left;
-        SpeedController right;
         navX = new NavX(SPI.Port.kMXP);
         addChild("NavX",navX);
     
@@ -95,6 +95,23 @@ public class Drive extends Subsystem {
         differentialDrive.setMaxOutput(1.0);
     }
 
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVE) {
+
+		@Override
+		protected void addAll() {
+            add("Left Distance", getLeftDistance());
+            add("Right Distance", getRightDistance());
+            add("Lift Lock State", getLiftLockState());
+            add("Lift Crawler Speed", getLiftCrawlerSpeed());
+            add("Intake Location", intakeLocation);
+            add("NavX Yaw", navX.getYaw());
+            add("NavX Roll", navX.getRoll());
+            add("NavX Pitch", navX.getPitch());
+
+		}
+    	
+    };
+
     public void tankDrive(double leftSpeed, double rightSpeed) {
         // Use 'squaredInputs' to get better control at low speed
         if (intakeLocation == IntakeLocation.FRONT) {
@@ -120,12 +137,12 @@ public class Drive extends Subsystem {
     }
 
 	public double getLeftDistance() {
-		return 0;
-	}
+		return left.get();
+    }
 
 	public double getRightDistance() {
-		return 0;
-	}
+        return right.get();
+    }
 
     public boolean isNavXReady(){
         return !navX.isConnected() || !navX.isCalibrating();
@@ -166,5 +183,9 @@ public class Drive extends Subsystem {
 
     public boolean getLiftLockState(){
         return liftLock.get();
+    }
+
+    public double getLiftCrawlerSpeed() {
+        return liftCrawler.getSpeed();
     }
 }

@@ -11,6 +11,8 @@
 package org.frc2881.subsystems;
 
 import org.frc2881.commands.scoring.cargo.CargoIntake;
+import org.frc2881.utils.frc4048.Logging;
+
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
@@ -43,7 +45,6 @@ public class Intake extends Subsystem {
         addChild("Cargo Intake Motor",cargoIntakeMotor);
         cargoIntakeMotor.setInverted(false);
 
-
         hPSuctionCup = new Solenoid(11, 1);
         addChild("HP Suction Cup Solenoid",hPSuctionCup);
 
@@ -63,6 +64,17 @@ public class Intake extends Subsystem {
     public void initDefaultCommand() {
         
     }
+
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.INTAKE) {
+
+        @Override
+        protected void addAll() {
+            add("Cargo Intake Motor Speed", cargoIntakeMotor.getSpeed());
+            add("HP Intake Motor Speed", hPIntakeMotor.getSpeed());
+            add("HP Suction State", getSuctionState());
+            add("HP Grabber State", getGrabberState());
+        }
+    };
 
     public void suction(SuctionState state) {
         if (state == SuctionState.BUTTON) {
@@ -149,6 +161,15 @@ public class Intake extends Subsystem {
 
         } else {
             hPGrabber.set(state == GrabberState.RELEASE);
+        }
+    }
+
+    public GrabberState getGrabberState(){
+        if (hPGrabber.get()){
+            return GrabberState.RELEASE;
+        }
+        else {
+            return GrabberState.GRAB;
         }
     }
 }

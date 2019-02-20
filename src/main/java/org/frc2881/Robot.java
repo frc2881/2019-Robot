@@ -23,10 +23,13 @@ import org.frc2881.subsystems.Intake;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Pneumatics;
 import org.frc2881.subsystems.PrettyLights;
+import org.frc2881.utils.frc4048.Logging;
 import org.frc2881.utils.NTValue;
+import org.frc2881.utils.frc4048.WorkQueue;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -52,10 +55,13 @@ public class Robot extends TimedRobot {
     public static Arm arm;
     public static Pneumatics pneumatics;
     public static PrettyLights prettyLights;
+    public static Logging logging;
 
     private static long startTime = System.currentTimeMillis();
 
     private boolean resetRobot = true;
+    public static double timeOfStart = 0;
+
 
     /**
      * This function is run when the robot is first started up and should be
@@ -80,6 +86,10 @@ public class Robot extends TimedRobot {
 
         // Add commands to Autonomous Sendable Chooser
 
+        WorkQueue wq = new WorkQueue(512);
+		logging = new Logging(100, wq);
+		logging.startThread(); // Starts the logger
+
         chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
 
         SmartDashboard.putData("Auto mode", chooser);
@@ -103,6 +113,8 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         printRobotMode("ROBOT IS DISABLED", "-");
+        logging.traceMessage(
+				"---------------------------- Robot Disabled ----------------------------");
         resetRobot = true;
     }
 
@@ -114,6 +126,21 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         printRobotMode("STARTING AUTONOMOUS", "-");
+        timeOfStart = Timer.getFPGATimestamp();
+        logging.traceMessage(
+				"---------------------------- Autonomous mode starting ----------------------------");
+		logging.printHeadings();
+		StringBuilder gameInfo = new StringBuilder();
+		gameInfo.append("Match Number=");
+		gameInfo.append(DriverStation.getInstance().getMatchNumber());
+		gameInfo.append(", Alliance Color=");
+		gameInfo.append(DriverStation.getInstance().getAlliance().toString());
+		gameInfo.append(", Match Type=");
+		gameInfo.append(DriverStation.getInstance().getMatchType().toString());
+		logging.traceMessage( gameInfo.toString());
+
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		logging.traceMessage( "Field plate selection:" + gameData);
         resetRobot();
 
         autonomousCommand = chooser.getSelected();
@@ -132,6 +159,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         printRobotMode("STARTING TELEOP", "-");
+        logging.traceMessage(
+				"---------------------------- Teleop mode starting ----------------------------");
+		logging.printHeadings();
         if (autonomousCommand != null) autonomousCommand.cancel();
         if (!isCompetitionMode()) {
             resetRobot();

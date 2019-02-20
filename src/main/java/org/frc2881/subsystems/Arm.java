@@ -15,7 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.frc2881.RobotType;
 import org.frc2881.commands.scoring.arm.ArmControl;
-
+import org.frc2881.utils.frc4048.Logging;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
@@ -121,6 +121,17 @@ public class Arm extends PIDSubsystem {
     public void initDefaultCommand() {
         setDefaultCommand(new ArmControl());
     }
+
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ARM) {
+		@Override
+		protected void addAll() {
+            add("Arm Height", getArmHeight());
+			add("Arm Angle (º)", getArmAngleDegrees());
+            add("Arm Angle Setpoint", getSetpoint());
+            add("Wrist Position", getWristState());
+            add("Arm Rate", getArmRate());
+        }
+    };
 
     public void moveWrist(WristState state){
         if (state == WristState.BUTTON) {
@@ -255,6 +266,15 @@ public class Arm extends PIDSubsystem {
             }
         });
         return spark;
+    }
+
+    public WristState getWristState(){
+        if (wristSolenoid.get()){
+            return WristState.DOWN;
+        }
+        else {
+            return WristState.UP;
+        }
     }
 
 }
