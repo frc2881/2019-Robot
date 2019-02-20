@@ -10,13 +10,27 @@
 
 package org.frc2881.commands.basic.background;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.frc2881.Robot;
+import org.frc2881.commands.basic.drive.IntakeSetAsFront;
+import org.frc2881.commands.basic.wait.WaitForPressure;
+import org.frc2881.commands.basic.wait.WaitUntilNavXDetected;
+import org.frc2881.commands.scoring.arm.ArmCalibrateEncoder;
+import org.frc2881.commands.scoring.hp.HPGrabber;
+import org.frc2881.commands.scoring.hp.HPSuction;
+import org.frc2881.subsystems.Intake.GrabberState;
+import org.frc2881.subsystems.Intake.SuctionState;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class RobotPrep extends CommandGroup {
 
     public RobotPrep() {
-        // TODO: implement this
+        addSequential(new WaitForPressure());
+        addSequential(new WaitUntilNavXDetected());
+        addSequential(new HPGrabber(GrabberState.GRAB));
+        addSequential(new HPSuction(SuctionState.CLOSED));
+        addSequential(new IntakeSetAsFront());
+        addSequential(new ArmCalibrateEncoder());
     }
 
     @Override
