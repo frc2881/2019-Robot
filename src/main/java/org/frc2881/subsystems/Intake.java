@@ -73,6 +73,15 @@ public class Intake extends Subsystem {
         }
     }
 
+    public SuctionState getSuctionState(){
+        if (hPSuctionCup.get()){
+            return SuctionState.OPEN;
+        }
+        else {
+            return SuctionState.CLOSED;
+        }
+    }
+
     @Override
     public void periodic() {
         // Put code here to be run every loop

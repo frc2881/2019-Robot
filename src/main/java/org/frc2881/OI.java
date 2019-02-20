@@ -52,6 +52,7 @@ import org.frc2881.commands.scoring.lift.LiftLock;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
+import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Arm.WristState;
 import org.frc2881.subsystems.Intake.RollerDirection;
@@ -183,15 +184,15 @@ public class OI {
 
         //Sets Arm to low goal;
         lowGoal = buttonFromPOV(manipulator, 180);
-        lowGoal.whileHeld(new ArmToHeight(Arm.LOW_GOAL_HEIGHT, true));
+        lowGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HP_LOW_GOAL_HEIGHT, true));
 
         //Sets Arm to middle goal
         mediumGoal = buttonFromPOV(manipulator, 90);
-        mediumGoal.whileHeld(new ArmToHeight(Arm.MEDIUM_GOAL_HEIGHT, true));
+        mediumGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HP_MEDIUM_GOAL_HEIGHT, true));
 
         //Sets arm to high goal
         highGoal = buttonFromPOV(manipulator, 0);
-        highGoal.whileHeld(new ArmToHeight(Arm.HIGH_GOAL_HEIGHT, true));
+        highGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HP_HIGH_GOAL_HEIGHT, true));
 
         //scores HP
         placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
@@ -211,7 +212,7 @@ public class OI {
         SmartDashboard.putData("Drive With Joysticks", new DriveWithJoysticks());
         SmartDashboard.putData("Arm Calibrate Encoder", new ArmCalibrateEncoder());
         SmartDashboard.putData("Arm Control", new ArmControl());
-        SmartDashboard.putData("Arm To Height", new ArmToHeight(Arm.MEDIUM_GOAL_HEIGHT, true));
+        SmartDashboard.putData("Arm To Height", new ArmToHeight(ArmValue.VALUE, Arm.HP_MEDIUM_GOAL_HEIGHT, true));
         SmartDashboard.putData("Cargo Control Rollers", new CargoControlRollers());
         SmartDashboard.putData("Cargo Placed", new CargoPlace());
         SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5, RollerDirection.EJECT));

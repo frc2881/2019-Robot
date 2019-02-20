@@ -23,6 +23,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Lift extends Subsystem {
 
+    /* LIFT SEQUENCE:
+        1. Lower wrist
+        2. lock wrist & drop intake
+        3. raise arm ~50%
+        4. drive to platform (hit bumpers)
+        5. lower arm to platform
+            amp monitor?
+        6. raise rear until front wheels touch (angle TBD ~10º?)
+        7. raise to full extension
+        8. drive forward
+        9. raise rear leg*/
+    
     public static double LOW_PLATFORM_HEIGHT = 1;
     public static double HIGH_PLATFORM_HEIGHT = 2;
 

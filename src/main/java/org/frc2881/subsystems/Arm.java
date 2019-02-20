@@ -42,16 +42,25 @@ public class Arm extends PIDSubsystem {
     /** The potentiometer reads about v_in/vcc=0.463 when the arm is horizontal. */
     private static final double POTENTIOMETER_AT_HORIZONTAL = 0.463;
 
-//ground: angle: -60.3 read: 11.71, actual: 14.5
-//low: -54.6, 14.2, 18.3
-//middle: -7.1, 44.5, 46.3
-//high: 32.7, 73.8, 74.3
+    //ground: angle: -60.3 read: 11.71, actual: 14.5
+    //low: -54.6, 14.2, 18.3
+    //middle: -7.1, 44.5, 46.3
+    //high: 32.7, 73.8, 74.3
+
+    //HP Middle Score 45.1, -6.3
+    //Cargo Middle Score 
+    //HP High Score 76.2, 36.7 
+    //Cargo High Score 61.2, 14.4; 60.9, 12.6
 
     public enum WristState {UP, DOWN, BUTTON}
-    public static double HIGH_GOAL_HEIGHT = 73.8;
-    public static double MEDIUM_GOAL_HEIGHT = 44.5;
+    public enum ArmValue {BUTTON, VALUE}
+    public static double HP_HIGH_GOAL_HEIGHT = 76.2;
+    public static double HP_MEDIUM_GOAL_HEIGHT = 45.1;
+    public static double HP_LOW_GOAL_HEIGHT = 14.2;
+    public static double CARGO_HIGH_GOAL_HEIGHT = 61;
+    public static double CARGO_MEDIUM_GOAL_HEIGHT = 30;
+    public static double CARGO_LOW_GOAL_HEIGHT = 11.71;
     public static double ILLEGAL_HEIGHT = 13;
-    public static double LOW_GOAL_HEIGHT = 14.2;
     public static double FLOOR = 11.71;
     
     private static final double topLimit = 7;
@@ -70,7 +79,7 @@ public class Arm extends PIDSubsystem {
         //NEED TO ADD ENCODER INTEGRATION B/C ARM WILL DRIFT WHEN ARMTOMIDDLE AND POT WILL NOT READ CHANGES IN ANGLE UNTIL ~6IN
         super("Arm", 1.0, 0.05, 0.0);
         setAbsoluteTolerance(0.05);
-        setInputRange(Math.toRadians(-65), Math.toRadians(35));
+        setInputRange(Math.toRadians(-65), Math.toRadians(40));
         getPIDController().setContinuous(false);
         getPIDController().setName("Arm", "PIDSubsystem Controller");
         LiveWindow.add(getPIDController());

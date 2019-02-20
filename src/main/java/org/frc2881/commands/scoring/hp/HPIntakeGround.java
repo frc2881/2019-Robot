@@ -23,6 +23,7 @@ import org.frc2881.commands.basic.wait.WaitForever;
 import org.frc2881.commands.scoring.arm.ArmToHeight;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Intake;
+import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Intake.GrabberState;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.SuctionState;
@@ -45,7 +46,7 @@ public class HPIntakeGround extends CommandGroup {
         });
 
         addSequential(new HPSetRollers(Intake.HP_DETECTED_SPEED, RollerDirection.INTAKE));
-        addSequential(new ArmToHeight(Arm.FLOOR, false));
+        addSequential(new ArmToHeight(ArmValue.VALUE, Arm.FLOOR, false));
         addSequential(new HPSuction(SuctionState.CLOSED));
         addSequential(new HPSetRollers(0.0, RollerDirection.INTAKE));
         addSequential(new HPGrabber(GrabberState.GRAB));

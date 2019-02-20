@@ -13,6 +13,10 @@ package org.frc2881.commands.scoring.arm;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleYes;
+import org.frc2881.subsystems.Arm;
+import org.frc2881.subsystems.Arm.ArmValue;
+import org.frc2881.subsystems.Arm.WristState;
+import org.frc2881.subsystems.Intake.SuctionState;
 
 /**
  *
@@ -21,23 +25,52 @@ public class ArmToHeight extends Command {
 
     //Code something that doesn't use pid controller and mannually ramps motor speed and compares to potentiometer/encoder value with speed min
     
-    //HP Middle Score 45.1, -6.3
-    //Cargo Middle Score 
-    //HP High Score 76.2, 36.7 
-    //Cargo High Score 61.2, 14.4; 60.9, 12.6
     private double height;
     private boolean rumble;
+    private ArmValue goal;
 
-    public ArmToHeight(double height, boolean rumble) {
+    public ArmToHeight(ArmValue goal, double height, boolean rumble) {
         requires(Robot.arm);
         this.height = height;
         this.rumble = rumble;
+        this.goal = goal;
     }
 
     @Override
     protected void initialize() {
+
+        boolean highGoal = height == Arm.CARGO_HIGH_GOAL_HEIGHT || height == Arm.HP_HIGH_GOAL_HEIGHT;
+        boolean mediumGoal = height == Arm.CARGO_MEDIUM_GOAL_HEIGHT || height == Arm.HP_MEDIUM_GOAL_HEIGHT;
+        boolean lowGoal = height == Arm.CARGO_LOW_GOAL_HEIGHT || height == Arm.HP_LOW_GOAL_HEIGHT;
+        boolean HPLoaded = Robot.intake.getSuctionState() == SuctionState.CLOSED;
+
         Robot.logInitialize(this, height);
-        Robot.arm.setArmDesiredHeight(this.height);
+        
+        if (goal == ArmValue.BUTTON){
+            if (!HPLoaded) {
+                if (highGoal) {
+                    Robot.arm.setArmDesiredHeight(Arm.CARGO_HIGH_GOAL_HEIGHT);
+                } else if (mediumGoal) {
+                    Robot.arm.setArmDesiredHeight(Arm.CARGO_MEDIUM_GOAL_HEIGHT);
+                } else if (lowGoal) {
+                    Robot.arm.setArmDesiredHeight(Arm.CARGO_LOW_GOAL_HEIGHT);
+                }
+            } else {
+                if (highGoal) {
+                    Robot.arm.setArmDesiredHeight(Arm.HP_HIGH_GOAL_HEIGHT);
+                } else if (mediumGoal) {
+                    Robot.arm.setArmDesiredHeight(Arm.HP_MEDIUM_GOAL_HEIGHT);
+                } else if (lowGoal) {
+                    Robot.arm.setArmDesiredHeight(Arm.HP_LOW_GOAL_HEIGHT);
+                }  
+                else {
+                    Robot.arm.setArmDesiredHeight(this.height);
+                }
+            }
+        }
+        else {
+            Robot.arm.setArmDesiredHeight(this.height);
+        }
         Robot.arm.enable();
     }
 
