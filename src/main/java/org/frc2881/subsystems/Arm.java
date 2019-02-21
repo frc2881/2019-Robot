@@ -57,18 +57,22 @@ public class Arm extends PIDSubsystem {
     public static double HP_HIGH_GOAL_HEIGHT = 76.2;
     public static double HP_MEDIUM_GOAL_HEIGHT = 45.1;
     public static double HP_LOW_GOAL_HEIGHT = 14.2;
-    public static double CARGO_HIGH_GOAL_HEIGHT = 61;
-    public static double CARGO_MEDIUM_GOAL_HEIGHT = 30;
+    public static double CARGO_HIGH_GOAL_HEIGHT = 62.8;
+    public static double CARGO_MEDIUM_GOAL_HEIGHT = 35.4;
     public static double CARGO_LOW_GOAL_HEIGHT = 11.71;
     public static double ILLEGAL_HEIGHT = 13;
     public static double FLOOR = 11.71;
+    public static double HIGH_GOAL = 3;
+    public static double MEDIUM_GOAL = 2;
+    public static double LOW_GOAL = 1;
     
     private static final double topLimit = 7;
     private static final double bottomLimit = 0;
     private static final double topThreshold = 5;
     private static final double bottomThreshold = 3;
 
-    public SpeedController armMotor;
+    //public SpeedController armMotor;
+    public CANSparkMax armMotor;
     private boolean isArmCalibrated;
     private Solenoid wristSolenoid;
     private AnalogInput armPotentiometer;
@@ -77,19 +81,21 @@ public class Arm extends PIDSubsystem {
     // Initialize your subsystem here
     public Arm() {
         //NEED TO ADD ENCODER INTEGRATION B/C ARM WILL DRIFT WHEN ARMTOMIDDLE AND POT WILL NOT READ CHANGES IN ANGLE UNTIL ~6IN
-        super("Arm", 1.0, 0.05, 0.0);
+        super("Arm", 0, 0.0, 0.0); //1, 0.05, 0
         setAbsoluteTolerance(0.05);
         setInputRange(Math.toRadians(-65), Math.toRadians(40));
         getPIDController().setContinuous(false);
         getPIDController().setName("Arm", "PIDSubsystem Controller");
         LiveWindow.add(getPIDController());
 
-        if (RobotType.get() == RobotType.COMPETITION_BOT) {
-            armMotor = addDevice ("Arm Motor", new CANSparkMax(5, MotorType.kBrushless));
-            ((CANSparkMax) armMotor).setRampRate(0.5);
-        } else {
+        //if (RobotType.get() == RobotType.COMPETITION_BOT) {
+        armMotor = addDevice ("Arm Motor", new CANSparkMax(5, MotorType.kBrushless));
+        armMotor.setRampRate(0.5);
+        //} 
+        /*else {
             armMotor = addDevice ("Arm Motor", new Spark(0));
-        }
+        }*/
+
         armMotor.setInverted(true);
 
         
@@ -113,8 +119,9 @@ public class Arm extends PIDSubsystem {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        builder.addDoubleProperty("Height", this::getArmHeight, null);
+        builder.addDoubleProperty("Pot Height", this::getArmPotHeight, null);
         builder.addDoubleProperty("Angle", this::getArmAngleDegrees, null);
+        builder.addDoubleProperty("Encoder Height", this::getArmEncoderHeight, null);
     }
             
     @Override
@@ -125,7 +132,7 @@ public class Arm extends PIDSubsystem {
     public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ARM) {
 		@Override
 		protected void addAll() {
-            add("Arm Height", getArmHeight());
+            add("Arm Height", getArmPotHeight());
 			add("Arm Angle (º)", getArmAngleDegrees());
             add("Arm Angle Setpoint", getSetpoint());
             add("Wrist Position", getWristState());
@@ -161,9 +168,13 @@ public class Arm extends PIDSubsystem {
         setSetpoint(angleFromHeight(height));
     }
 
-    public double getArmHeight() {
+    public double getArmPotHeight() {
         // From the pivot point to the plane of the hatch panel is about 44 inches
         return heightFromAngle(getArmAngleRadians());
+    }
+
+    public double getArmEncoderHeight(){
+        return armEncoder.getDistance();
     }
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
@@ -209,7 +220,7 @@ public class Arm extends PIDSubsystem {
 
     private double getArmMotorMin() {
 
-        double position = getArmHeight();
+        double position = getArmPotHeight();
 
         double min = -1;
        
@@ -225,7 +236,7 @@ public class Arm extends PIDSubsystem {
 
     private double getArmMotorMax() {
 
-        double position = getArmHeight();
+        double position = getArmPotHeight();
 
         double max = 1;
         if (!isArmCalibrated) {

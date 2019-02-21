@@ -184,15 +184,15 @@ public class OI {
 
         //Sets Arm to low goal;
         lowGoal = buttonFromPOV(manipulator, 180);
-        lowGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HP_LOW_GOAL_HEIGHT, true));
+        lowGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.LOW_GOAL, true));
 
         //Sets Arm to middle goal
         mediumGoal = buttonFromPOV(manipulator, 90);
-        mediumGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HP_MEDIUM_GOAL_HEIGHT, true));
+        mediumGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.MEDIUM_GOAL, true));
 
         //Sets arm to high goal
         highGoal = buttonFromPOV(manipulator, 0);
-        highGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HP_HIGH_GOAL_HEIGHT, true));
+        highGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HIGH_GOAL, true));
 
         //scores HP
         placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);

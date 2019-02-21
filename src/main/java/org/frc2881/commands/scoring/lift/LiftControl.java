@@ -20,10 +20,10 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
  */
 public class LiftControl extends PIDCommand {
 
-    private static final double joystickMultiplier = 0.4;
+    private static final double joystickMultiplier = 0.45;
 
     public LiftControl() {
-        super("LiftControl", 0.01, 0.0, 0.0);
+        super("LiftControl", 0, 0.0, 0.0);
         setSetpoint(2);
         requires(Robot.lift);
         requires(Robot.arm);

@@ -81,16 +81,16 @@ public class Intake extends Subsystem {
             hPSuctionCup.set(!hPSuctionCup.get());
 
         } else {
-            hPSuctionCup.set(state == SuctionState.OPEN);
+            hPSuctionCup.set(state == SuctionState.CLOSED);
         }
     }
 
     public SuctionState getSuctionState(){
         if (hPSuctionCup.get()){
-            return SuctionState.OPEN;
+            return SuctionState.CLOSED;
         }
         else {
-            return SuctionState.CLOSED;
+            return SuctionState.OPEN;
         }
     }
 
