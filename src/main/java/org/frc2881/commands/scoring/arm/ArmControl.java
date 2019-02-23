@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.OI;
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Arm;
-import org.frc2881.subsystems.Arm.WristState;
 
 /**
  *
@@ -38,9 +36,6 @@ public class ArmControl extends Command {
     protected void execute() {
         double speed = -Robot.oi.manipulator.getY(Hand.kRight);
         Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)));
-        if (Robot.arm.getArmHeight() > Arm.ILLEGAL_HEIGHT){
-            Robot.arm.moveWrist(WristState.UP);
-        }
     }
 
     @Override

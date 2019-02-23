@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -42,7 +41,6 @@ public class Arm extends PIDSubsystem {
     /** The potentiometer reads about v_in/vcc=0.463 when the arm is horizontal. */
     private static final double POTENTIOMETER_AT_HORIZONTAL = 0.463;
 
-    public enum WristState {UP, DOWN, BUTTON}
     public static double HIGH_GOAL_HEIGHT = 75;
     public static double MEDIUM_GOAL_HEIGHT = 60;
     public static double ILLEGAL_HEIGHT = 45;
@@ -57,7 +55,6 @@ public class Arm extends PIDSubsystem {
 
     public SpeedController armMotor;
     private boolean isArmCalibrated;
-    private Solenoid wristSolenoid;
     private AnalogInput armPotentiometer;
     private Encoder armEncoder;
 
@@ -82,8 +79,6 @@ public class Arm extends PIDSubsystem {
         armEncoder.setDistancePerPulse(1.0);
         armEncoder.setPIDSourceType(PIDSourceType.kRate);
         
-        wristSolenoid = new Solenoid(11, 4);
-        addChild("Wrist Solenoid",wristSolenoid);
 
         armPotentiometer = new AnalogInput(1);
         addChild("Arm Potentiometer", armPotentiometer);
@@ -104,15 +99,6 @@ public class Arm extends PIDSubsystem {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new ArmControl());
-    }
-
-    public void moveWrist(WristState state){
-        if (state == WristState.BUTTON) {
-            wristSolenoid.set(!wristSolenoid.get());
-
-        } else {
-            wristSolenoid.set(state == WristState.DOWN);
-        }
     }
 
     @Override
