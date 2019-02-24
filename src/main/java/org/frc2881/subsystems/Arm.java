@@ -82,10 +82,16 @@ public class Arm extends PIDSubsystem {
     private DoubleSupplier armEncoderVelocity;
     private double beginningPosition = 0;
 
+    private static final double armKc = 0.36;
+    private static final double armPc = 0.6;  // period of oscillation
+    private static final double armP = 0.6 * armKc;
+    private static final double armI = 0;
+    private static final double armD = 0.125 * armP * armPc / 0.05;
+
     // Initialize your subsystem here
     public Arm() {
         //NEED TO ADD ENCODER INTEGRATION B/C ARM WILL DRIFT WHEN ARMTOMIDDLE AND POT WILL NOT READ CHANGES IN ANGLE UNTIL ~6IN
-        super("Arm", 0.36, 0.0, 0.0); //1, 0.05, 0
+        super("Arm", armP, armI, armD); //1, 0.05, 0
         setAbsoluteTolerance(0.05);
         //setInputRange(Math.toRadians(-65), Math.toRadians(40));
         setInputRange(0, 76);
@@ -104,7 +110,7 @@ public class Arm extends PIDSubsystem {
             
             CANEncoder encoder = sparkMax.getEncoder();
             double armAngleRadians = 4.345 * (POTENTIOMETER_AT_HORIZONTAL - armPotentiometer.getVoltage() / RobotController.getVoltage5V());
-            double potHeight = ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL;
+            double potHeight = ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 33.4;//value @ 0
             beginningPosition = encoder.getPosition() * distancePerPulse;
             armEncoderPosition = () -> encoder.getPosition() * distancePerPulse - beginningPosition + potHeight;
             armEncoderVelocity = () -> encoder.getVelocity() * distancePerPulse;
