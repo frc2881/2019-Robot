@@ -10,19 +10,21 @@
 
 package org.frc2881.commands.scoring.lift;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Drive.LiftLockState;
+import org.frc2881.subsystems.Drive.ArmExtensionState;
 
 /**
  *
  */
-public class LiftLock extends Command {
+public class ArmExtension extends Command {
 
-    private LiftLockState state;
+    private ArmExtensionState state;
+    private boolean competitionMode;
 
-    public LiftLock(LiftLockState state) {
+    public ArmExtension(ArmExtensionState state, boolean competitionMode) {
         this.state = state;
     }
 
@@ -34,7 +36,9 @@ public class LiftLock extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.drive.setLiftLock(state);
+        if (!competitionMode || Timer.getFPGATimestamp() >= 120) {
+            Robot.drive.setArmExtension(state);
+        }
     }
 
 

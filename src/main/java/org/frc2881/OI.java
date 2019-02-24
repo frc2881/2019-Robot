@@ -46,14 +46,14 @@ import org.frc2881.commands.scoring.lift.LiftControlBack;
 import org.frc2881.commands.scoring.lift.LiftControlForward;
 import org.frc2881.commands.scoring.lift.LiftSet;
 import org.frc2881.commands.scoring.lift.LiftCrawler;
-import org.frc2881.commands.scoring.lift.LiftLock;
+import org.frc2881.commands.scoring.lift.ArmExtension;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Intake.RollerDirection;
-import org.frc2881.subsystems.Drive.LiftLockState;
+import org.frc2881.subsystems.Drive.ArmExtensionState;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -114,7 +114,7 @@ public class OI {
     public Button hPSuction;
     public Button backLift;
     public Button forwardLift;
-    public Button setLiftLock;
+    public Button setArmExtension;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -148,8 +148,8 @@ public class OI {
         liftCrawler = new JoystickButton(driver, PS4.PINK_SQUARE);
         liftCrawler.whileHeld(new LiftCrawler());
 
-        setLiftLock = new JoystickButton(driver, PS4.RED_CIRCLE);
-        setLiftLock.whenPressed(new LiftLock(LiftLockState.BUTTON));
+        setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
+        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON, Robot.competitionMode));
 
         //controls lift
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);

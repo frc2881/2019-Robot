@@ -57,6 +57,8 @@ public class Robot extends TimedRobot {
     public static PrettyLights prettyLights;
     public static Logging logging;
 
+    public static boolean competitionMode;
+
     private static long startTime = System.currentTimeMillis();
 
     private boolean resetRobot = true;
@@ -191,7 +193,8 @@ public class Robot extends TimedRobot {
     private boolean isCompetitionMode() {
         // In Practice mode and in a real competition getMatchTime() returns time left in this
         // part of the match.  Otherwise it just returns -1.0.
-        return DriverStation.getInstance().getMatchTime() != -1;
+        competitionMode = DriverStation.getInstance().getMatchTime() != -1;
+        return competitionMode;
     }
 
     public static void log(String message) {

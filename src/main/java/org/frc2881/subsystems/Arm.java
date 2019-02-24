@@ -93,14 +93,20 @@ public class Arm extends PIDSubsystem {
         getPIDController().setName("Arm", "PIDSubsystem Controller");
         LiveWindow.add(getPIDController());
 
+        armPotentiometer = new AnalogInput(1);
+        addChild("Arm Potentiometer", armPotentiometer);
+
         if (RobotType.get() == RobotType.COMPETITION_BOT) {
             distancePerPulse = -55/83.0;
             CANSparkMax sparkMax = new CANSparkMax(5, MotorType.kBrushless);
             armMotor = addDevice("Arm Motor", sparkMax);
             sparkMax.setRampRate(0.5);
+            
             CANEncoder encoder = sparkMax.getEncoder();
+            double armAngleRadians = 4.345 * (POTENTIOMETER_AT_HORIZONTAL - armPotentiometer.getVoltage() / RobotController.getVoltage5V());
+            double potHeight = ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL;
             beginningPosition = encoder.getPosition() * distancePerPulse;
-            armEncoderPosition = () -> encoder.getPosition() * distancePerPulse - beginningPosition;
+            armEncoderPosition = () -> encoder.getPosition() * distancePerPulse - beginningPosition + potHeight;
             armEncoderVelocity = () -> encoder.getVelocity() * distancePerPulse;
         } else {
             distancePerPulse = 1.2345;
@@ -112,10 +118,6 @@ public class Arm extends PIDSubsystem {
         }
 
         armMotor.setInverted(true);
-        
-
-        armPotentiometer = new AnalogInput(1);
-        addChild("Arm Potentiometer", armPotentiometer);
 
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
@@ -175,7 +177,11 @@ public class Arm extends PIDSubsystem {
     }
 
     public double getArmEncoderHeight(){
-        return armEncoderPosition.getAsDouble();
+        if (armEncoderPosition.getAsDouble() <= -0.1) {
+            return 0;
+        } else {
+            return armEncoderPosition.getAsDouble();
+        }
     }
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
