@@ -39,7 +39,7 @@ public class ArmControl extends Command {
         /*if (Robot.arm.getArmHeight() > Arm.ILLEGAL_HEIGHT){
             Robot.arm.moveWrist(WristState.UP);
         }*/
-    }
+    }//
 
     @Override
     protected boolean isFinished() {
