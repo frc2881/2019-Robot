@@ -26,10 +26,9 @@ public class DriveWithJoysticks extends Command {
         double left = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
         double right = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
         Robot.drive.tankDrive(left, right);
-        if(Robot.drive.getLiftLockState()){
-            //three compensates for smaller radius
-            Robot.drive.setLiftCrawler(3 * (right + left) / 2);
-        }
+        /*if(Robot.lift.getLiftLockState()){
+            Robot.lift.setLiftCrawler(right);
+        }*/
     }
 
     // Make this return true when this Command no longer needs to run execute()

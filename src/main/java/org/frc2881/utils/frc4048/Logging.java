@@ -11,7 +11,7 @@ import java.util.TimeZone;
 import java.util.TimerTask;
 import org.frc2881.Robot;
 import org.frc2881.subsystems.Intake;
-import org.frc2881.subsystems.Arm.WristState;
+//import org.frc2881.subsystems.Arm.WristState;
 import org.frc2881.subsystems.Drive.IntakeLocation;
 import org.frc2881.subsystems.Intake.GrabberState;
 import org.frc2881.subsystems.Intake.SuctionState;
@@ -85,8 +85,8 @@ public class Logging {
 			}
 			sb.append(COMMA);
         }
-        
-        protected void add(String title, WristState value) {
+		
+		/*protected void add(String title, WristState value) {
 			if (writeTitles) {
 				sb.append(QUOTE).append(title).append(QUOTE);
 			}
@@ -94,8 +94,8 @@ public class Logging {
 				sb.append(value);
 			}
 			sb.append(COMMA);
-		}
-		
+		}*/
+
 		protected void add(String title, GrabberState value) {
 			if (writeTitles) {
 				sb.append(QUOTE).append(title).append(QUOTE);

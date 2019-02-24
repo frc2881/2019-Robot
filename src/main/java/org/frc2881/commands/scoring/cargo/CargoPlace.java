@@ -11,7 +11,7 @@
 package org.frc2881.commands.scoring.cargo;
 
 import org.frc2881.Robot;
-import org.frc2881.commands.scoring.arm.ArmWrist;
+//import org.frc2881.commands.scoring.arm.ArmWrist;
 import org.frc2881.subsystems.Arm.WristState;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class CargoPlace extends CommandGroup {
 
     public CargoPlace() {
-        addSequential(new ArmWrist(WristState.DOWN));
+        //addSequential(new ArmWrist(WristState.DOWN));
         addSequential(new WaitCommand("Cargo Wait", 1));
         addSequential(new CargoSetRollers(0.6, RollerDirection.EJECT));
 
@@ -39,7 +39,7 @@ public class CargoPlace extends CommandGroup {
     protected void end() {
         Robot.logEnd(this);
         Robot.intake.cargoRollers(0, RollerDirection.EJECT);
-        Robot.arm.moveWrist(WristState.UP);
+        //Robot.arm.moveWrist(WristState.UP);
     }
 
     @Override

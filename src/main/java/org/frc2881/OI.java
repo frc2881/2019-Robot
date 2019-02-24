@@ -31,14 +31,12 @@ import org.frc2881.commands.basic.wait.WaitUntilHPDetected;
 import org.frc2881.commands.basic.wait.WaitUntilNavXDetected;
 import org.frc2881.commands.scoring.AutonomousCommand;
 import org.frc2881.commands.scoring.hp.HPControlRollers;
-import org.frc2881.commands.scoring.hp.HPIntakeGround;
 import org.frc2881.commands.scoring.hp.HPIntakeHuman;
 import org.frc2881.commands.scoring.hp.HPPlace;
 import org.frc2881.commands.scoring.hp.HPSetRollers;
 import org.frc2881.commands.scoring.arm.ArmCalibrateEncoder;
 import org.frc2881.commands.scoring.arm.ArmControl;
 import org.frc2881.commands.scoring.arm.ArmToHeight;
-import org.frc2881.commands.scoring.arm.ArmWrist;
 import org.frc2881.commands.scoring.cargo.CargoControlRollers;
 import org.frc2881.commands.scoring.cargo.CargoIntake;
 import org.frc2881.commands.scoring.cargo.CargoPlace;
@@ -54,7 +52,6 @@ import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Lift;
-import org.frc2881.subsystems.Arm.WristState;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Drive.LiftLockState;
 
@@ -114,9 +111,7 @@ public class OI {
     public Button mediumGoal;
     public Button highGoal;
     public Button intakeHPHuman;
-    public Button intakeHPFloor;
     public Button hPSuction;
-    public Button moveWrist;
     public Button backLift;
     public Button forwardLift;
     public Button setLiftLock;
@@ -170,13 +165,7 @@ public class OI {
 
         //MANIPULATOR
         
-        //moves wrist to opposite state
-        moveWrist = new JoystickButton(manipulator, PS4.BLUE_X);
-        moveWrist.whenPressed(new ArmWrist(WristState.BUTTON));
 
-        //intakes HP from ground
-        intakeHPFloor = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
-        intakeHPFloor.whileHeld(new HPIntakeGround(buttonFromAxisRange(manipulator, PS4.RIGHT_TRIGGER), manipulator));
 
         //intakes HP from human player
         intakeHPHuman = new JoystickButton(manipulator, PS4.RIGHT_BUMPER);
@@ -223,7 +212,6 @@ public class OI {
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
-        SmartDashboard.putData("HP Intake Ground", new HPIntakeGround(buttonFromAxisRange(manipulator, PS4.RIGHT_TRIGGER), manipulator));
         SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.LOW_PLATFORM_HEIGHT, true));
         SmartDashboard.putData("Lift Control", new LiftControl());
         SmartDashboard.putData("Lift Crawler", new LiftCrawler());

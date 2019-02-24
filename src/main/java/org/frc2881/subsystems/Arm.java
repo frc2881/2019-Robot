@@ -26,7 +26,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -78,7 +77,6 @@ public class Arm extends PIDSubsystem {
 
     public SpeedController armMotor;
     private boolean isArmCalibrated;
-    private Solenoid wristSolenoid;
     private AnalogInput armPotentiometer;
     private DoubleSupplier armEncoderPosition;
     private DoubleSupplier armEncoderVelocity;
@@ -115,8 +113,6 @@ public class Arm extends PIDSubsystem {
 
         armMotor.setInverted(true);
         
-        wristSolenoid = new Solenoid(11, 4);
-        addChild("Wrist Solenoid",wristSolenoid);
 
         armPotentiometer = new AnalogInput(1);
         addChild("Arm Potentiometer", armPotentiometer);
@@ -126,6 +122,18 @@ public class Arm extends PIDSubsystem {
         //                  to
         // enable() - Enables the PID controller.
     }
+
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ARM) {
+
+		@Override
+		protected void addAll() {
+            add("Arm Encoder Height", getArmEncoderHeight());
+            add("Arm Potentiometer Height", getArmPotHeight());
+            add("Arm Potentiometer Angle", getArmAngleDegrees());
+            add("Arm Speed", armMotor.get());
+		}
+    	
+    };
 
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -138,26 +146,6 @@ public class Arm extends PIDSubsystem {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new ArmControl());
-    }
-
-    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ARM) {
-		@Override
-		protected void addAll() {
-            add("Arm Height", getArmPotHeight());
-			add("Arm Angle (º)", getArmAngleDegrees());
-            add("Arm Angle Setpoint", getSetpoint());
-            add("Wrist Position", getWristState());
-            add("Arm Rate", getArmRate());
-        }
-    };
-
-    public void moveWrist(WristState state){
-        if (state == WristState.BUTTON) {
-            wristSolenoid.set(!wristSolenoid.get());
-
-        } else {
-            wristSolenoid.set(state == WristState.DOWN);
-        }
     }
 
     @Override
@@ -292,13 +280,13 @@ public class Arm extends PIDSubsystem {
         return spark;
     }
 
-    public WristState getWristState(){
+    /*public WristState getWristState(){
         if (wristSolenoid.get()){
             return WristState.DOWN;
         }
         else {
             return WristState.UP;
         }
-    }
+    }*/
 
 }
