@@ -29,10 +29,10 @@ public class TWINKLES extends Command {
             Robot.prettyLights.setColor(PrettyLights.blue_heartbeat);
 
         } else if (alliance == DriverStation.Alliance.Red) {
-            Robot.prettyLights.tWINKLES.set(PrettyLights.red_heartbeat);
+            Robot.prettyLights.setColor(PrettyLights.red_heartbeat);
 
         } else {
-            Robot.prettyLights.tWINKLES.set(PrettyLights.hotPink);
+            Robot.prettyLights.setColor(PrettyLights.hotPink);
         }
     }
 

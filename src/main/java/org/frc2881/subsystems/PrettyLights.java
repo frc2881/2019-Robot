@@ -16,12 +16,16 @@ public class PrettyLights extends Subsystem implements SendableWithChildren {
     public static final double green = 0.77;
     public static final double orange = 0.65;
     public final Spark tWINKLES;
-
+    public final Spark ringLight;
+//intake - 3 and 4, lift - 1 and 2, driveCrawler - 5, twinkles - 6, 
     public PrettyLights() {
         tWINKLES = new Spark(6);
         addChild("TWINKLES",tWINKLES);
         tWINKLES.setInverted(false);
         
+        ringLight = new Spark(7);
+        addChild("Ring Light", ringLight);
+        ringLight.setInverted(false);
 
     }
 
@@ -40,6 +44,7 @@ public class PrettyLights extends Subsystem implements SendableWithChildren {
 
     public void setColor(double color){
         tWINKLES.set(color);
+        ringLight.set(hotPink);
     }
 
     // Put methods for controlling this subsystem
