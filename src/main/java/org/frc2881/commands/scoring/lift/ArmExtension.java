@@ -10,6 +10,7 @@
 
 package org.frc2881.commands.scoring.lift;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -22,9 +23,8 @@ import org.frc2881.subsystems.Drive.ArmExtensionState;
 public class ArmExtension extends Command {
 
     private ArmExtensionState state;
-    private boolean competitionMode;
 
-    public ArmExtension(ArmExtensionState state, boolean competitionMode) {
+    public ArmExtension(ArmExtensionState state) {
         this.state = state;
     }
 
@@ -36,7 +36,7 @@ public class ArmExtension extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (!competitionMode || Timer.getFPGATimestamp() >= 120) {
+        if (!Robot.isCompetitionMode() || ((Timer.getFPGATimestamp() - Robot.timeOfStart) >= 120)) {
             Robot.drive.setArmExtension(state);
         }
     }

@@ -149,7 +149,7 @@ public class OI {
         liftCrawler.whileHeld(new LiftCrawler());
 
         setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
-        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON, Robot.competitionMode));
+        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
 
         //controls lift
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);

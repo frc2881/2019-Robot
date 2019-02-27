@@ -190,7 +190,7 @@ public class Robot extends TimedRobot {
         System.err.println(message + line);
     }
 
-    private boolean isCompetitionMode() {
+    public static boolean isCompetitionMode() {
         // In Practice mode and in a real competition getMatchTime() returns time left in this
         // part of the match.  Otherwise it just returns -1.0.
         competitionMode = DriverStation.getInstance().getMatchTime() != -1;
