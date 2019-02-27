@@ -81,7 +81,7 @@ public class Intake extends Subsystem {
             hPSuctionCup.set(!hPSuctionCup.get());
 
         } else {
-            hPSuctionCup.set(state == SuctionState.CLOSED);
+            hPSuctionCup.set(state == SuctionState.OPEN);
         }
     }
 
@@ -160,7 +160,7 @@ public class Intake extends Subsystem {
             hPGrabber.set(!hPGrabber.get());
 
         } else {
-            hPGrabber.set(state == GrabberState.RELEASE);
+            hPGrabber.set(state == GrabberState.GRAB);
         }
     }
 

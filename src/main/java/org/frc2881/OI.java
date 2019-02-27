@@ -168,7 +168,7 @@ public class OI {
 
 
         //intakes HP from human player
-        intakeHPHuman = new JoystickButton(manipulator, PS4.RIGHT_BUMPER);
+        intakeHPHuman = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
         intakeHPHuman.whenPressed(new HPIntakeHuman());
 
         //Sets Arm to low goal;
@@ -184,7 +184,7 @@ public class OI {
         highGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HIGH_GOAL, true));
 
         //scores HP
-        placeHP = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        placeHP = new JoystickButton(manipulator, PS4.RIGHT_BUMPER);
         placeHP.whenPressed(new HPPlace());
 
         //scores Cargo

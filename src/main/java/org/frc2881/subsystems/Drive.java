@@ -101,7 +101,7 @@ public class Drive extends Subsystem {
 		protected void addAll() {
             add("Left Distance", getLeftDistance());
             add("Right Distance", getRightDistance());
-            add("Lift Lock State", getArmExtensionState());
+            add("Arm Extension State", getArmExtensionState());
             add("Lift Crawler Speed", getLiftCrawlerSpeed());
             add("Intake Location", intakeLocation);
             add("NavX Yaw", navX.getYaw());
@@ -181,8 +181,12 @@ public class Drive extends Subsystem {
         }
     }
 
-    public boolean getArmExtensionState(){
-        return armExtension.get();
+    public ArmExtensionState getArmExtensionState(){
+        if (armExtension.get()) {
+            return ArmExtensionState.LOCKED;
+        } else {
+            return ArmExtensionState.UNLOCKED;
+        }
     }
 
     public double getLiftCrawlerSpeed() {
