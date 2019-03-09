@@ -23,6 +23,8 @@ import org.frc2881.subsystems.Intake;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Pneumatics;
 import org.frc2881.subsystems.PrettyLights;
+import org.frc2881.subsystems.Intake.GrabberState;
+import org.frc2881.subsystems.Intake.SuctionState;
 import org.frc2881.utils.frc4048.Logging;
 import org.frc2881.utils.NTValue;
 import org.frc2881.utils.frc4048.WorkQueue;
@@ -118,6 +120,8 @@ public class Robot extends TimedRobot {
         logging.traceMessage(
 				"---------------------------- Robot Disabled ----------------------------");
         resetRobot = true;
+        Robot.intake.suction(SuctionState.CLOSED);
+        Robot.intake.setHPGrabber(GrabberState.RELEASE);
     }
 
     @Override
@@ -144,6 +148,9 @@ public class Robot extends TimedRobot {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		logging.traceMessage( "Field plate selection:" + gameData);
         resetRobot();
+
+        Robot.intake.suction(SuctionState.CLOSED);
+        Robot.intake.setHPGrabber(GrabberState.GRAB);
 
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)

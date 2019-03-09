@@ -11,59 +11,47 @@
 package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
-import org.frc2881.commands.basic.rumble.RumbleNo;
-import org.frc2881.utils.AmpMonitor;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class LiftControlForward extends Command {
+public class LiftUntil0 extends Command {
+    
+    private double goal;
 
-    private static final double joystickMultiplier = 0.25;
-    private AmpMonitor ampMonitor = new AmpMonitor(20, () -> Robot.lift.getLiftMotorCurrent());
-    private boolean rumbled;
-
-    public LiftControlForward() {
+    public LiftUntil0(double goal) {
         requires(Robot.lift);
+        this.goal = goal;
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        ampMonitor.reset();
-        rumbled = false;
     }
 
-    // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = (0.5);
-        Robot.lift.setLiftMotors(speed);
-
-        if (ampMonitor.isTriggered()) {
-            
-            if (!rumbled) {         
-                new RumbleNo(Robot.oi.manipulator).start();
-                Robot.log("Lift current limit exceeded");
-                rumbled = true;
-            }
-
-            Robot.lift.setLiftMotors(0);   
-        }
+        Robot.logging.traceMessage("Roll: " + Robot.drive.navX.getRoll());
+        Robot.lift.setLiftMotors(0.3);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.drive.navX.getRoll() >= goal - 1;
     }
 
     @Override
     protected void end() {
-        Robot.lift.setLiftLeft(0);
-        Robot.lift.setLiftRight(0);
+        Robot.lift.setLiftMotors(0);
         Robot.logEnd(this);
+    }
+
+    @Override
+    protected void interrupted() {
+        Robot.lift.setLiftMotors(0);
+        Robot.logInterrupted(this);
     }
 
 }

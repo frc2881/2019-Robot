@@ -8,22 +8,20 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands.basic.drive;
+package org.frc2881.commands.scoring.lift;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.frc2881.Robot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class DriveForward extends Command {
+public class LiftControlAutomated extends CommandGroup {
 
-    private double speed;
-
-    public DriveForward(double speed) {
-        // TODO: implement this
-        this.speed = speed;
-        requires(Robot.drive);
+    public LiftControlAutomated() {
+        addSequential(new ArmUntil15(15));
+        addSequential(new LiftUntil0(0));
+        addParallel(new SetCrawler(0.5));
     }
 
     @Override
@@ -31,18 +29,12 @@ public class DriveForward extends Command {
         Robot.logInitialize(this);
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-        Robot.drive.tankDrive(speed, speed);
-    }
-
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         return false;
     }
-
+    
     @Override
     protected void interrupted() {
         end();
@@ -50,8 +42,10 @@ public class DriveForward extends Command {
 
     @Override
     protected void end() {
+        Robot.arm.setArmMotorSpeed(0);
+        Robot.lift.setLiftMotors(0);
+        Robot.drive.setLiftCrawler(0);
         Robot.logEnd(this);
-        Robot.drive.tankDrive(0, 0);
-        
     }
+
 }

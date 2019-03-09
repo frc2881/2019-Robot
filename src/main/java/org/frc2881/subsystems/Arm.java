@@ -42,7 +42,7 @@ public class Arm extends PIDSubsystem {
     /** Height of the gripper midpoint when the arm is horizontal. */
     private static final double HEIGHT_AT_HORIZONTAL = 50.0;
     /** The potentiometer reads about v_in/vcc=0.463 when the arm is horizontal. */
-    private static final double POTENTIOMETER_AT_HORIZONTAL = 0.19;//0.463;
+    private static final double POTENTIOMETER_AT_HORIZONTAL = 0.463; //0.19;
 
     //ground: angle: -60.3 read: 11.71, actual: 14.5
     //low: -54.6, 14.2, 18.3
@@ -82,12 +82,12 @@ public class Arm extends PIDSubsystem {
     private DoubleSupplier armEncoderVelocity;
     private double beginningPosition = 0;
 
-    /*//ENCODER
+    //ENCODER
     private static final double armKc = 0.36;
     private static final double armPc = 0.7;  // period of oscillation
     private static final double armP = 0.6 * armKc;
     private static final double armI = 0;
-    private static final double armD = 0.125 * armP * armPc / 0.05;*/
+    private static final double armD = 0.125 * armP * armPc / 0.05;
 
     /*//POTENTIOMETER
     private static final double armKc = 0.36;
@@ -168,8 +168,8 @@ public class Arm extends PIDSubsystem {
     protected double returnPIDInput() {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
-        return getArmAngleRadians();
-        //return armEncoderPosition.getAsDouble();
+        //return getArmAngleRadians();
+        return armEncoderPosition.getAsDouble();
     }
 
     @Override
@@ -181,8 +181,8 @@ public class Arm extends PIDSubsystem {
     }
 
     public void setArmDesiredHeight(double height) {
-        setSetpoint(angleFromHeight(height));
-        //setSetpoint(height);
+        //setSetpoint(angleFromHeight(height));
+        setSetpoint(height);
     }
 
     public double getArmPotHeight() {
@@ -200,7 +200,7 @@ public class Arm extends PIDSubsystem {
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
     private double getArmAngleRadians() {
-        double value = 1 - armPotentiometer.getVoltage() / RobotController.getVoltage5V();
+        double value = armPotentiometer.getVoltage() / RobotController.getVoltage5V();//1 - armPotentiometer.getVoltage() / RobotController.getVoltage5V();
         return 4.345 * (POTENTIOMETER_AT_HORIZONTAL - value);
     }
 

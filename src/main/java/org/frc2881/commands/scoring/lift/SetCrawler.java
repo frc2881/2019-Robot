@@ -8,22 +8,22 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands.basic.drive;
+package org.frc2881.commands.scoring.lift;
 
 import edu.wpi.first.wpilibj.command.Command;
+
 import org.frc2881.Robot;
 
 /**
  *
  */
-public class DriveForward extends Command {
+public class SetCrawler extends Command {
 
     private double speed;
 
-    public DriveForward(double speed) {
-        // TODO: implement this
-        this.speed = speed;
+    public SetCrawler(double speed) {
         requires(Robot.drive);
+        this.speed = speed;
     }
 
     @Override
@@ -34,8 +34,10 @@ public class DriveForward extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.drive.setLiftCrawler(speed);
         Robot.drive.tankDrive(speed, speed);
     }
+
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
@@ -50,8 +52,8 @@ public class DriveForward extends Command {
 
     @Override
     protected void end() {
-        Robot.logEnd(this);
+        Robot.drive.setLiftCrawler(0);
         Robot.drive.tankDrive(0, 0);
-        
+        Robot.logEnd(this);
     }
 }

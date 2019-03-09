@@ -37,7 +37,7 @@ public class LiftControl extends PIDCommand {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft) * .5;
+        double speed = Math.pow(Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft), 2);
         Robot.lift.setLiftMotors(speed);
     }
 

@@ -42,10 +42,12 @@ import org.frc2881.commands.scoring.cargo.CargoIntake;
 import org.frc2881.commands.scoring.cargo.CargoPlace;
 import org.frc2881.commands.scoring.cargo.CargoSetRollers;
 import org.frc2881.commands.scoring.lift.LiftControl;
+import org.frc2881.commands.scoring.lift.ArmUntil15;
+import org.frc2881.commands.scoring.lift.LiftControlAutomated;
 import org.frc2881.commands.scoring.lift.LiftControlBack;
-import org.frc2881.commands.scoring.lift.LiftControlForward;
+import org.frc2881.commands.scoring.lift.LiftUntil0;
 import org.frc2881.commands.scoring.lift.LiftSet;
-import org.frc2881.commands.scoring.lift.LiftCrawler;
+import org.frc2881.commands.scoring.lift.SetCrawler;
 import org.frc2881.commands.scoring.lift.ArmExtension;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.controllers.PS4;
@@ -56,6 +58,7 @@ import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Drive.ArmExtensionState;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -112,9 +115,11 @@ public class OI {
     public Button highGoal;
     public Button intakeHPHuman;
     public Button hPSuction;
-    public Button backLift;
-    public Button forwardLift;
+    public Button lowerLift;
+    public Button liftLift;
+    public Button liftAutomated;
     public Button setArmExtension;
+    public Button driveBackward;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -130,11 +135,19 @@ public class OI {
         switchCamera = new JoystickButton(driver, PS4.RIGHT_BUMPER);
         switchCamera.whenPressed(new CameraSwitch());
 
-        forwardLift = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
-        forwardLift.whileHeld(new LiftControlForward());
+
+        driveBackward = new JoystickButton(driver, PS4.LEFT_BUMPER);
+        driveBackward.whileHeld(new DriveForward(-0.5));
+
+        liftLift = buttonFromAxis(driver, PS4.RIGHT_TRIGGER);
+        liftLift.whileHeld(new LiftControlBack());
         
-        backLift = new JoystickButton(driver, PS4.SHARE_BUTTON);
-        backLift.whileHeld(new LiftControlBack());
+        //controls lift
+        liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
+        liftControl.whileHeld(new LiftControl());
+
+        //liftAutomated = buttonFromPOV(driver, 0);
+        //liftAutomated.whileHeld(new LiftControlAutomated());
 
         //Climbs to high platform
         lowLift = buttonFromPOV(driver, 180);
@@ -144,16 +157,8 @@ public class OI {
         highLift = buttonFromPOV(driver, 0);
         highLift.whileHeld(new LiftToHeight(Lift.LOW_PLATFORM_HEIGHT, true));
 
-        //drives lift wheels forward
-        liftCrawler = new JoystickButton(driver, PS4.PINK_SQUARE);
-        liftCrawler.whileHeld(new LiftCrawler());
-
         setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
         setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
-
-        //controls lift
-        liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
-        liftControl.whileHeld(new LiftControl());
 
         //sets intake as back
         setIntakeBack = new JoystickButton(driver, PS4.BLUE_X);
@@ -207,14 +212,14 @@ public class OI {
         SmartDashboard.putData("Cargo Set Rollers", new CargoSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("Cargo Intake", new CargoIntake());
         SmartDashboard.putData("Do Nothing", new DoNothing());
-        SmartDashboard.putData("Drive Forward", new DriveForward());
+        //SmartDashboard.putData("Drive Forward", new DriveForward(0.5));
         SmartDashboard.putData("HP Placed", new HPPlace());
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
         SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.LOW_PLATFORM_HEIGHT, true));
         SmartDashboard.putData("Lift Control", new LiftControl());
-        SmartDashboard.putData("Lift Crawler", new LiftCrawler());
+        SmartDashboard.putData("Lift Crawler", new SetCrawler(1));
         SmartDashboard.putData("Robot Prep", new RobotPrep());
         SmartDashboard.putData("NavX Reset", new NavXReset());
         SmartDashboard.putData("Rumble Driver", new RumbleDriver());
