@@ -35,7 +35,7 @@ public class ArmControl extends Command {
     @Override
     protected void execute() {
         double speed = -Robot.oi.manipulator.getY(Hand.kRight);
-        Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)));
+        Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)), 0);
     }
 
     @Override

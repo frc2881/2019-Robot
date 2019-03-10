@@ -51,7 +51,7 @@ public class ArmCalibrateEncoder extends Command {
 
     @Override
     protected void end() {
-        Robot.arm.setArmMotorSpeed(0);
+        Robot.arm.setArmMotorSpeed(0, 0);
         Robot.logEnd(this);
     }
 }

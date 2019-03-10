@@ -50,29 +50,28 @@ public class ArmToHeight extends Command {
         if (goal == ArmValue.BUTTON){
             if (!HPLoaded) {
                 if (highGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.CARGO_HIGH_GOAL_HEIGHT);
+                    Robot.arm.armToHeight(Arm.CARGO_HIGH_GOAL_HEIGHT);
                 } else if (mediumGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.CARGO_MEDIUM_GOAL_HEIGHT);
+                    Robot.arm.armToHeight(Arm.CARGO_MEDIUM_GOAL_HEIGHT);
                 } else if (lowGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.CARGO_LOW_GOAL_HEIGHT);
+                    Robot.arm.armToHeight(Arm.CARGO_LOW_GOAL_HEIGHT);
                 }
             } else {
                 if (highGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.HP_HIGH_GOAL_HEIGHT);
+                    Robot.arm.armToHeight(Arm.HP_HIGH_GOAL_HEIGHT);
                 } else if (mediumGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.HP_MEDIUM_GOAL_HEIGHT);
+                    Robot.arm.armToHeight(Arm.HP_MEDIUM_GOAL_HEIGHT);
                 } else if (lowGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.HP_LOW_GOAL_HEIGHT);
+                    Robot.arm.armToHeight(Arm.HP_LOW_GOAL_HEIGHT);
                 }  
                 else {
-                    Robot.arm.setArmDesiredHeight(this.height);
+                    Robot.arm.armToHeight(this.height);
                 }
             }
         }
         else {
-            Robot.arm.setArmDesiredHeight(this.height);
+            Robot.arm.armToHeight(this.height);
         }
-        Robot.arm.enable();
 
         Robot.logInitialize(this, Robot.arm.getSetpoint());
 
@@ -81,7 +80,7 @@ public class ArmToHeight extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.arm.onTarget() || timeSinceInitialized() >= 200;
+        return Robot.arm.getArmEncoderHeight() == height;
     }
 
     @Override
@@ -95,8 +94,7 @@ public class ArmToHeight extends Command {
 
     @Override
     protected void interrupted() {
-        Robot.arm.disable();
-        Robot.arm.setArmMotorSpeed(0);
+        Robot.arm.setArmMotorSpeed(0, 0);
         Robot.logInterrupted(this);
     }
 
