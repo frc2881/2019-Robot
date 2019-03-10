@@ -8,46 +8,44 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands.scoring.arm;
+package org.frc2881.commands.scoring.lift;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.command.Command;
-
-import org.frc2881.OI;
 import org.frc2881.Robot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class ArmControl extends Command {
+public class LiftControlAutomated extends CommandGroup {
 
-    public ArmControl() {
-        requires(Robot.arm);
+    public LiftControlAutomated() {
+        addSequential(new ArmUntil15(15));
+        addSequential(new LiftUntil0(0));
+        addParallel(new SetCrawler(0.5));
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.log("Arm control has started");
+        Robot.logInitialize(this);
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-        double speed = -Robot.oi.manipulator.getY(Hand.kRight);
-        Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)));
-    }
-
+    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         return false;
     }
+    
+    @Override
+    protected void interrupted() {
+        end();
+    }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.log("Arm Control has ended");
+        Robot.arm.setArmMotorSpeed(0);
+        Robot.lift.setLiftMotors(0);
+        Robot.drive.setLiftCrawler(0);
+        Robot.logEnd(this);
     }
 
 }
-

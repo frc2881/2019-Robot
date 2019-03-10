@@ -10,48 +10,34 @@
 
 package org.frc2881.commands.scoring.lift;
 
-import org.frc2881.Robot;
-import org.frc2881.commands.basic.rumble.RumbleNo;
-import org.frc2881.utils.AmpMonitor;
 import edu.wpi.first.wpilibj.command.Command;
+
+import org.frc2881.Robot;
 
 /**
  *
  */
-public class LiftControlForward extends Command {
+public class SetCrawler extends Command {
 
-    private static final double joystickMultiplier = 0.25;
-    private AmpMonitor ampMonitor = new AmpMonitor(20, () -> Robot.lift.getLiftMotorCurrent());
-    private boolean rumbled;
+    private double speed;
 
-    public LiftControlForward() {
-        requires(Robot.lift);
+    public SetCrawler(double speed) {
+        requires(Robot.drive);
+        this.speed = speed;
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        ampMonitor.reset();
-        rumbled = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = (0.5);
-        Robot.lift.setLiftMotors(speed);
-
-        if (ampMonitor.isTriggered()) {
-            
-            if (!rumbled) {         
-                new RumbleNo(Robot.oi.manipulator).start();
-                Robot.log("Lift current limit exceeded");
-                rumbled = true;
-            }
-
-            Robot.lift.setLiftMotors(0);   
-        }
+        Robot.drive.setLiftCrawler(speed);
+        Robot.drive.tankDrive(speed, speed);
     }
+
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
@@ -60,10 +46,14 @@ public class LiftControlForward extends Command {
     }
 
     @Override
-    protected void end() {
-        Robot.lift.setLiftLeft(0);
-        Robot.lift.setLiftRight(0);
-        Robot.logEnd(this);
+    protected void interrupted() {
+        end();
     }
 
+    @Override
+    protected void end() {
+        Robot.drive.setLiftCrawler(0);
+        Robot.drive.tankDrive(0, 0);
+        Robot.logEnd(this);
+    }
 }

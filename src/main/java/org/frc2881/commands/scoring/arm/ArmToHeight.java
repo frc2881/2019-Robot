@@ -73,6 +73,9 @@ public class ArmToHeight extends Command {
             Robot.arm.setArmDesiredHeight(this.height);
         }
         Robot.arm.enable();
+
+        Robot.logInitialize(this, Robot.arm.getSetpoint());
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

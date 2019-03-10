@@ -23,9 +23,11 @@ public class LiftSet extends Command {
     private AmpMonitor ampMonitor = new AmpMonitor(20, () -> Robot.lift.getLiftMotorCurrent());
     private boolean rumbled;
     private boolean lift;
+    private double speed;
 
-    public LiftSet(boolean lift) {
+    public LiftSet(boolean lift, double speed) {
         requires(Robot.lift);
+        this.speed = speed;
     }
 
     @Override
@@ -38,16 +40,13 @@ public class LiftSet extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        
-        double speed;
 
         if (lift) {
-            speed = 0.5;
+            Robot.lift.setLiftMotors(speed);
         } else {
-            speed = -0.5;
+            Robot.lift.setLiftMotors(-speed);
         }
 
-        Robot.lift.setLiftMotors(speed);
 
         if (ampMonitor.isTriggered()) {
             
@@ -69,8 +68,7 @@ public class LiftSet extends Command {
 
     @Override
     protected void end() {
-        Robot.lift.setLiftLeft(0);
-        Robot.lift.setLiftRight(0);
+        Robot.lift.setLiftMotors(0);
         Robot.logEnd(this);
     }
 

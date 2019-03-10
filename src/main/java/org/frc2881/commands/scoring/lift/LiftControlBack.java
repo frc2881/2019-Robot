@@ -13,6 +13,8 @@ package org.frc2881.commands.scoring.lift;
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleNo;
 import org.frc2881.utils.AmpMonitor;
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -20,12 +22,12 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class LiftControlBack extends Command {
 
-    private static final double joystickMultiplier = 0.25;
     private AmpMonitor ampMonitor = new AmpMonitor(20, () -> Robot.lift.getLiftMotorCurrent());
     private boolean rumbled;
 
     public LiftControlBack() {
         requires(Robot.lift);
+        
     }
 
     @Override
@@ -38,7 +40,7 @@ public class LiftControlBack extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = (-0.5);
+        double speed = -Math.pow(Robot.oi.driver.getTriggerAxis(Hand.kRight), 2);
         Robot.lift.setLiftMotors(speed);
 
         if (ampMonitor.isTriggered()) {
@@ -61,8 +63,7 @@ public class LiftControlBack extends Command {
 
     @Override
     protected void end() {
-        Robot.lift.setLiftLeft(0);
-        Robot.lift.setLiftRight(0);
+        Robot.lift.setLiftMotors(0);
         Robot.logEnd(this);
     }
 

@@ -10,6 +10,9 @@
 
 package org.frc2881.subsystems;
 
+import java.util.function.DoubleSupplier;
+
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -23,7 +26,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -40,7 +42,7 @@ public class Arm extends PIDSubsystem {
     /** Height of the gripper midpoint when the arm is horizontal. */
     private static final double HEIGHT_AT_HORIZONTAL = 50.0;
     /** The potentiometer reads about v_in/vcc=0.463 when the arm is horizontal. */
-    private static final double POTENTIOMETER_AT_HORIZONTAL = 0.463;
+    private static final double POTENTIOMETER_AT_HORIZONTAL = 0.463; //0.19;
 
     //ground: angle: -60.3 read: 11.71, actual: 14.5
     //low: -54.6, 14.2, 18.3
@@ -55,10 +57,10 @@ public class Arm extends PIDSubsystem {
     public enum WristState {UP, DOWN, BUTTON}
     public enum ArmValue {BUTTON, VALUE}
     public static double HP_HIGH_GOAL_HEIGHT = 76.2;
-    public static double HP_MEDIUM_GOAL_HEIGHT = 45.1;
+    public static double HP_MEDIUM_GOAL_HEIGHT = 56;//45.1;
     public static double HP_LOW_GOAL_HEIGHT = 14.2;
     public static double CARGO_HIGH_GOAL_HEIGHT = 62.8;
-    public static double CARGO_MEDIUM_GOAL_HEIGHT = 35.4;
+    public static double CARGO_MEDIUM_GOAL_HEIGHT = 56;//35.4;
     public static double CARGO_LOW_GOAL_HEIGHT = 11.71;
     public static double ILLEGAL_HEIGHT = 13;
     public static double FLOOR = 11.71;
@@ -66,55 +68,88 @@ public class Arm extends PIDSubsystem {
     public static double MEDIUM_GOAL = 2;
     public static double LOW_GOAL = 1;
     
+    private double distancePerPulse;
+
     private static final double topLimit = 7;
     private static final double bottomLimit = 0;
     private static final double topThreshold = 5;
     private static final double bottomThreshold = 3;
 
-    //public SpeedController armMotor;
-    public CANSparkMax armMotor;
+    public SpeedController armMotor;
     private boolean isArmCalibrated;
-    private Solenoid wristSolenoid;
     private AnalogInput armPotentiometer;
-    private Encoder armEncoder;
+    private DoubleSupplier armEncoderPosition;
+    private DoubleSupplier armEncoderVelocity;
+    private double beginningPosition = 0;
+
+    //ENCODER
+    private static final double armKc = 0.36;
+    private static final double armPc = 0.7;  // period of oscillation
+    private static final double armP = 0.6 * armKc;
+    private static final double armI = 0;
+    private static final double armD = 0.125 * armP * armPc / 0.05;
+
+    /*//POTENTIOMETER
+    private static final double armKc = 0.36;
+    private static final double armPc = 0.7;  // period of oscillation
+    private static final double armP = 0.6 * armKc;
+    private static final double armI = 0;
+    private static final double armD = 0.125 * armP * armPc / 0.05;*/
 
     // Initialize your subsystem here
     public Arm() {
         //NEED TO ADD ENCODER INTEGRATION B/C ARM WILL DRIFT WHEN ARMTOMIDDLE AND POT WILL NOT READ CHANGES IN ANGLE UNTIL ~6IN
-        super("Arm", 0, 0.0, 0.0); //1, 0.05, 0
+        super("Arm", 1, 0.05, 0); //1, 0.05, 0
         setAbsoluteTolerance(0.05);
-        setInputRange(Math.toRadians(-65), Math.toRadians(40));
+        //setInputRange(Math.toRadians(-65), Math.toRadians(40));
+        setInputRange(0, 76);
         getPIDController().setContinuous(false);
         getPIDController().setName("Arm", "PIDSubsystem Controller");
         LiveWindow.add(getPIDController());
 
-        //if (RobotType.get() == RobotType.COMPETITION_BOT) {
-        armMotor = addDevice ("Arm Motor", new CANSparkMax(5, MotorType.kBrushless));
-        armMotor.setRampRate(0.5);
-        //} 
-        /*else {
-            armMotor = addDevice ("Arm Motor", new Spark(0));
-        }*/
-
-        armMotor.setInverted(true);
-
-        
-        armEncoder = new Encoder(6, 7, false, EncodingType.k4X);
-        addChild("Arm Encoder",armEncoder);
-        armEncoder.setDistancePerPulse(1.0);
-        armEncoder.setPIDSourceType(PIDSourceType.kRate);
-        
-        wristSolenoid = new Solenoid(11, 4);
-        addChild("Wrist Solenoid",wristSolenoid);
-
         armPotentiometer = new AnalogInput(1);
         addChild("Arm Potentiometer", armPotentiometer);
+
+        if (RobotType.get() == RobotType.COMPETITION_BOT) {
+            distancePerPulse = -55/83.0;
+            CANSparkMax sparkMax = new CANSparkMax(5, MotorType.kBrushless);
+            armMotor = addDevice("Arm Motor", sparkMax);
+            sparkMax.setRampRate(0.5);
+            
+            CANEncoder encoder = sparkMax.getEncoder();
+            //final double armAngleRadians = 4.345 * (POTENTIOMETER_AT_HORIZONTAL - armPotentiometer.getVoltage() / RobotController.getVoltage5V());
+            final double potHeight = getArmPotHeight();//ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 11.7;//value @ 0
+            beginningPosition = encoder.getPosition() * distancePerPulse;
+            armEncoderPosition = () -> encoder.getPosition() * distancePerPulse - beginningPosition + potHeight;
+            armEncoderVelocity = () -> encoder.getVelocity() * distancePerPulse;
+        } else {
+            distancePerPulse = 1.2345;
+            armMotor = addDevice ("Arm Motor", new Spark(0));
+            Encoder armEncoder = new Encoder(6, 7, false, EncodingType.k4X);
+            beginningPosition = armEncoder.getDistance() * distancePerPulse;
+            armEncoderPosition = () -> armEncoder.getDistance() * distancePerPulse - beginningPosition;
+            armEncoderVelocity = () -> armEncoder.getRate() * distancePerPulse;
+        }
+
+        armMotor.setInverted(true);
 
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
         // enable() - Enables the PID controller.
     }
+
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ARM) {
+
+		@Override
+		protected void addAll() {
+            add("Arm Encoder Height", getArmEncoderHeight());
+            add("Arm Potentiometer Height", getArmPotHeight());
+            add("Arm Potentiometer Angle", getArmAngleDegrees());
+            add("Arm Speed", armMotor.get());
+		}
+    	
+    };
 
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -129,31 +164,12 @@ public class Arm extends PIDSubsystem {
         setDefaultCommand(new ArmControl());
     }
 
-    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ARM) {
-		@Override
-		protected void addAll() {
-            add("Arm Height", getArmPotHeight());
-			add("Arm Angle (º)", getArmAngleDegrees());
-            add("Arm Angle Setpoint", getSetpoint());
-            add("Wrist Position", getWristState());
-            add("Arm Rate", getArmRate());
-        }
-    };
-
-    public void moveWrist(WristState state){
-        if (state == WristState.BUTTON) {
-            wristSolenoid.set(!wristSolenoid.get());
-
-        } else {
-            wristSolenoid.set(state == WristState.DOWN);
-        }
-    }
-
     @Override
     protected double returnPIDInput() {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
-        return getArmAngleRadians();
+        //return getArmAngleRadians();
+        return armEncoderPosition.getAsDouble();
     }
 
     @Override
@@ -165,7 +181,8 @@ public class Arm extends PIDSubsystem {
     }
 
     public void setArmDesiredHeight(double height) {
-        setSetpoint(angleFromHeight(height));
+        //setSetpoint(angleFromHeight(height));
+        setSetpoint(height);
     }
 
     public double getArmPotHeight() {
@@ -174,12 +191,16 @@ public class Arm extends PIDSubsystem {
     }
 
     public double getArmEncoderHeight(){
-        return armEncoder.getDistance();
+        if (armEncoderPosition.getAsDouble() <= -0.1) {
+            return 0;
+        } else {
+            return armEncoderPosition.getAsDouble();
+        }
     }
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
     private double getArmAngleRadians() {
-        double value = armPotentiometer.getVoltage() / RobotController.getVoltage5V();
+        double value = armPotentiometer.getVoltage() / RobotController.getVoltage5V();//1 - armPotentiometer.getVoltage() / RobotController.getVoltage5V();
         return 4.345 * (POTENTIOMETER_AT_HORIZONTAL - value);
     }
 
@@ -196,11 +217,11 @@ public class Arm extends PIDSubsystem {
     }
     
     public boolean isSpeedReallySmall() {
-        return Math.abs(armEncoder.getRate()) < .05;
+        return Math.abs(armEncoderVelocity.getAsDouble()) < .05;
     }
 
     public Double getArmRate(){
-        return armEncoder.getRate();
+        return armEncoderVelocity.getAsDouble();
     }
 
     public void setArmMotorSpeed(double speed) {
@@ -254,7 +275,7 @@ public class Arm extends PIDSubsystem {
     }
 
     public void resetArmEncoder() {
-        armEncoder.reset();
+        //armEncoder.reset();
 
         isArmCalibrated = true;
 //        armMotor.setExpiration(0.1);
@@ -279,13 +300,13 @@ public class Arm extends PIDSubsystem {
         return spark;
     }
 
-    public WristState getWristState(){
+    /*public WristState getWristState(){
         if (wristSolenoid.get()){
             return WristState.DOWN;
         }
         else {
             return WristState.UP;
         }
-    }
+    }*/
 
 }

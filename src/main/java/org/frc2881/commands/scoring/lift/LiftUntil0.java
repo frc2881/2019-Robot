@@ -10,20 +10,19 @@
 
 package org.frc2881.commands.scoring.lift;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Drive.LiftLockState;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class LiftLock extends Command {
+public class LiftUntil0 extends Command {
+    
+    private double goal;
 
-    private LiftLockState state;
-
-    public LiftLock(LiftLockState state) {
-        this.state = state;
+    public LiftUntil0(double goal) {
+        requires(Robot.lift);
+        this.goal = goal;
     }
 
     @Override
@@ -31,21 +30,28 @@ public class LiftLock extends Command {
         Robot.logInitialize(this);
     }
 
-    // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.drive.setLiftLock(state);
+        Robot.logging.traceMessage("Roll: " + Robot.drive.navX.getRoll());
+        Robot.lift.setLiftMotors(0.3);
     }
-
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return Robot.drive.navX.getRoll() >= goal - 1;
     }
 
     @Override
     protected void end() {
+        Robot.lift.setLiftMotors(0);
         Robot.logEnd(this);
     }
+
+    @Override
+    protected void interrupted() {
+        Robot.lift.setLiftMotors(0);
+        Robot.logInterrupted(this);
+    }
+
 }

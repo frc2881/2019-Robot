@@ -8,46 +8,50 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands.scoring.arm;
+package org.frc2881.commands.scoring.lift;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.command.Command;
-
-import org.frc2881.OI;
 import org.frc2881.Robot;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ArmControl extends Command {
+public class ArmUntil15 extends Command {
 
-    public ArmControl() {
+    private double goal;
+
+    public ArmUntil15(double goal) {
         requires(Robot.arm);
+        this.goal = goal;
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.log("Arm control has started");
+        Robot.logInitialize(this);
     }
 
-    // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = -Robot.oi.manipulator.getY(Hand.kRight);
-        Robot.arm.setArmMotorSpeed(OI.squareInput(OI.applyDeadband(speed)));
+        Robot.logging.traceMessage("Roll: " + Robot.drive.navX.getRoll());
+        Robot.arm.setArmMotorSpeed(-0.2);
     }
 
+    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.drive.navX.getRoll() <= -goal + 1;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.log("Arm Control has ended");
+        Robot.arm.setArmMotorSpeed(0);
+        Robot.logEnd(this);
+    }
+
+    @Override
+    protected void interrupted() {
+        Robot.arm.setArmMotorSpeed(0);
+        Robot.logInterrupted(this);
     }
 
 }
-

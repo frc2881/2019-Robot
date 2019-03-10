@@ -1,6 +1,7 @@
 package org.frc2881.commands.basic.drive;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Drive.ArmExtensionState;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,9 +27,8 @@ public class DriveWithJoysticks extends Command {
         double left = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
         double right = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
         Robot.drive.tankDrive(left, right);
-        if(Robot.drive.getLiftLockState()){
-            //three compensates for smaller radius
-            Robot.drive.setLiftCrawler(3 * (right + left) / 2);
+        if(Robot.drive.getArmExtensionState() == ArmExtensionState.LOCKED){
+            Robot.drive.setLiftCrawler((right + left)/2);
         }
     }
 

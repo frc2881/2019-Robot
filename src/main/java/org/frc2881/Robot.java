@@ -23,6 +23,8 @@ import org.frc2881.subsystems.Intake;
 import org.frc2881.subsystems.Lift;
 import org.frc2881.subsystems.Pneumatics;
 import org.frc2881.subsystems.PrettyLights;
+import org.frc2881.subsystems.Intake.GrabberState;
+import org.frc2881.subsystems.Intake.SuctionState;
 import org.frc2881.utils.frc4048.Logging;
 import org.frc2881.utils.NTValue;
 import org.frc2881.utils.frc4048.WorkQueue;
@@ -56,6 +58,8 @@ public class Robot extends TimedRobot {
     public static Pneumatics pneumatics;
     public static PrettyLights prettyLights;
     public static Logging logging;
+
+    public static boolean competitionMode;
 
     private static long startTime = System.currentTimeMillis();
 
@@ -116,6 +120,8 @@ public class Robot extends TimedRobot {
         logging.traceMessage(
 				"---------------------------- Robot Disabled ----------------------------");
         resetRobot = true;
+        Robot.intake.suction(SuctionState.CLOSED);
+        Robot.intake.setHPGrabber(GrabberState.RELEASE);
     }
 
     @Override
@@ -142,6 +148,9 @@ public class Robot extends TimedRobot {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		logging.traceMessage( "Field plate selection:" + gameData);
         resetRobot();
+
+        Robot.intake.suction(SuctionState.CLOSED);
+        Robot.intake.setHPGrabber(GrabberState.GRAB);
 
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
@@ -188,10 +197,11 @@ public class Robot extends TimedRobot {
         System.err.println(message + line);
     }
 
-    private boolean isCompetitionMode() {
+    public static boolean isCompetitionMode() {
         // In Practice mode and in a real competition getMatchTime() returns time left in this
         // part of the match.  Otherwise it just returns -1.0.
-        return DriverStation.getInstance().getMatchTime() != -1;
+        competitionMode = DriverStation.getInstance().getMatchTime() != -1;
+        return competitionMode;
     }
 
     public static void log(String message) {
