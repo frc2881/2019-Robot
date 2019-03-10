@@ -213,6 +213,8 @@ public class OI {
         SmartDashboard.putData("Cargo Intake", new CargoIntake());
         SmartDashboard.putData("Do Nothing", new DoNothing());
         //SmartDashboard.putData("Drive Forward", new DriveForward(0.5));
+        SmartDashboard.putData("Arm Until 15", new ArmUntil15(15));
+        SmartDashboard.putData("Lift Until 0", new LiftUntil0(0));
         SmartDashboard.putData("HP Placed", new HPPlace());
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());

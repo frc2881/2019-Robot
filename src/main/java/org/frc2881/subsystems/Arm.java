@@ -83,11 +83,11 @@ public class Arm extends PIDSubsystem {
     private double beginningPosition = 0;
 
     //ENCODER
-    private static final double armKc = 0.36;
-    private static final double armPc = 0.7;  // period of oscillation
-    private static final double armP = 0.6 * armKc;
-    private static final double armI = 0;
-    private static final double armD = 0.125 * armP * armPc / 0.05;
+    private static final double armKc = 0.2;
+    private static final double armPc = 1;  // period of oscillation
+    private static final double armP = 0.2 * armKc;
+    private static final double armI = 0.4 * armKc / armPc;
+    private static final double armD = armKc * armPc / 15;
 
     /*//POTENTIOMETER
     private static final double armKc = 0.36;
@@ -99,7 +99,7 @@ public class Arm extends PIDSubsystem {
     // Initialize your subsystem here
     public Arm() {
         //NEED TO ADD ENCODER INTEGRATION B/C ARM WILL DRIFT WHEN ARMTOMIDDLE AND POT WILL NOT READ CHANGES IN ANGLE UNTIL ~6IN
-        super("Arm", 1, 0.05, 0); //1, 0.05, 0
+        super("Arm", armP, armI, armD); //1, 0.05, 0
         setAbsoluteTolerance(0.05);
         //setInputRange(Math.toRadians(-65), Math.toRadians(40));
         setInputRange(0, 76);
@@ -200,7 +200,7 @@ public class Arm extends PIDSubsystem {
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
     private double getArmAngleRadians() {
-        double value = armPotentiometer.getVoltage() / RobotController.getVoltage5V();//1 - armPotentiometer.getVoltage() / RobotController.getVoltage5V();
+        double value = (1 - armPotentiometer.getVoltage() / RobotController.getVoltage5V()) - 2.92 - Math.toRadians(64);//armPotentiometer.getVoltage() / RobotController.getVoltage5V();
         return 4.345 * (POTENTIOMETER_AT_HORIZONTAL - value);
     }
 
