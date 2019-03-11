@@ -146,16 +146,16 @@ public class OI {
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
         liftControl.whileHeld(new LiftControl());
 
-        //liftAutomated = buttonFromPOV(driver, 0);
-        //liftAutomated.whileHeld(new LiftControlAutomated());
+        liftAutomated = buttonFromPOV(driver, 180);
+        liftAutomated.whileHeld(new LiftControlAutomated());
 
         //Climbs to high platform
-        lowLift = buttonFromPOV(driver, 180);
-        lowLift.whileHeld(new LiftToHeight(Lift.HIGH_PLATFORM_HEIGHT, true));
-
-        //Climbs to low platform
-        highLift = buttonFromPOV(driver, 0);
-        highLift.whileHeld(new LiftToHeight(Lift.LOW_PLATFORM_HEIGHT, true));
+    //    threeLift = buttonFromPOV(driver, 0);
+    //    threeLift.whileHeld(new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));
+      
+        //Climbs to middle platform
+    //    twoLift = buttonFromPOV(driver, 180);
+    //    twoLift.whileHeld(new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
 
         setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
         setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
@@ -217,7 +217,7 @@ public class OI {
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
-        SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.LOW_PLATFORM_HEIGHT, true));
+        SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
         SmartDashboard.putData("Lift Control", new LiftControl());
         SmartDashboard.putData("Lift Crawler", new SetCrawler(1));
         SmartDashboard.putData("Robot Prep", new RobotPrep());
