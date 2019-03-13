@@ -33,7 +33,7 @@ public class LiftUntil0 extends Command {
     @Override
     protected void execute() {
         Robot.logging.traceMessage("Roll: " + Robot.drive.navX.getRoll());
-        Robot.lift.setLiftMotors(0.3);
+        Robot.lift.setLiftMotors(1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
