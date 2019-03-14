@@ -23,6 +23,7 @@ public class HPSuction extends InstantCommand {
     private SuctionState state;
 
     public HPSuction(SuctionState state) {
+        super("HPSuction" + (state == SuctionState.OPEN ? "OPEN" : "CLOSED"));
         requires(Robot.intake);
         this.state = state;
     }
