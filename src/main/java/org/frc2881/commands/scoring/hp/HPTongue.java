@@ -31,7 +31,7 @@ public class HPTongue extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        Robot.intake.Tongue(state);
+        Robot.intake.tongue(state);
     }
 
 }
