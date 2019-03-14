@@ -27,12 +27,14 @@ public class Intake extends Subsystem {
     public enum GrabberState {GRAB, RELEASE, BUTTON}
     public enum SuctionState {OPEN, CLOSED, BUTTON}
     public enum RollerDirection {INTAKE, EJECT, BUTTON}
+    public enum TongueState {IN, OUT, BUTTON}
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Spark cargoIntakeMotor;
     private int intakecargoRollerPdpChannel = 1;
     private Solenoid hPSuctionCup;
     private Solenoid hPGrabber;
+    private Solenoid hPTongue;
     private Spark hPIntakeMotor;
     private DigitalInput hPDetector;
 
@@ -51,6 +53,9 @@ public class Intake extends Subsystem {
         hPGrabber = new Solenoid(11, 2);
         addChild("HP Grabber Solenoid",hPGrabber);
         
+        hPTongue = new Solenoid(11, *);
+        addChild("HP Tongue Solenoid",hPTongue);
+
         hPIntakeMotor = new Spark(3);
         addChild("HP Intake Motor",hPIntakeMotor);
         hPIntakeMotor.setInverted(false);
