@@ -218,7 +218,8 @@ public class OI {
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
-        SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
+        SmartDashboard.putData("Lift To Height Hab Two", new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
+        SmartDashboard.putData("Lift To Height Hab Three", new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));        
         SmartDashboard.putData("Lift Control", new LiftControl());
         SmartDashboard.putData("Lift Crawler", new SetCrawler(1));
         SmartDashboard.putData("Robot Prep", new RobotPrep());
