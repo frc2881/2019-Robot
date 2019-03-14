@@ -81,6 +81,7 @@ public class Intake extends Subsystem {
         }
     };
 
+    //Suction Cups
     public void suction(SuctionState state) {
         if (state == SuctionState.BUTTON) {
             hPSuctionCup.set(!hPSuctionCup.get());
@@ -99,6 +100,7 @@ public class Intake extends Subsystem {
         }
     }
 
+    //Tongue
     public void tongue(TongueState state) {
         if (state == TongueState.BUTTON) {
             hPTongue.set(!hPTongue.get());
@@ -179,6 +181,7 @@ public class Intake extends Subsystem {
         hPIntakeMotor.set(0);
     }
 
+    //Grabber
     public void setHPGrabber(GrabberState state) {
         if (state == GrabberState.BUTTON) {
             hPGrabber.set(!hPGrabber.get());

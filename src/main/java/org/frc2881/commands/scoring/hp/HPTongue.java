@@ -23,6 +23,7 @@ public class HPTongue extends InstantCommand {
     private TongueState state;
 
     public HPTongue(TongueState state) {
+        super("HPTongue" + (state == TongueState.OUT ? "OUT" : "IN"));
         requires(Robot.intake);
         this.state = state;
     }
@@ -30,7 +31,7 @@ public class HPTongue extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        //Robot.intake.Tongue(state);
+        Robot.intake.Tongue(state);
     }
 
 }
