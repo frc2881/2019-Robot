@@ -10,9 +10,11 @@
 
 package org.frc2881.commands.scoring.hp;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.frc2881.subsystems.Intake.GrabberState;
 import org.frc2881.subsystems.Intake.SuctionState;
+import org.frc2881.subsystems.Intake.TongueState;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
@@ -20,6 +22,7 @@ import org.frc2881.subsystems.Intake.SuctionState;
 public class HPIntakeHuman extends CommandGroup {
 
     public HPIntakeHuman() {
+        addSequential(new HPTongue(TongueState.IN));
         addSequential(new HPSuction(SuctionState.CLOSED));
         addSequential(new HPGrabber(GrabberState.GRAB));
     }

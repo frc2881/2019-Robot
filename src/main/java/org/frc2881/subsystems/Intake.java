@@ -53,7 +53,7 @@ public class Intake extends Subsystem {
         hPGrabber = new Solenoid(11, 2);
         addChild("HP Grabber Solenoid",hPGrabber);
         
-        hPTongue = new Solenoid(11, *);
+        hPTongue = new Solenoid(11, 4);
         addChild("HP Tongue Solenoid",hPTongue);
 
         hPIntakeMotor = new Spark(3);
@@ -98,6 +98,25 @@ public class Intake extends Subsystem {
             return SuctionState.OPEN;
         }
     }
+
+    public void tongue(TongueState state) {
+        if (state == TongueState.BUTTON) {
+            hPTongue.set(!hPTongue.get());
+
+        } else {
+            hPTongue.set(state == TongueState.OUT);
+        }
+    }
+
+    public TongueState getTongueState() {
+        if (hPSuctionCup.get()){
+            return TongueState.IN;
+        }
+        else {
+            return TongueState.OUT;
+        }
+    }
+
 
     @Override
     public void periodic() {
