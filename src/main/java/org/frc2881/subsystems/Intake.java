@@ -53,7 +53,7 @@ public class Intake extends Subsystem {
         hPGrabber = new Solenoid(11, 2);
         addChild("HP Grabber Solenoid",hPGrabber);
         
-        hPTongue = new Solenoid(11, 4);
+        hPTongue = new Solenoid(11, 3);
         addChild("HP Tongue Solenoid",hPTongue);
 
         hPIntakeMotor = new Spark(3);
