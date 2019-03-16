@@ -118,6 +118,7 @@ public class OI {
     public Button liftAutomated;
     public Button setArmExtension;
     public Button driveBackward;
+    public Button hpTongue;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -197,6 +198,10 @@ public class OI {
         //intake Cargo
         intakeCargo = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
         intakeCargo.whileHeld(new CargoIntake());
+
+        //tongue
+        hpTongue = new JoystickButton(driver, PS4.GREEN_TRIANGLE);
+        hpTongue.whenPressed(new HPTongue());
 
 
         // SmartDashboard Buttons
