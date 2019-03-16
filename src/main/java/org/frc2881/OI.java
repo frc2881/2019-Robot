@@ -146,19 +146,22 @@ public class OI {
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
         liftControl.whileHeld(new LiftControl());
 
+        //Climbs to second platform
         liftAutomated = buttonFromPOV(driver, 180);
         liftAutomated.whileHeld(new LiftControlAutomated());
 
-        //Climbs to high platform
-    //    threeLift = buttonFromPOV(driver, 0);
-    //    threeLift.whileHeld(new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));
+        //Climbs to third platform
+        highLift = buttonFromPOV(driver, 0);
+        highLift.whileHeld(new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));
       
-        //Climbs to middle platform
+        setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
+        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
+
+
+        //Climbs to middle platform KINDA NOT NECESSARY RN
     //    twoLift = buttonFromPOV(driver, 180);
     //    twoLift.whileHeld(new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
 
-        setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
-        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
 
         //sets intake as back
         setIntakeBack = new JoystickButton(driver, PS4.BLUE_X);

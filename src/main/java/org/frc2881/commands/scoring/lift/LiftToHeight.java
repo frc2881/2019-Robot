@@ -10,17 +10,18 @@
 
 package org.frc2881.commands.scoring.lift;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 import org.frc2881.Robot;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class LiftToHeight extends Command {
-
+    
     public LiftToHeight(double height, boolean rumble) {
-
+    requires(Robot.lift);
+    requires(Robot.arm);
     }
 
     @Override
@@ -31,6 +32,8 @@ public class LiftToHeight extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.lift.setLiftMotors(.1);
+        Robot.arm.setArmMotorSpeed(.7);
     }
 
     // Make this return true when this Command no longer needs to run execute()
