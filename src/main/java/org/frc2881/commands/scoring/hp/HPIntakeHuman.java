@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class HPIntakeHuman extends CommandGroup {
 
     public HPIntakeHuman() {
-        addSequential(new HPTongue(TongueState.IN));
         addSequential(new HPSuction(SuctionState.CLOSED));
         addSequential(new HPGrabber(GrabberState.GRAB));
     }
