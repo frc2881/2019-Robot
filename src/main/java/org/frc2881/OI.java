@@ -120,6 +120,7 @@ public class OI {
     public Button liftAutomated;
     public Button setArmExtension;
     public Button driveBackward;
+    public Button driveForward;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -138,6 +139,9 @@ public class OI {
 
         driveBackward = new JoystickButton(driver, PS4.LEFT_BUMPER);
         driveBackward.whileHeld(new DriveForward(-0.5));
+
+        driveForward = new JoystickButton(driver, PS4.PINK_SQUARE);
+        driveForward.whileHeld(new DriveForward(0.5));
 
         liftLift = buttonFromAxis(driver, PS4.RIGHT_TRIGGER);
         liftLift.whileHeld(new LiftControlBack());
