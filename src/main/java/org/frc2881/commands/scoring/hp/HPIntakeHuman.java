@@ -10,9 +10,9 @@
 
 package org.frc2881.commands.scoring.hp;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.frc2881.subsystems.Intake.GrabberState;
 import org.frc2881.subsystems.Intake.SuctionState;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
