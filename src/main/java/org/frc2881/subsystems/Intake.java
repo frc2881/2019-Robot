@@ -30,7 +30,7 @@ public class Intake extends Subsystem {
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Spark cargoIntakeMotor;
-    private int intakecargoRollerPdpChannel = 1;
+    private int intakecargoRollerPdpChannel = 6;
     private Solenoid hPSuctionCup;
     private Solenoid hPGrabber;
     private Spark hPIntakeMotor;
