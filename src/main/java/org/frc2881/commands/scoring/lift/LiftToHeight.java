@@ -32,8 +32,8 @@ public class LiftToHeight extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.lift.setLiftMotors(.1);
-        Robot.arm.setArmMotorSpeed(.7);
+        Robot.lift.setLiftMotors(1);
+        Robot.arm.setArmMotorSpeed(-.5);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -44,6 +44,8 @@ public class LiftToHeight extends Command {
 
     @Override
     protected void end() {
+        Robot.lift.setLiftMotors(0);
+        Robot.arm.setArmMotorSpeed(0);
         Robot.logEnd(this);
     }
 
