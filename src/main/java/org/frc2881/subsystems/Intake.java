@@ -111,7 +111,7 @@ public class Intake extends Subsystem {
     }
 
     public TongueState getTongueState() {
-        if (hPSuctionCup.get()){
+        if (hPTongue.get()){
             return TongueState.IN;
         }
         else {

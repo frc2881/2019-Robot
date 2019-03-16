@@ -200,8 +200,8 @@ public class OI {
         intakeCargo.whileHeld(new CargoIntake());
 
         //tongue
-        hpTongue = new JoystickButton(driver, PS4.GREEN_TRIANGLE);
-       // hpTongue.whenPressed(new HPTongue(null));
+        hpTongue = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        hpTongue.whenPressed(new HPTongue());
 
 
         // SmartDashboard Buttons
