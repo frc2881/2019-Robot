@@ -19,13 +19,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class LiftControlAutomatedHabThree extends CommandGroup {
 
     public LiftControlAutomatedHabThree() {
-        addSequential(new ArmUntil15(15));
+        addSequential(new ArmUntil15(8));
         addSequential(new LiftUntil0(0));
-        addSequential(new ArmUntil15(15));
+        addSequential(new ArmUntil15(8));
         addSequential(new LiftUntil0(0));
-        addSequential(new ArmUntil15(15));
+        addSequential(new ArmUntil15(8));
         addSequential(new LiftUntil0(0));
-        addParallel(new SetCrawler(0.5));
+        addSequential(new ArmUntil15(8));
+        addSequential(new LiftUntil0(0));
+        //addParallel(new SetCrawler(0.5));
     }
 
     @Override
