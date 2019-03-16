@@ -22,16 +22,19 @@ public class HPTongue extends InstantCommand {
 
     private TongueState state;
 
-    public HPTongue(TongueState state) {
-        super("HPTongue" + (state == TongueState.OUT ? "OUT" : "IN"));
+    public HPTongue() {
+        
+        //super("HPTongue" + (state == TongueState.OUT ? "OUT" : "IN"));
         requires(Robot.intake);
-        this.state = state;
+        //this.state = state;
     }
 
     @Override
     protected void initialize() {
+        if Tonguestate == IN
+
         Robot.logInitialize(this);
-        Robot.intake.tongue(state);
+        Robot.intake.tongue(if TongueState == IN);
     }
 
 }
