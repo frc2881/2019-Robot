@@ -141,7 +141,7 @@ public class OI {
         driveBackward.whileHeld(new DriveForward(-0.5));
 
         driveForward = new JoystickButton(driver, PS4.PINK_SQUARE);
-        driveForward.whileHeld(new DriveForward(0.5));
+        driveForward.whileHeld(new DriveForward(0.7));
 
         liftLift = buttonFromAxis(driver, PS4.RIGHT_TRIGGER);
         liftLift.whileHeld(new LiftControlBack());
