@@ -8,26 +8,24 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands.scoring.hp;
+package org.frc2881.commands.scoring;
 
 import org.frc2881.Robot;
+import org.frc2881.commands.basic.drive.DriveForward;
+import org.frc2881.commands.scoring.hp.HPTongue;
 import org.frc2881.subsystems.Intake.TongueState;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class HPTongue extends InstantCommand {
-    TongueState state;
-    public HPTongue(TongueState stateNew ) {
-        requires(Robot.intake);
-        state = stateNew;
-    }
+public class HabEscape extends CommandGroup {
 
-    @Override
-    protected void initialize() {
+    public HabEscape() {
         Robot.logInitialize(this);
-        Robot.intake.tongue(state);
+        addSequential(new HPTongue(TongueState.OUT));
+        //addSequential(new LiftToHeight()); IMPLEMENT
+        addSequential(new DriveForward(0.7));
     }
 }

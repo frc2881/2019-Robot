@@ -30,6 +30,7 @@ import org.frc2881.commands.basic.wait.WaitForever;
 import org.frc2881.commands.basic.wait.WaitUntilHPDetected;
 import org.frc2881.commands.basic.wait.WaitUntilNavXDetected;
 import org.frc2881.commands.scoring.AutonomousCommand;
+import org.frc2881.commands.scoring.HabEscape;
 import org.frc2881.commands.scoring.arm.ArmCalibrateEncoder;
 import org.frc2881.commands.scoring.arm.ArmControl;
 import org.frc2881.commands.scoring.arm.ArmToHeight;
@@ -113,6 +114,7 @@ public class OI {
     public Button highGoal;
     public Button intakeHPHuman;
     public Button hPSuction;
+    public Button habEscape;
     public Button lowerLift;
     public Button liftLift;
     public Button liftAutomated;
@@ -134,7 +136,6 @@ public class OI {
         switchCamera = new JoystickButton(driver, PS4.RIGHT_BUMPER);
         switchCamera.whenPressed(new CameraSwitch());
 
-
         driveBackward = new JoystickButton(driver, PS4.LEFT_BUMPER);
         driveBackward.whileHeld(new DriveForward(-0.5));
 
@@ -147,6 +148,11 @@ public class OI {
 
         liftAutomated = buttonFromPOV(driver, 180);
         liftAutomated.whileHeld(new LiftControlAutomated());
+
+        habEscape = new JoystickButton(driver, PS4.PINK_SQUARE);
+        habEscape.whileHeld(new HabEscape());
+
+
 
         //Climbs to high platform
     //    threeLift = buttonFromPOV(driver, 0);
@@ -201,7 +207,7 @@ public class OI {
 
         //tongue
         hpTongue = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
-        hpTongue.whenPressed(new HPTongue());
+        hpTongue.whenPressed(new HPTongue(TongueState.BUTTON));
 
 
         // SmartDashboard Buttons
@@ -220,7 +226,7 @@ public class OI {
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
-        SmartDashboard.putData("HP Tongue", new HPTongue());
+        SmartDashboard.putData("HP Tongue", new HPTongue(TongueState.BUTTON));
         SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
         SmartDashboard.putData("Lift Control", new LiftControl());
         SmartDashboard.putData("Lift Crawler", new SetCrawler(1));
