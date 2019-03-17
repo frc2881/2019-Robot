@@ -16,6 +16,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.frc2881.Robot;
 import org.frc2881.RobotType;
 import org.frc2881.commands.scoring.arm.ArmControl;
 import org.frc2881.utils.frc4048.Logging;
@@ -70,10 +71,10 @@ public class Arm extends PIDSubsystem {
     
     private double distancePerPulse;
 
-    private static double topLimit = 100;
+    private static double topLimit = 93;
     private static double bottomLimit = 11;
-    private static double topThreshold = topLimit - 10;
-    private static double bottomThreshold = bottomLimit + 10;
+    private static double topThreshold = topLimit - 15;
+    private static double bottomThreshold = bottomLimit + 15;
 
     public SpeedController armMotor;
     private boolean isArmCalibrated;
@@ -118,7 +119,7 @@ public class Arm extends PIDSubsystem {
             
             CANEncoder encoder = sparkMax.getEncoder();
             //final double armAngleRadians = 4.345 * (POTENTIOMETER_AT_HORIZONTAL - armPotentiometer.getVoltage() / RobotController.getVoltage5V());
-            final double potHeight = 11;//getArmPotHeight();//ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 11.7;//value @ 0
+            final double potHeight = getArmPotHeight();//ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 11.7;//value @ 0
             beginningPosition = encoder.getPosition() * distancePerPulse;
             armEncoderPosition = () -> encoder.getPosition() * distancePerPulse - beginningPosition + potHeight;
             armEncoderVelocity = () -> encoder.getVelocity() * distancePerPulse;
@@ -225,12 +226,12 @@ public class Arm extends PIDSubsystem {
     }
 
     public void armToHeight(double setpoint){
-        setArmMotorSpeed(1, setpoint);
+        setArmHeightMotorSpeed(1, setpoint);
     }
 
-    public void setArmMotorSpeed(double speed, double setpoint) {
+    public void setArmMotorSpeed(double speed) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
-        double min = getArmMotorMin(setpoint);
+        /*double min = getArmMotorMin(setpoint);
         double max = getArmMotorMax(setpoint);
 
         if (speed < min) {
@@ -238,50 +239,82 @@ public class Arm extends PIDSubsystem {
         }
         if (speed > max) {
             speed = max;
+        }*/
+
+        armMotor.set(speed);
+    }
+
+    public void setArmHeightMotorSpeed(double speed, double setpoint) {
+        // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
+        /*double min = getArmMotorMin(setpoint);
+        double max = getArmMotorMax(setpoint);
+
+        if (speed < min) {
+            speed = min;
+        }
+        if (speed > max) {
+            speed = max;
+        }*/
+
+        double distance = setpoint - getArmEncoderHeight();
+
+        if (distance / 15 > 1) {
+            speed = 1;
+        }
+        else if (distance / 15 < -1) {
+            speed = -1;
+        }
+        else if (Math.abs(distance / 15) <= 0.125) {
+            if (distance < 0){
+                speed = -0.125;
+            }
+            else {
+                speed = 0.125;
+            }
+        }
+        else {
+            speed = distance / 15;
         }
 
         armMotor.set(speed);
     }
 
-    private double getArmMotorMin(double setpoint) {
+    /*private double getArmMotorMin(double setpoint) {
 
         double position = getArmEncoderHeight();
 
-        if (setpoint < 10) {
-            bottomLimit = setpoint;
-            bottomThreshold = bottomLimit + 10;
-        }
+        double bottomLimit = setpoint;
+        double bottomThreshold = bottomLimit + 15;
 
         double min = -1;
         
         if (position <= bottomLimit) {
-            min = 0.3;
+            min = 0.125;
         } else if (position <= bottomThreshold) {
-            min = -(.3 + (.7 * (position - bottomLimit) / (bottomThreshold - bottomLimit)));
+            min = -(.125 + .2 * (position - bottomLimit) / (bottomThreshold - bottomLimit));
         }
         
-        return -min;
+        return min;
     }
 
     private double getArmMotorMax(double setpoint) {
 
         double position = getArmPotHeight();
 
-        if (setpoint > 100) {
-            topLimit = setpoint;
-            topThreshold = topLimit - 10;
-        }
+        topLimit = setpoint;
+        topThreshold = topLimit - 15;
+        
 
         double max = 1;
 
         if (position >= topLimit) {
-            max = -0.3;
+            max = -0.125;
         } else if (position >= topThreshold) {
-            max = 1 - (.7 * (position - topThreshold) / (topLimit - topThreshold));
+            max = 0.125 + .2 * (position - topThreshold) / (topLimit - topThreshold);
         }
 
-        return -max;
-    }
+        return max;
+    }*/
 
     public void resetArmEncoder() {
         //armEncoder.reset();
