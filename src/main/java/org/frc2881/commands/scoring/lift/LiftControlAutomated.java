@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class LiftControlAutomated extends CommandGroup {
 
     public LiftControlAutomated() {
-        addSequential(new ArmUntil15(15));
+        addSequential(new ArmUntil15(9));
         addSequential(new LiftUntil0(0));
         addParallel(new SetCrawler(0.5));
     }
