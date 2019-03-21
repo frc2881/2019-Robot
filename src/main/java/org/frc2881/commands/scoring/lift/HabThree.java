@@ -16,9 +16,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class LiftControlAutomatedHabThree extends CommandGroup {
+public class HabThree extends CommandGroup {
 
-    public LiftControlAutomatedHabThree() {
+    public HabThree() {
         addSequential(new ArmUntil15(8));
         addSequential(new LiftUntil0(0));
         addSequential(new ArmUntil15(8));

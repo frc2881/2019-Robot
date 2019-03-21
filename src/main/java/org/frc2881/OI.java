@@ -41,10 +41,11 @@ import org.frc2881.commands.scoring.hp.HPControlRollers;
 import org.frc2881.commands.scoring.hp.HPIntakeHuman;
 import org.frc2881.commands.scoring.hp.HPPlace;
 import org.frc2881.commands.scoring.hp.HPSetRollers;
+import org.frc2881.commands.scoring.hp.HPTongue;
 import org.frc2881.commands.scoring.lift.ArmExtension;
+import org.frc2881.commands.scoring.lift.HabThree;
+import org.frc2881.commands.scoring.lift.HabTwo;
 import org.frc2881.commands.scoring.lift.LiftControl;
-import org.frc2881.commands.scoring.lift.LiftControlAutomatedHabThree;
-import org.frc2881.commands.scoring.lift.LiftControlAutomatedHabTwo;
 import org.frc2881.commands.scoring.lift.LiftControlBack;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.commands.scoring.lift.SetCrawler;
@@ -53,6 +54,7 @@ import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Drive.ArmExtensionState;
 import org.frc2881.subsystems.Intake.RollerDirection;
+import org.frc2881.subsystems.Intake.TongueState;
 import org.frc2881.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -118,6 +120,7 @@ public class OI {
     public Button liftAutomatedHabTwo;    
     public Button setArmExtension;
     public Button driveBackward;
+    public Button hpTongue;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -145,10 +148,10 @@ public class OI {
         liftControl.whileHeld(new LiftControl());
 
         liftAutomatedHabTwo = buttonFromPOV(driver, 180);
-        liftAutomatedHabTwo.whileHeld(new LiftControlAutomatedHabTwo());
+        liftAutomatedHabTwo.whileHeld(new HabTwo());
 
         liftAutomatedHabThree = buttonFromPOV(driver, 0);
-        liftAutomatedHabThree.whileHeld(new LiftControlAutomatedHabThree());
+        liftAutomatedHabThree.whileHeld(new HabThree());
 
         //Climbs to high platform
     //    threeLift = buttonFromPOV(driver, 0);
@@ -201,6 +204,10 @@ public class OI {
         intakeCargo = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
         intakeCargo.whileHeld(new CargoIntake());
 
+        //tongue
+        hpTongue = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
+        hpTongue.whenPressed(new HPTongue());
+
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
@@ -218,8 +225,8 @@ public class OI {
         SmartDashboard.putData("HP Set Rollers", new HPSetRollers(0.5, RollerDirection.EJECT));
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
-        SmartDashboard.putData("Lift To Height Hab Two", new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
-        SmartDashboard.putData("Lift To Height Hab Three", new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));        
+        SmartDashboard.putData("HP Tongue", new HPTongue());
+        SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
         SmartDashboard.putData("Lift Control", new LiftControl());
         SmartDashboard.putData("Lift Crawler", new SetCrawler(1));
         SmartDashboard.putData("Robot Prep", new RobotPrep());

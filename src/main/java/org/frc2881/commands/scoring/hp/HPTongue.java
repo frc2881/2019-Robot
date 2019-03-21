@@ -11,27 +11,22 @@
 package org.frc2881.commands.scoring.hp;
 
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Intake.SuctionState;
+import org.frc2881.subsystems.Intake.TongueState;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class HPSuction extends InstantCommand {
-
-    private SuctionState state;
-
-    public HPSuction(SuctionState state) {
-        super("HPSuction" + (state == SuctionState.OPEN ? "OPEN" : "CLOSED"));
+public class HPTongue extends InstantCommand {
+    public HPTongue() {
         requires(Robot.intake);
-        this.state = state;
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        Robot.intake.suction(state);
-    }
 
+        Robot.intake.tongue(TongueState.BUTTON);
+    }
 }

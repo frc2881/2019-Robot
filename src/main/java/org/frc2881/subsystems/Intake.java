@@ -27,12 +27,14 @@ public class Intake extends Subsystem {
     public enum GrabberState {GRAB, RELEASE, BUTTON}
     public enum SuctionState {OPEN, CLOSED, BUTTON}
     public enum RollerDirection {INTAKE, EJECT, BUTTON}
+    public enum TongueState {IN, OUT, BUTTON}
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Spark cargoIntakeMotor;
-    private int intakecargoRollerPdpChannel = 1;
+    private int intakecargoRollerPdpChannel = 6;
     private Solenoid hPSuctionCup;
     private Solenoid hPGrabber;
+    private Solenoid hPTongue;
     private Spark hPIntakeMotor;
     private DigitalInput hPDetector;
 
@@ -51,6 +53,9 @@ public class Intake extends Subsystem {
         hPGrabber = new Solenoid(11, 2);
         addChild("HP Grabber Solenoid",hPGrabber);
         
+        hPTongue = new Solenoid(11, 3);
+        addChild("HP Tongue Solenoid",hPTongue);
+
         hPIntakeMotor = new Spark(3);
         addChild("HP Intake Motor",hPIntakeMotor);
         hPIntakeMotor.setInverted(false);
@@ -76,6 +81,7 @@ public class Intake extends Subsystem {
         }
     };
 
+    //Suction Cups
     public void suction(SuctionState state) {
         if (state == SuctionState.BUTTON) {
             hPSuctionCup.set(!hPSuctionCup.get());
@@ -93,6 +99,26 @@ public class Intake extends Subsystem {
             return SuctionState.OPEN;
         }
     }
+
+    //Tongue
+    public void tongue(TongueState state) {
+        if (state == TongueState.BUTTON) {
+            hPTongue.set(!hPTongue.get());
+
+        } else {
+            hPTongue.set(state == TongueState.OUT);
+        }
+    }
+
+    public TongueState getTongueState() {
+        if (hPTongue.get()){
+            return TongueState.IN;
+        }
+        else {
+            return TongueState.OUT;
+        }
+    }
+
 
     @Override
     public void periodic() {
@@ -155,6 +181,7 @@ public class Intake extends Subsystem {
         hPIntakeMotor.set(0);
     }
 
+    //Grabber
     public void setHPGrabber(GrabberState state) {
         if (state == GrabberState.BUTTON) {
             hPGrabber.set(!hPGrabber.get());
