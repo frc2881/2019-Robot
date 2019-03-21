@@ -80,12 +80,12 @@ public class ArmToHeight extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Math.abs(Robot.arm.getArmEncoderHeight() - height) <= 1;
+        return Math.abs(Robot.arm.getArmEncoderHeight() - height) <= 2;
     }
 
     @Override
     protected void end() {
-        Robot.arm.disable();
+        Robot.arm.setArmMotorSpeed(0);
         if (rumble) {
             new RumbleYes(Robot.oi.manipulator).start();
         }

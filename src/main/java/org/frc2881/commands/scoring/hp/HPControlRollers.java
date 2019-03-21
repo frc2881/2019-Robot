@@ -12,7 +12,6 @@ package org.frc2881.commands.scoring.hp;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc2881.Robot;
-import org.frc2881.commands.basic.rumble.RumbleNo;
 import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.utils.AmpMonitor;
