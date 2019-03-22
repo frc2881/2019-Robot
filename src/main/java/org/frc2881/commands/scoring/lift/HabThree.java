@@ -11,56 +11,46 @@
 package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Lift;
-
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class LiftToHeight extends Command {
+public class HabThree extends CommandGroup {
 
-    double height;
-    double initial;
-    
-    public LiftToHeight(double height, boolean rumble) {
-        requires(Robot.lift);
-        requires(Robot.arm);
-        if (height == Lift.HAB_THREE_HEIGHT){
-            this.height = 3;
-        }
-        else {
-            this.height = 2;
-        }
+    public HabThree() {
+        addSequential(new ArmUntil15(8));
+        addSequential(new LiftUntil0(0));
+        addSequential(new ArmUntil15(8));
+        addSequential(new LiftUntil0(0));
+        addSequential(new ArmUntil15(8));
+        addSequential(new LiftUntil0(0));
+        addSequential(new ArmUntil15(8));
+        addSequential(new LiftUntil0(0));
+        //addParallel(new SetCrawler(0.5));
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        initial = Robot.arm.getArmEncoderHeight();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-        double goal = 1;
-        double tilt = Robot.drive.navX.getRoll();
-        double difference = tilt - goal;
-
-        Robot.lift.setLiftMotors(1);
-        Robot.arm.setArmMotorSpeed(-.5 + difference * -0.05);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return height >= initial - Robot.arm.getArmEncoderHeight();
+        return false;
+    }
+    
+    @Override
+    protected void interrupted() {
+        end();
     }
 
     @Override
     protected void end() {
-        Robot.lift.setLiftMotors(0);
         Robot.arm.setArmMotorSpeed(0);
+        Robot.lift.setLiftMotors(0);
+        Robot.drive.setLiftCrawler(0);
         Robot.logEnd(this);
     }
 

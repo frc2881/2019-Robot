@@ -16,12 +16,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class LiftControlAutomated extends CommandGroup {
+public class HabTwo extends CommandGroup {
 
-    public LiftControlAutomated() {
-        addSequential(new ArmUntil15(15));
+    public HabTwo() {
+        addSequential(new ArmUntil15(9.5));
         addSequential(new LiftUntil0(0));
-        addParallel(new SetCrawler(0.5));
+        addParallel(new SetCrawler(1));
     }
 
     @Override
