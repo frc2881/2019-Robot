@@ -25,13 +25,11 @@ public class CargoIntake extends Command {
 
     private AmpMonitor ampMonitor = new AmpMonitor(10, () -> Robot.intake.getCargoRollerCurrent());
     private boolean monitoringAmps;
-    private double programTime;
-    private double triggerValue;
-    private static final double speedCap = 0;
-
+    private boolean rumbleNo;
+    private static final double speedCap = 0.2;
 
     public CargoIntake() {
-        requires (Robot.intake);
+        requires(Robot.intake);
 
     }
 
@@ -39,37 +37,35 @@ public class CargoIntake extends Command {
     protected void initialize() {
         Robot.logInitialize(this);
         monitoringAmps = false;
+        rumbleNo = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        ampMonitor.checkTriggered();
 
-        //Robot.intake.cargoRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER), RollerDirection.INTAKE);
-
-        if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
-                triggerValue - Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) >= 0.25)) {
-            Robot.intake.cargoRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER), RollerDirection.INTAKE);
-        }
-
-        else {
-            Robot.intake.cargoRollers(speedCap, RollerDirection.INTAKE);
-        }
-
-        if (!monitoringAmps && timeSinceInitialized() > .2){
+        if (!monitoringAmps && timeSinceInitialized() > 0.2) {
+            Robot.log("Cargo Roller monitoring");
             ampMonitor.reset();
             monitoringAmps = true;
         }
 
-        if (monitoringAmps && ampMonitor.isTriggered()) {
+        else if (monitoringAmps && ampMonitor.isTriggered()) {
             Robot.log("Cargo Roller current limit exceeded");
 
-            triggerValue = Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER);
-            programTime = timeSinceInitialized();
-            Robot.intake.cargoRollers(speedCap, RollerDirection.INTAKE);
+            Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER);
+            timeSinceInitialized();
+            Robot.intake.cargoRollers(speedCap, RollerDirection.INTAKE); 
 
-            new RumbleNo(Robot.oi.manipulator).start();
+            if (!rumbleNo) {
+                new RumbleNo(Robot.oi.manipulator).start();
+                rumbleNo = true;
+            }
         }
+        else {
+            Robot.intake.cargoRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER), RollerDirection.INTAKE);
+}
     }
 
     // Make this return true when this Command no longer needs to run execute()

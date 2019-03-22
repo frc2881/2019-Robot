@@ -11,18 +11,17 @@
 package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
-import edu.wpi.first.wpilibj.command.Command;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class LiftUntil0 extends Command {
-    
-    private double goal;
+public class HabThree extends CommandGroup {
 
-    public LiftUntil0(double goal) {
-        requires(Robot.lift);
-        this.goal = goal;
+    public HabThree() {
+        addSequential(new LiftToHeight());
+        addSequential(new SetCrawler(1));
     }
 
     @Override
@@ -30,28 +29,23 @@ public class LiftUntil0 extends Command {
         Robot.logInitialize(this);
     }
 
-    @Override
-    protected void execute() {
-        Robot.logging.traceMessage("Roll: " + Robot.drive.navX.getRoll());
-        Robot.lift.setLiftMotors(1);
-    }
-
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.drive.navX.getRoll() >= goal - 1;
+        return false;
+    }
+    
+    @Override
+    protected void interrupted() {
+        end();
     }
 
     @Override
     protected void end() {
+        Robot.arm.setArmMotorSpeed(0);
         Robot.lift.setLiftMotors(0);
+        Robot.drive.setLiftCrawler(0);
         Robot.logEnd(this);
-    }
-
-    @Override
-    protected void interrupted() {
-        Robot.lift.setLiftMotors(0);
-        Robot.logInterrupted(this);
     }
 
 }

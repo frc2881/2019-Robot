@@ -23,7 +23,6 @@ import org.frc2881.utils.frc4048.Logging;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
@@ -70,11 +69,11 @@ public class Arm extends PIDSubsystem {
     public static double LOW_GOAL = 1;
     
     private double distancePerPulse;
-
-    private static double topLimit = 93;
+  
+    /*private static double topLimit = 93;
     private static double bottomLimit = 11;
     private static double topThreshold = topLimit - 15;
-    private static double bottomThreshold = bottomLimit + 15;
+    private static double bottomThreshold = bottomLimit + 15;*/
 
     public SpeedController armMotor;
     private boolean isArmCalibrated;
@@ -192,11 +191,12 @@ public class Arm extends PIDSubsystem {
     }
 
     public double getArmEncoderHeight(){
-        if (armEncoderPosition.getAsDouble() <= -0.1) {
+        /*if (armEncoderPosition.getAsDouble() <= -0.1) {
             return 0;
         } else {
             return armEncoderPosition.getAsDouble();
-        }
+        }*/
+        return armEncoderPosition.getAsDouble();
     }
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
@@ -257,7 +257,6 @@ public class Arm extends PIDSubsystem {
         }*/
 
         double speed;
-
         double distance = setpoint - getArmEncoderHeight();
 
         if (distance / 15 > 1) {

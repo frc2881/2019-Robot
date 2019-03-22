@@ -10,37 +10,50 @@
 
 package org.frc2881.commands.scoring.lift;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 import org.frc2881.Robot;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class LiftToHeight extends Command {
 
-    public LiftToHeight(double height, boolean rumble) {
-
+    double initial;
+    
+    public LiftToHeight() {
+        requires(Robot.lift);
+        requires(Robot.arm);
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
+        initial = Robot.arm.getArmEncoderHeight();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        double goal = 1;
+        double tilt = Robot.drive.navX.getRoll();
+        double difference = tilt - goal;
+
+        Robot.lift.setLiftMotors(1);
+        Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        double height = 76.451 - 55;
+        return height - 1 <= initial - Robot.arm.getArmEncoderHeight();
     }
 
     @Override
     protected void end() {
+        Robot.lift.setLiftMotors(0);
+        Robot.arm.setArmMotorSpeed(0);
         Robot.logEnd(this);
     }
 
