@@ -57,12 +57,12 @@ public class Arm extends PIDSubsystem {
 
     public enum WristState {UP, DOWN, BUTTON}
     public enum ArmValue {BUTTON, VALUE}
-    public static double HP_HIGH_GOAL_HEIGHT = 76.2;
-    public static double HP_MEDIUM_GOAL_HEIGHT = 56;//45.1;
-    public static double HP_LOW_GOAL_HEIGHT = 14.2;
-    public static double CARGO_HIGH_GOAL_HEIGHT = 62.8;
-    public static double CARGO_MEDIUM_GOAL_HEIGHT = 56;//35.4;
-    public static double CARGO_LOW_GOAL_HEIGHT = 11.71;
+    public static double HP_HIGH_GOAL_HEIGHT = 80;
+    public static double HP_MEDIUM_GOAL_HEIGHT = 49;//45.1;
+    public static double HP_LOW_GOAL_HEIGHT = 14;
+    public static double CARGO_HIGH_GOAL_HEIGHT = 101;
+    public static double CARGO_MEDIUM_GOAL_HEIGHT = 75;//35.4;
+    public static double CARGO_LOW_GOAL_HEIGHT = 43;
     public static double ILLEGAL_HEIGHT = 13;
     public static double FLOOR = 11.71;
     public static double HIGH_GOAL = 3;
