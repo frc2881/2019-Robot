@@ -119,7 +119,7 @@ public class Arm extends PIDSubsystem {
             
             CANEncoder encoder = sparkMax.getEncoder();
             //final double armAngleRadians = 4.345 * (POTENTIOMETER_AT_HORIZONTAL - armPotentiometer.getVoltage() / RobotController.getVoltage5V());
-            final double potHeight = getArmPotHeight();//ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 11.7;//value @ 0
+            final double potHeight = 11;//getArmPotHeight();//ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 11.7;//value @ 0
             beginningPosition = encoder.getPosition() * distancePerPulse;
             armEncoderPosition = () -> encoder.getPosition() * distancePerPulse - beginningPosition + potHeight;
             armEncoderVelocity = () -> encoder.getVelocity() * distancePerPulse;
@@ -266,12 +266,12 @@ public class Arm extends PIDSubsystem {
         else if (distance / 15 < -1) {
             speed = -1;
         }
-        else if (Math.abs(distance / 15) <= 0.125) {
+        else if (Math.abs(distance / 15) <= 0.075) {
             if (distance < 0){
-                speed = -0.125;
+                speed = -0.075;
             }
             else {
-                speed = 0.125;
+                speed = 0.075;
             }
         }
         else {

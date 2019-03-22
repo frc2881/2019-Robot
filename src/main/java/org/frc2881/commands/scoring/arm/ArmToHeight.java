@@ -25,6 +25,7 @@ public class ArmToHeight extends Command {
     //Code something that doesn't use pid controller and mannually ramps motor speed and compares to potentiometer/encoder value with speed min
     
     private double height;
+    private double initial;
     private boolean rumble;
     private ArmValue goal;
 
@@ -37,11 +38,10 @@ public class ArmToHeight extends Command {
 
     @Override
     protected void initialize() {
-
         Robot.logInitialize(this, height);
-        
-        Robot.logInitialize(this, Robot.arm.getSetpoint());
+        Robot.logInitialize(this,  Robot.arm.getSetpoint());
 
+        initial = Robot.arm.getArmEncoderHeight();
     }
 
     @Override
@@ -69,12 +69,12 @@ public class ArmToHeight extends Command {
                     Robot.arm.armToHeight(Arm.HP_LOW_GOAL_HEIGHT);
                 }  
                 else {
-                    Robot.arm.armToHeight(this.height);
+                    Robot.arm.armToHeight(height);
                 }
             }
         }
         else {
-            Robot.arm.armToHeight(this.height);
+            Robot.arm.armToHeight(height);
         }
 
     }
@@ -82,7 +82,17 @@ public class ArmToHeight extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Math.abs(Robot.arm.getArmEncoderHeight() - height) <= 2;
+        double currentHeight = Robot.arm.getArmEncoderHeight();
+        
+        if (initial < height - 0.5) {
+			return currentHeight >= height;
+        }
+        else if (initial > height + 0.5){
+            return Math.abs(currentHeight - height) <= 0.5;
+        }
+        else {
+            return true;
+        }
     }
 
     @Override
