@@ -93,10 +93,10 @@ public class Intake extends Subsystem {
 
     public SuctionState getSuctionState(){
         if (hPSuctionCup.get()){
-            return SuctionState.CLOSED;
+            return SuctionState.OPEN;
         }
         else {
-            return SuctionState.OPEN;
+            return SuctionState.CLOSED;
         }
     }
 

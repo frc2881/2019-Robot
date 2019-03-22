@@ -16,6 +16,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.frc2881.Robot;
 import org.frc2881.RobotType;
 import org.frc2881.commands.scoring.arm.ArmControl;
 import org.frc2881.utils.frc4048.Logging;
@@ -55,12 +56,12 @@ public class Arm extends PIDSubsystem {
 
     public enum WristState {UP, DOWN, BUTTON}
     public enum ArmValue {BUTTON, VALUE}
-    public static double HP_HIGH_GOAL_HEIGHT = 76.2;
-    public static double HP_MEDIUM_GOAL_HEIGHT = 56;//45.1;
-    public static double HP_LOW_GOAL_HEIGHT = 14.2;
-    public static double CARGO_HIGH_GOAL_HEIGHT = 62.8;
-    public static double CARGO_MEDIUM_GOAL_HEIGHT = 56;//35.4;
-    public static double CARGO_LOW_GOAL_HEIGHT = 11.71;
+    public static double HP_HIGH_GOAL_HEIGHT = 80;
+    public static double HP_MEDIUM_GOAL_HEIGHT = 49;//45.1;
+    public static double HP_LOW_GOAL_HEIGHT = 14;
+    public static double CARGO_HIGH_GOAL_HEIGHT = 101;
+    public static double CARGO_MEDIUM_GOAL_HEIGHT = 75;//35.4;
+    public static double CARGO_LOW_GOAL_HEIGHT = 43;
     public static double ILLEGAL_HEIGHT = 13;
     public static double FLOOR = 11.71;
     public static double HIGH_GOAL = 3;
@@ -68,7 +69,7 @@ public class Arm extends PIDSubsystem {
     public static double LOW_GOAL = 1;
     
     private double distancePerPulse;
-
+  
     /*private static double topLimit = 93;
     private static double bottomLimit = 11;
     private static double topThreshold = topLimit - 15;
@@ -117,7 +118,7 @@ public class Arm extends PIDSubsystem {
             
             CANEncoder encoder = sparkMax.getEncoder();
             //final double armAngleRadians = 4.345 * (POTENTIOMETER_AT_HORIZONTAL - armPotentiometer.getVoltage() / RobotController.getVoltage5V());
-            final double potHeight = getArmPotHeight();//ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 11.7;//value @ 0
+            final double potHeight = 11;//getArmPotHeight();//ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 11.7;//value @ 0
             beginningPosition = encoder.getPosition() * distancePerPulse;
             armEncoderPosition = () -> encoder.getPosition() * distancePerPulse - beginningPosition + potHeight;
             armEncoderVelocity = () -> encoder.getVelocity() * distancePerPulse;
@@ -225,7 +226,7 @@ public class Arm extends PIDSubsystem {
     }
 
     public void armToHeight(double setpoint){
-        setArmHeightMotorSpeed(1, setpoint);
+        setArmHeightMotorSpeed(setpoint);
     }
 
     public void setArmMotorSpeed(double speed) {
@@ -243,7 +244,7 @@ public class Arm extends PIDSubsystem {
         armMotor.set(speed);
     }
 
-    public void setArmHeightMotorSpeed(double speed, double setpoint) {
+    public void setArmHeightMotorSpeed(double setpoint) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
         /*double min = getArmMotorMin(setpoint);
         double max = getArmMotorMax(setpoint);
@@ -255,6 +256,7 @@ public class Arm extends PIDSubsystem {
             speed = max;
         }*/
 
+        double speed;
         double distance = setpoint - getArmEncoderHeight();
 
         if (distance / 15 > 1) {
@@ -263,12 +265,12 @@ public class Arm extends PIDSubsystem {
         else if (distance / 15 < -1) {
             speed = -1;
         }
-        else if (Math.abs(distance / 15) <= 0.125) {
+        else if (Math.abs(distance / 15) <= 0.075) {
             if (distance < 0){
-                speed = -0.125;
+                speed = -0.075;
             }
             else {
-                speed = 0.125;
+                speed = 0.075;
             }
         }
         else {
