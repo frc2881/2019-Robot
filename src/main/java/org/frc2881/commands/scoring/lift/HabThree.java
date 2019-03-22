@@ -12,48 +12,39 @@ package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class LiftToHeight extends Command {
+public class HabThree extends CommandGroup {
 
-    double initial;
-    
-    public LiftToHeight() {
-        requires(Robot.lift);
-        requires(Robot.arm);
+    public HabThree() {
+        addSequential(new LiftToHeight());
+        addSequential(new SetCrawler(1));
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        initial = Robot.arm.getArmEncoderHeight();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-        double goal = 1;
-        double tilt = Robot.drive.navX.getRoll();
-        double difference = tilt - goal;
-
-        Robot.lift.setLiftMotors(1);
-        Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        double height = 76.451 - 55;
-        return height - 1 <= initial - Robot.arm.getArmEncoderHeight();
+        return false;
+    }
+    
+    @Override
+    protected void interrupted() {
+        end();
     }
 
     @Override
     protected void end() {
-        Robot.lift.setLiftMotors(0);
         Robot.arm.setArmMotorSpeed(0);
+        Robot.lift.setLiftMotors(0);
+        Robot.drive.setLiftCrawler(0);
         Robot.logEnd(this);
     }
 

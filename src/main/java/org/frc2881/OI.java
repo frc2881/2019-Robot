@@ -43,8 +43,9 @@ import org.frc2881.commands.scoring.hp.HPPlace;
 import org.frc2881.commands.scoring.hp.HPSetRollers;
 import org.frc2881.commands.scoring.hp.HPTongue;
 import org.frc2881.commands.scoring.lift.ArmExtension;
+import org.frc2881.commands.scoring.lift.HabThree;
+import org.frc2881.commands.scoring.lift.HabTwo;
 import org.frc2881.commands.scoring.lift.LiftControl;
-import org.frc2881.commands.scoring.lift.LiftControlAutomated;
 import org.frc2881.commands.scoring.lift.LiftControlBack;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.commands.scoring.lift.SetCrawler;
@@ -115,7 +116,8 @@ public class OI {
     public Button hPSuction;
     public Button lowerLift;
     public Button liftLift;
-    public Button liftAutomated;
+    public Button liftAutomatedHabThree;
+    public Button liftAutomatedHabTwo;    
     public Button setArmExtension;
     public Button driveBackward;
     public Button hpTongue;
@@ -145,19 +147,21 @@ public class OI {
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
         liftControl.whileHeld(new LiftControl());
 
-        liftAutomated = buttonFromPOV(driver, 180);
-        liftAutomated.whileHeld(new LiftControlAutomated());
+        liftAutomatedHabTwo = buttonFromPOV(driver, 180);
+        liftAutomatedHabTwo.whileHeld(new HabTwo());
 
-        //Climbs to high platform
-    //    threeLift = buttonFromPOV(driver, 0);
-    //    threeLift.whileHeld(new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));
+        //Climbs to third platform
+        highLift = buttonFromPOV(driver, 0);
+        highLift.whileHeld(new HabThree());
       
-        //Climbs to middle platform
+        setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
+        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
+
+
+        //Climbs to middle platform KINDA NOT NECESSARY RN
     //    twoLift = buttonFromPOV(driver, 180);
     //    twoLift.whileHeld(new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
 
-        setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
-        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
 
         //sets intake as back
         setIntakeBack = new JoystickButton(driver, PS4.BLUE_X);
@@ -221,8 +225,6 @@ public class OI {
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
         SmartDashboard.putData("HP Tongue", new HPTongue());
-        SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
-        SmartDashboard.putData("Lift Control", new LiftControl());
         SmartDashboard.putData("Lift Crawler", new SetCrawler(1));
         SmartDashboard.putData("Robot Prep", new RobotPrep());
         SmartDashboard.putData("NavX Reset", new NavXReset());
