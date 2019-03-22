@@ -152,7 +152,7 @@ public class OI {
 
         //Climbs to third platform
         highLift = buttonFromPOV(driver, 0);
-        highLift.whileHeld(new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));
+        highLift.whileHeld(new HabThree());
       
         setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
         setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
@@ -225,8 +225,6 @@ public class OI {
         SmartDashboard.putData("HP Control Rollers", new HPControlRollers());
         SmartDashboard.putData("HP Intake Human", new HPIntakeHuman());
         SmartDashboard.putData("HP Tongue", new HPTongue());
-        SmartDashboard.putData("Lift To Height", new LiftToHeight(Lift.HAB_TWO_HEIGHT, true));
-        SmartDashboard.putData("Lift Control", new LiftControl());
         SmartDashboard.putData("Lift Crawler", new SetCrawler(1));
         SmartDashboard.putData("Robot Prep", new RobotPrep());
         SmartDashboard.putData("NavX Reset", new NavXReset());

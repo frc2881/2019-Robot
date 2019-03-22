@@ -11,6 +11,7 @@
 package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -19,15 +20,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class HabThree extends CommandGroup {
 
     public HabThree() {
-        addSequential(new ArmUntil15(8));
-        addSequential(new LiftUntil0(0));
-        addSequential(new ArmUntil15(8));
-        addSequential(new LiftUntil0(0));
-        addSequential(new ArmUntil15(8));
-        addSequential(new LiftUntil0(0));
-        addSequential(new ArmUntil15(8));
-        addSequential(new LiftUntil0(0));
-        //addParallel(new SetCrawler(0.5));
+        addSequential(new LiftToHeight());
+        addSequential(new SetCrawler(1));
     }
 
     @Override

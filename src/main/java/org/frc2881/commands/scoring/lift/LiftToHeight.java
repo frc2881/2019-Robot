@@ -11,7 +11,6 @@
 package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
-import org.frc2881.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -20,18 +19,11 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class LiftToHeight extends Command {
 
-    double height;
     double initial;
     
-    public LiftToHeight(double height, boolean rumble) {
+    public LiftToHeight() {
         requires(Robot.lift);
         requires(Robot.arm);
-        if (height == Lift.HAB_THREE_HEIGHT){
-            this.height = 3;
-        }
-        else {
-            this.height = 2;
-        }
     }
 
     @Override
@@ -48,13 +40,14 @@ public class LiftToHeight extends Command {
         double difference = tilt - goal;
 
         Robot.lift.setLiftMotors(1);
-        Robot.arm.setArmMotorSpeed(-.5 + difference * -0.05);
+        Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return height >= initial - Robot.arm.getArmEncoderHeight();
+        double height = 76.451 - 55;
+        return height - 1 <= initial - Robot.arm.getArmEncoderHeight();
     }
 
     @Override

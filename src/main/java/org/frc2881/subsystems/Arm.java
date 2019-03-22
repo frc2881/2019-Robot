@@ -190,11 +190,12 @@ public class Arm extends PIDSubsystem {
     }
 
     public double getArmEncoderHeight(){
-        if (armEncoderPosition.getAsDouble() <= -0.1) {
+        /*if (armEncoderPosition.getAsDouble() <= -0.1) {
             return 0;
         } else {
             return armEncoderPosition.getAsDouble();
-        }
+        }*/
+        return armEncoderPosition.getAsDouble();
     }
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
