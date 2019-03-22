@@ -226,7 +226,7 @@ public class Arm extends PIDSubsystem {
     }
 
     public void armToHeight(double setpoint){
-        setArmHeightMotorSpeed(1, setpoint);
+        setArmHeightMotorSpeed(setpoint);
     }
 
     public void setArmMotorSpeed(double speed) {
@@ -244,7 +244,7 @@ public class Arm extends PIDSubsystem {
         armMotor.set(speed);
     }
 
-    public void setArmHeightMotorSpeed(double speed, double setpoint) {
+    public void setArmHeightMotorSpeed(double setpoint) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
         /*double min = getArmMotorMin(setpoint);
         double max = getArmMotorMax(setpoint);
@@ -255,6 +255,8 @@ public class Arm extends PIDSubsystem {
         if (speed > max) {
             speed = max;
         }*/
+
+        double speed;
 
         double distance = setpoint - getArmEncoderHeight();
 

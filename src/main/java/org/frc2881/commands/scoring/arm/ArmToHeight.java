@@ -15,8 +15,6 @@ import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleYes;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Arm.ArmValue;
-import org.frc2881.subsystems.Arm.WristState;
-import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.SuctionState;
 
 /**
@@ -40,13 +38,19 @@ public class ArmToHeight extends Command {
     @Override
     protected void initialize() {
 
+        Robot.logInitialize(this, height);
+        
+        Robot.logInitialize(this, Robot.arm.getSetpoint());
+
+    }
+
+    @Override
+    protected void execute(){
         boolean highGoal = height == Arm.HIGH_GOAL;
         boolean mediumGoal = height == Arm.MEDIUM_GOAL;
         boolean lowGoal = height == Arm.LOW_GOAL;
         boolean HPLoaded = Robot.intake.getSuctionState() == SuctionState.CLOSED;
 
-        Robot.logInitialize(this, height);
-        
         if (goal == ArmValue.BUTTON){
             if (!HPLoaded) {
                 if (highGoal) {
@@ -72,8 +76,6 @@ public class ArmToHeight extends Command {
         else {
             Robot.arm.armToHeight(this.height);
         }
-
-        Robot.logInitialize(this, Robot.arm.getSetpoint());
 
     }
 
