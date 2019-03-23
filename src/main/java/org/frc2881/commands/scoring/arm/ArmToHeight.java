@@ -15,8 +15,6 @@ import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleYes;
 import org.frc2881.subsystems.Arm;
 import org.frc2881.subsystems.Arm.ArmValue;
-import org.frc2881.subsystems.Arm.WristState;
-import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.SuctionState;
 
 /**
@@ -27,8 +25,10 @@ public class ArmToHeight extends Command {
     //Code something that doesn't use pid controller and mannually ramps motor speed and compares to potentiometer/encoder value with speed min
     
     private double height;
+    private double initial;
     private boolean rumble;
     private ArmValue goal;
+    private double setpoint;
 
     public ArmToHeight(ArmValue goal, double height, boolean rumble) {
         requires(Robot.arm);
@@ -39,54 +39,76 @@ public class ArmToHeight extends Command {
 
     @Override
     protected void initialize() {
-
         boolean highGoal = height == Arm.HIGH_GOAL;
         boolean mediumGoal = height == Arm.MEDIUM_GOAL;
         boolean lowGoal = height == Arm.LOW_GOAL;
         boolean HPLoaded = Robot.intake.getSuctionState() == SuctionState.CLOSED;
 
-        Robot.logInitialize(this, height);
-        
         if (goal == ArmValue.BUTTON){
             if (!HPLoaded) {
                 if (highGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.CARGO_HIGH_GOAL_HEIGHT);
+                    setpoint = (Arm.CARGO_HIGH_GOAL_HEIGHT);
                 } else if (mediumGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.CARGO_MEDIUM_GOAL_HEIGHT);
+                    setpoint = (Arm.CARGO_MEDIUM_GOAL_HEIGHT);
                 } else if (lowGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.CARGO_LOW_GOAL_HEIGHT);
+                    setpoint = (Arm.CARGO_LOW_GOAL_HEIGHT);
                 }
             } else {
                 if (highGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.HP_HIGH_GOAL_HEIGHT);
+                    setpoint = (Arm.HP_HIGH_GOAL_HEIGHT);
                 } else if (mediumGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.HP_MEDIUM_GOAL_HEIGHT);
+                    setpoint = (Arm.HP_MEDIUM_GOAL_HEIGHT);
                 } else if (lowGoal) {
-                    Robot.arm.setArmDesiredHeight(Arm.HP_LOW_GOAL_HEIGHT);
+                    setpoint = (Arm.HP_LOW_GOAL_HEIGHT);
                 }  
                 else {
-                    Robot.arm.setArmDesiredHeight(this.height);
+                    setpoint = (height);
                 }
             }
         }
         else {
-            Robot.arm.setArmDesiredHeight(this.height);
+            setpoint = (height);
         }
-        Robot.arm.enable();
 
-        Robot.logInitialize(this, Robot.arm.getSetpoint());
+        Robot.logInitialize(this, height);
+        Robot.logInitialize(this, setpoint);
 
+        initial = Robot.arm.getArmEncoderHeight();
     }
 
+    @Override
+    protected void execute(){
+        Robot.arm.armToHeight(setpoint);
+    }
+    
+    int i;
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.arm.onTarget() || timeSinceInitialized() >= 200;
+        double currentHeight = Robot.arm.getArmEncoderHeight();
+
+        /*if (i++ == 10) {
+            i = 0;
+            Robot.log("Current Height: " + currentHeight);
+            Robot.log("Initial: " + initial);
+            Robot.log("Height: " + setpoint);
+        }
+        
+        return false;*/
+        if (initial < setpoint - 0.5) {
+			return currentHeight >= setpoint;
+        }
+        else if (initial > setpoint + 0.5){
+            return Math.abs(currentHeight - setpoint) <= 0.5;
+        }
+        else {
+            return true;
+        }
     }
 
     @Override
     protected void end() {
-        Robot.arm.disable();
+        Robot.arm.setArmMotorSpeed(0);
         if (rumble) {
             new RumbleYes(Robot.oi.manipulator).start();
         }
@@ -95,7 +117,6 @@ public class ArmToHeight extends Command {
 
     @Override
     protected void interrupted() {
-        Robot.arm.disable();
         Robot.arm.setArmMotorSpeed(0);
         Robot.logInterrupted(this);
     }

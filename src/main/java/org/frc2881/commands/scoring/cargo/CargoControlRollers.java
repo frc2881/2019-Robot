@@ -11,7 +11,6 @@
 package org.frc2881.commands.scoring.cargo;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc2881.Robot;
-import org.frc2881.commands.basic.rumble.RumbleNo;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.utils.AmpMonitor;
 import edu.wpi.first.wpilibj.GenericHID;

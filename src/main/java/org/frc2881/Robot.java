@@ -209,6 +209,11 @@ public class Robot extends TimedRobot {
         System.out.printf("[%6.2f] %s%n", time / 1000.0, message);
     }
 
+    public static void logDouble(double message) {
+        long time = System.currentTimeMillis() - startTime;
+        System.out.printf("[%6.2f] %s%n", time / 1000.0, message);
+    }
+    
     public static void logInitialize(Command command) {
         log("Command " + command.getClass().getSimpleName() + " started");
     }

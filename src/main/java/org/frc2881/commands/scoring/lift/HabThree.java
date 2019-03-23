@@ -11,17 +11,18 @@
 package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Lift;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class LiftControlAutomated extends CommandGroup {
+public class HabThree extends CommandGroup {
 
-    public LiftControlAutomated() {
-        addSequential(new ArmUntil15(9));
-        addSequential(new LiftUntil0(0));
-        addParallel(new SetCrawler(0.5));
+    public HabThree() {
+        addSequential(new LiftToHeight(Lift.HAB_THREE_HEIGHT));
+        addSequential(new SetCrawler(1));
     }
 
     @Override
