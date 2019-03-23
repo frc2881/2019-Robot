@@ -43,11 +43,13 @@ import org.frc2881.commands.scoring.hp.HPPlace;
 import org.frc2881.commands.scoring.hp.HPSetRollers;
 import org.frc2881.commands.scoring.hp.HPTongue;
 import org.frc2881.commands.scoring.lift.ArmExtension;
+import org.frc2881.commands.scoring.lift.ArmUntil15;
 import org.frc2881.commands.scoring.lift.HabThree;
 import org.frc2881.commands.scoring.lift.HabTwo;
 import org.frc2881.commands.scoring.lift.LiftControl;
 import org.frc2881.commands.scoring.lift.LiftControlBack;
 import org.frc2881.commands.scoring.lift.LiftToHeight;
+import org.frc2881.commands.scoring.lift.LiftUntil0;
 import org.frc2881.commands.scoring.lift.SetCrawler;
 import org.frc2881.controllers.PS4;
 import org.frc2881.subsystems.Arm;
@@ -147,6 +149,7 @@ public class OI {
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
         liftControl.whileHeld(new LiftControl());
 
+        //Climbs to two platform
         liftAutomatedHabTwo = buttonFromPOV(driver, 180);
         liftAutomatedHabTwo.whileHeld(new HabTwo());
 

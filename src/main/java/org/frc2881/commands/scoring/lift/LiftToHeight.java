@@ -20,10 +20,12 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LiftToHeight extends Command {
 
     double initial;
+    double height;
     
-    public LiftToHeight() {
+    public LiftToHeight(double height) {
         requires(Robot.lift);
         requires(Robot.arm);
+        this.height = height;
     }
 
     @Override
@@ -46,7 +48,6 @@ public class LiftToHeight extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        double height = 76.451 - 55;
         return height - 1 <= initial - Robot.arm.getArmEncoderHeight();
     }
 
