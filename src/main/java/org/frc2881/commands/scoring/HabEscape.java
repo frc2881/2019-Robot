@@ -12,7 +12,13 @@ package org.frc2881.commands.scoring;
 
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.drive.DriveForward;
+import org.frc2881.commands.basic.wait.DoNothing;
+import org.frc2881.commands.basic.wait.WaitForever;
+import org.frc2881.commands.scoring.arm.ArmToHeight;
+import org.frc2881.commands.scoring.hp.HPGrabber;
 import org.frc2881.commands.scoring.hp.HPTongue;
+import org.frc2881.subsystems.Arm.ArmValue;
+import org.frc2881.subsystems.Intake.GrabberState;
 import org.frc2881.subsystems.Intake.TongueState;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -25,7 +31,9 @@ public class HabEscape extends CommandGroup {
     public HabEscape() {
         Robot.logInitialize(this);
         addSequential(new HPTongue(TongueState.OUT));
-        //addSequential(new LiftToHeight()); IMPLEMENT
-        addSequential(new DriveForward(0.7));
+        addSequential(new HPGrabber(GrabberState.GRAB));
+        addSequential(new ArmToHeight(ArmValue.VALUE, 25, false));
+        addSequential(new ArmToHeight(ArmValue.VALUE, 5, false));
+        addSequential(new DriveForward(0.65));
     }
 }
