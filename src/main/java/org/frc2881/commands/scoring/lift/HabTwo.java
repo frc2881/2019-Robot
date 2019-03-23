@@ -11,6 +11,8 @@
 package org.frc2881.commands.scoring.lift;
 
 import org.frc2881.Robot;
+import org.frc2881.subsystems.Lift;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -19,9 +21,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class HabTwo extends CommandGroup {
 
     public HabTwo() {
-        addSequential(new ArmUntil15(9.5));
-        addSequential(new LiftUntil0(0));
-        addParallel(new SetCrawler(1));
+        addSequential(new LiftToHeight(Lift.HAB_TWO_HEIGHT));
+        addSequential(new SetCrawler(1));
     }
 
     @Override
