@@ -56,14 +56,14 @@ public class Arm extends PIDSubsystem {
 
     public enum WristState {UP, DOWN, BUTTON}
     public enum ArmValue {BUTTON, VALUE}
-    public static double HP_HIGH_GOAL_HEIGHT = 80;
-    public static double HP_MEDIUM_GOAL_HEIGHT = 49;//45.1;
-    public static double HP_LOW_GOAL_HEIGHT = 14;
-    public static double CARGO_HIGH_GOAL_HEIGHT = 101;
-    public static double CARGO_MEDIUM_GOAL_HEIGHT = 75;//35.4;
-    public static double CARGO_LOW_GOAL_HEIGHT = 43;
-    public static double ILLEGAL_HEIGHT = 13;
-    public static double FLOOR = 11.71;
+    public static double HP_HIGH_GOAL_HEIGHT = 80 - 11;
+    public static double HP_MEDIUM_GOAL_HEIGHT = 49 - 11;
+    public static double HP_LOW_GOAL_HEIGHT = 14 - 11;
+    public static double CARGO_HIGH_GOAL_HEIGHT = 101 - 11;
+    public static double CARGO_MEDIUM_GOAL_HEIGHT = 75 - 11;
+    public static double CARGO_LOW_GOAL_HEIGHT = 43 - 11;
+    public static double ILLEGAL_HEIGHT = 13 - 11;
+    public static double FLOOR = 11.71 - 11;
     public static double HIGH_GOAL = 3;
     public static double MEDIUM_GOAL = 2;
     public static double LOW_GOAL = 1;
@@ -117,10 +117,9 @@ public class Arm extends PIDSubsystem {
             sparkMax.setRampRate(0.5);
             
             CANEncoder encoder = sparkMax.getEncoder();
-            //final double armAngleRadians = 4.345 * (POTENTIOMETER_AT_HORIZONTAL - armPotentiometer.getVoltage() / RobotController.getVoltage5V());
-            final double potHeight = 11;//getArmPotHeight();//ARM_LENGTH * Math.sin(armAngleRadians) + HEIGHT_AT_HORIZONTAL - 11.7;//value @ 0
+            final double potHeight = 0;//getArmPotHeight();
             beginningPosition = encoder.getPosition() * distancePerPulse;
-            armEncoderPosition = () -> encoder.getPosition() * distancePerPulse - beginningPosition + potHeight;
+            armEncoderPosition = () -> encoder.getPosition() * distancePerPulse;// - beginningPosition + potHeight;
             armEncoderVelocity = () -> encoder.getVelocity() * distancePerPulse;
         } else {
             distancePerPulse = 1.2345;
@@ -190,13 +189,14 @@ public class Arm extends PIDSubsystem {
         return heightFromAngle(getArmAngleRadians());
     }
 
-    public double getArmEncoderHeight(){
-        /*if (armEncoderPosition.getAsDouble() <= -0.1) {
-            return 0;
-        } else {
-            return armEncoderPosition.getAsDouble();
-        }*/
-        return armEncoderPosition.getAsDouble();
+    public double getArmEncoderHeight() {
+        double position = armEncoderPosition.getAsDouble();
+        
+        if (position < beginningPosition) {
+            beginningPosition = position;
+        }
+
+        return position - beginningPosition;
     }
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
