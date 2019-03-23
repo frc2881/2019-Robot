@@ -28,6 +28,7 @@ public class ArmToHeight extends Command {
     private double initial;
     private boolean rumble;
     private ArmValue goal;
+    private double setpoint;
 
     public ArmToHeight(ArmValue goal, double height, boolean rumble) {
         requires(Robot.arm);
@@ -38,14 +39,6 @@ public class ArmToHeight extends Command {
 
     @Override
     protected void initialize() {
-        Robot.logInitialize(this, height);
-        Robot.logInitialize(this,  Robot.arm.getSetpoint());
-
-        initial = Robot.arm.getArmEncoderHeight();
-    }
-
-    @Override
-    protected void execute(){
         boolean highGoal = height == Arm.HIGH_GOAL;
         boolean mediumGoal = height == Arm.MEDIUM_GOAL;
         boolean lowGoal = height == Arm.LOW_GOAL;
@@ -54,42 +47,59 @@ public class ArmToHeight extends Command {
         if (goal == ArmValue.BUTTON){
             if (!HPLoaded) {
                 if (highGoal) {
-                    Robot.arm.armToHeight(Arm.CARGO_HIGH_GOAL_HEIGHT);
+                    setpoint = (Arm.CARGO_HIGH_GOAL_HEIGHT);
                 } else if (mediumGoal) {
-                    Robot.arm.armToHeight(Arm.CARGO_MEDIUM_GOAL_HEIGHT);
+                    setpoint = (Arm.CARGO_MEDIUM_GOAL_HEIGHT);
                 } else if (lowGoal) {
-                    Robot.arm.armToHeight(Arm.CARGO_LOW_GOAL_HEIGHT);
+                    setpoint = (Arm.CARGO_LOW_GOAL_HEIGHT);
                 }
             } else {
                 if (highGoal) {
-                    Robot.arm.armToHeight(Arm.HP_HIGH_GOAL_HEIGHT);
+                    setpoint = (Arm.HP_HIGH_GOAL_HEIGHT);
                 } else if (mediumGoal) {
-                    Robot.arm.armToHeight(Arm.HP_MEDIUM_GOAL_HEIGHT);
+                    setpoint = (Arm.HP_MEDIUM_GOAL_HEIGHT);
                 } else if (lowGoal) {
-                    Robot.arm.armToHeight(Arm.HP_LOW_GOAL_HEIGHT);
+                    setpoint = (Arm.HP_LOW_GOAL_HEIGHT);
                 }  
                 else {
-                    Robot.arm.armToHeight(height);
+                    setpoint = (height);
                 }
             }
         }
         else {
-            Robot.arm.armToHeight(height);
+            setpoint = (height);
         }
 
+        Robot.logInitialize(this, height);
+        Robot.logInitialize(this, setpoint);
+
+        initial = Robot.arm.getArmEncoderHeight();
+    }
+
+    @Override
+    protected void execute(){
+        Robot.arm.armToHeight(setpoint);
     }
     
-
+    int i;
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         double currentHeight = Robot.arm.getArmEncoderHeight();
-        
-        if (initial < height - 0.5) {
-			return currentHeight >= height;
+
+        /*if (i++ == 10) {
+            i = 0;
+            Robot.log("Current Height: " + currentHeight);
+            Robot.log("Initial: " + initial);
+            Robot.log("Height: " + setpoint);
         }
-        else if (initial > height + 0.5){
-            return Math.abs(currentHeight - height) <= 0.5;
+        
+        return false;*/
+        if (initial < setpoint - 0.5) {
+			return currentHeight >= setpoint;
+        }
+        else if (initial > setpoint + 0.5){
+            return Math.abs(currentHeight - setpoint) <= 0.5;
         }
         else {
             return true;

@@ -58,10 +58,10 @@ public class Arm extends PIDSubsystem {
     public enum ArmValue {BUTTON, VALUE}
     public static double HP_HIGH_GOAL_HEIGHT = 80 - 11;
     public static double HP_MEDIUM_GOAL_HEIGHT = 49 - 11;
-    public static double HP_LOW_GOAL_HEIGHT = 14 - 11;
-    public static double CARGO_HIGH_GOAL_HEIGHT = 101 - 11;
-    public static double CARGO_MEDIUM_GOAL_HEIGHT = 75 - 11;
-    public static double CARGO_LOW_GOAL_HEIGHT = 43 - 11;
+    public static double HP_LOW_GOAL_HEIGHT = 6;
+    public static double CARGO_HIGH_GOAL_HEIGHT = 87;
+    public static double CARGO_MEDIUM_GOAL_HEIGHT = 61;
+    public static double CARGO_LOW_GOAL_HEIGHT = 30;
     public static double ILLEGAL_HEIGHT = 13 - 11;
     public static double FLOOR = 11.71 - 11;
     public static double HIGH_GOAL = 3;
@@ -262,16 +262,11 @@ public class Arm extends PIDSubsystem {
         if (distance / 15 > 1) {
             speed = 1;
         }
-        else if (distance / 15 < -1) {
-            speed = -1;
+        else if (distance / 15 < -0.5) {
+            speed = -0.5;
         }
         else if (Math.abs(distance / 15) <= 0.075) {
-            if (distance < 0){
-                speed = -0.075;
-            }
-            else {
-                speed = 0.075;
-            }
+            speed = Math.copySign(0.075, distance);
         }
         else {
             speed = distance / 15;
