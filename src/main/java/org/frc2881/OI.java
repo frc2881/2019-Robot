@@ -149,6 +149,7 @@ public class OI {
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
         liftControl.whileHeld(new LiftControl());
 
+        //Climbs to two platform
         liftAutomatedHabTwo = buttonFromPOV(driver, 180);
         liftAutomatedHabTwo.whileHeld(new HabTwo());
 
