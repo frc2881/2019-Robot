@@ -23,10 +23,10 @@ import org.frc2881.utils.AmpMonitor;
  */
 public class CargoIntake extends Command {
 
-    private AmpMonitor ampMonitor = new AmpMonitor(10, () -> Robot.intake.getCargoRollerCurrent());
+    private AmpMonitor ampMonitor = new AmpMonitor(40, () -> Robot.intake.getCargoRollerCurrent());
     private boolean monitoringAmps;
     private boolean rumbleNo;
-    private static final double speedCap = 0.2;
+    private static final double speedCap = 0.35;
 
     public CargoIntake() {
         requires(Robot.intake);
