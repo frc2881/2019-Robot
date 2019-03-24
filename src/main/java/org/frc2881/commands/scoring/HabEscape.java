@@ -12,8 +12,6 @@ package org.frc2881.commands.scoring;
 
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.drive.DriveForward;
-import org.frc2881.commands.basic.wait.DoNothing;
-import org.frc2881.commands.basic.wait.WaitForever;
 import org.frc2881.commands.scoring.arm.ArmToHeight;
 import org.frc2881.commands.scoring.hp.HPGrabber;
 import org.frc2881.commands.scoring.hp.HPTongue;
