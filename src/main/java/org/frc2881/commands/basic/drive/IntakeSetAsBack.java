@@ -29,6 +29,6 @@ public class IntakeSetAsBack extends InstantCommand {
         //Prints in the driver station
         Robot.log("Intake has been set to BACK.");
         Robot.log("Meaning the BACK of the robot is now the FRONT");
-        Robot.log("The Driver Camera has been switched to BACKWARDS");
+        //Robot.log("The Driver Camera has been switched to BACKWARDS"); REMOVE
     }
 }
