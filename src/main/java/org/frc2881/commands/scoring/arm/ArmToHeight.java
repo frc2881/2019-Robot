@@ -70,7 +70,6 @@ public class ArmToHeight extends Command {
             setpoint = (height);
         }
 
-        Robot.logInitialize(this, height);
         Robot.logInitialize(this, setpoint);
 
         initial = Robot.arm.getArmEncoderHeight();
@@ -81,20 +80,15 @@ public class ArmToHeight extends Command {
         Robot.arm.armToHeight(setpoint);
     }
     
-    int i;
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         double currentHeight = Robot.arm.getArmEncoderHeight();
 
-        /*if (i++ == 10) {
-            i = 0;
-            Robot.log("Current Height: " + currentHeight);
-            Robot.log("Initial: " + initial);
-            Robot.log("Height: " + setpoint);
+        if(goal == ArmValue.BUTTON) {
+            return false;
         }
-        
-        return false;*/
+
         if (initial < setpoint - 0.5) {
 			return currentHeight >= setpoint;
         }
