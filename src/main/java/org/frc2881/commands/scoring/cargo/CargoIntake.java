@@ -23,9 +23,11 @@ import org.frc2881.utils.AmpMonitor;
  */
 public class CargoIntake extends Command {
 
+    // The AmpMonitor should be 40A on the competition robot and 10A on the practice robot.
     private AmpMonitor ampMonitor = new AmpMonitor(40, () -> Robot.intake.getCargoRollerCurrent());
     private boolean monitoringAmps;
     private boolean rumbleNo;
+    // The speedCap should be 0.35 on the competition robot and 0.2 on the practice robot.
     private static final double speedCap = 0.35;
 
     public CargoIntake() {
@@ -52,13 +54,11 @@ public class CargoIntake extends Command {
         }
 
         else if (monitoringAmps && ampMonitor.isTriggered()) {
-            Robot.log("Cargo Roller current limit exceeded");
-
-            Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER);
-            timeSinceInitialized();
             Robot.intake.cargoRollers(speedCap, RollerDirection.INTAKE); 
 
             if (!rumbleNo) {
+                Robot.log("Cargo Roller current limit exceeded");
+
                 new RumbleNo(Robot.oi.manipulator).start();
                 rumbleNo = true;
             }
