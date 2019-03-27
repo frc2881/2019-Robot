@@ -29,6 +29,7 @@ import org.frc2881.utils.frc4048.Logging;
 import org.frc2881.utils.NTValue;
 import org.frc2881.utils.frc4048.WorkQueue;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -97,6 +98,9 @@ public class Robot extends TimedRobot {
         chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
 
         SmartDashboard.putData("Auto mode", chooser);
+
+        CameraServer.getInstance().startAutomaticCapture(0);
+        CameraServer.getInstance().startAutomaticCapture(1);
     }
 
     private void resetRobot() {
