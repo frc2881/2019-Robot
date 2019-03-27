@@ -19,14 +19,15 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  *
  */
 public class HPTongue extends InstantCommand {
-    public HPTongue() {
+    TongueState state;
+    public HPTongue(TongueState stateNew ) {
         requires(Robot.intake);
+        state = stateNew;
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-
-        Robot.intake.tongue(TongueState.BUTTON);
+        Robot.intake.tongue(state);
     }
 }

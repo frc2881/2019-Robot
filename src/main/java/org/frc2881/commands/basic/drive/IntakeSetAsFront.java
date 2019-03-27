@@ -16,11 +16,11 @@ public class IntakeSetAsFront extends InstantCommand {
     protected void initialize() {
         Robot.logInitialize(this);
         Robot.drive.setIntakeLocation(Drive.IntakeLocation.FRONT);
-        NTValue.setCameraForward(true);
+        //NTValue.setCameraForward(true); REMOVE
         //Prints in the driver station
         Robot.log("Intake has been set to FRONT.");
         Robot.log("Meaning the INTAKE of the robot is now the FRONT");
-        Robot.log("The Driver Camera has been switched to FORWARD");
+        //Robot.log("The Driver Camera has been switched to FORWARD"); REMOVE
     }
 
 }

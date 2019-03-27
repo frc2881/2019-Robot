@@ -259,17 +259,26 @@ public class Arm extends PIDSubsystem {
         double speed;
         double distance = setpoint - getArmEncoderHeight();
 
-        if (distance / 15 > 1) {
+        speed = distance / 15;
+
+        if (speed > 1) {
             speed = 1;
         }
-        else if (distance / 15 < -0.5) {
-            speed = -0.5;
+
+        if (speed < -0.75) {
+            speed = -0.75;
         }
-        else if (Math.abs(distance / 15) <= 0.075) {
-            speed = Math.copySign(0.075, distance);
+
+        if ((speed >= 0) && (speed <= 0.125)) {
+            speed = 0.125;
         }
-        else {
-            speed = distance / 15;
+
+        if ((speed < 0) && (speed > -0.1)) {
+            speed = 0;
+        }
+
+        if ((speed <= -0.1) && (speed > -0.125)) {
+            speed = -0.125;
         }
 
         armMotor.set(speed);
