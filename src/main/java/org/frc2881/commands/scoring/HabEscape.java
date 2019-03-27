@@ -30,7 +30,6 @@ public class HabEscape extends CommandGroup {
         Robot.logInitialize(this);
         addSequential(new HPTongue(TongueState.OUT));
         addSequential(new HPGrabber(GrabberState.GRAB));
-        addSequential(new ArmToHeight(ArmValue.VALUE, 25, false));
         addSequential(new ArmToHeight(ArmValue.VALUE, 5, false));
         addSequential(new DriveForward(0.65));
     }
