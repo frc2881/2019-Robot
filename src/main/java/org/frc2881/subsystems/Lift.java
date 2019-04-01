@@ -52,11 +52,11 @@ public class Lift extends Subsystem {
 
         liftEncoderLeft = new Encoder(6, 7, false, EncodingType.k4X);
         addChild("Lift Encoder Left",liftEncoderLeft);
-        liftEncoderLeft.setDistancePerPulse(1.0);
+        liftEncoderLeft.setDistancePerPulse(1.0/200);
         
         liftEncoderRight = new Encoder(8, 9, false, EncodingType.k4X);
         addChild("Lift Encoder Right",liftEncoderRight);
-        liftEncoderRight.setDistancePerPulse(1.0);
+        liftEncoderRight.setDistancePerPulse(1.0/200);
 
         liftMotorLeft = new Spark(2);
         addChild("Lift Motor Left",liftMotorLeft);
