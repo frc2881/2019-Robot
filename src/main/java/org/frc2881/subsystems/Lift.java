@@ -37,8 +37,8 @@ public class Lift extends Subsystem {
         8. drive forward
         9. raise rear leg*/
     
-    public static double HAB_TWO_HEIGHT = 8;
-    public static double HAB_THREE_HEIGHT = 76.451 - 55;
+    public static double HAB_TWO_HEIGHT = 7;
+    public static double HAB_THREE_HEIGHT = 20;
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Encoder liftEncoderLeft;

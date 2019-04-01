@@ -31,7 +31,7 @@ public class LiftToHeight extends Command {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        initial = Robot.arm.getArmEncoderHeight();
+        initial = Robot.lift.getLiftEncoderRightDistance();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -42,13 +42,13 @@ public class LiftToHeight extends Command {
         double difference = tilt - goal;
 
         Robot.lift.setLiftMotors(1);
-        Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
+    Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return height - 1 <= initial - Robot.arm.getArmEncoderHeight();
+        return height <= Robot.lift.getLiftEncoderRightDistance() - initial;
     }
 
     @Override
