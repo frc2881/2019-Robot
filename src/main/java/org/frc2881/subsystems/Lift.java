@@ -50,11 +50,11 @@ public class Lift extends Subsystem {
     // Initialize your subsystem here
     public Lift() {
 
-        liftEncoderLeft = new Encoder(0, 1, false, EncodingType.k4X);
+        liftEncoderLeft = new Encoder(6, 7, false, EncodingType.k4X);
         addChild("Lift Encoder Left",liftEncoderLeft);
         liftEncoderLeft.setDistancePerPulse(1.0);
         
-        liftEncoderRight = new Encoder(2, 3, false, EncodingType.k4X);
+        liftEncoderRight = new Encoder(8, 9, false, EncodingType.k4X);
         addChild("Lift Encoder Right",liftEncoderRight);
         liftEncoderRight.setDistancePerPulse(1.0);
 
@@ -97,6 +97,14 @@ public class Lift extends Subsystem {
 
     public double getLiftMotorCurrent(){
         return Math.max(pdp.getCurrent(2), pdp.getCurrent(1)) ;
+    }
+
+    public double getLiftEncoderRightDistance (){
+        return liftEncoderRight.getDistance();
+    }
+
+    public double getLiftEncoderLeftDistance (){
+        return liftEncoderLeft.getDistance();
     }
 
     @Override
