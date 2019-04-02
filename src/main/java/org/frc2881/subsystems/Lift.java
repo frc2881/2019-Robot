@@ -37,8 +37,8 @@ public class Lift extends Subsystem {
         8. drive forward
         9. raise rear leg*/
     
-    public static double HAB_TWO_HEIGHT = 8;
-    public static double HAB_THREE_HEIGHT = 76.451 - 55;
+    public static double HAB_TWO_HEIGHT = 7;
+    public static double HAB_THREE_HEIGHT = 20;
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Encoder liftEncoderLeft;
@@ -50,13 +50,13 @@ public class Lift extends Subsystem {
     // Initialize your subsystem here
     public Lift() {
 
-        liftEncoderLeft = new Encoder(0, 1, false, EncodingType.k4X);
+        liftEncoderLeft = new Encoder(6, 7, false, EncodingType.k4X);
         addChild("Lift Encoder Left",liftEncoderLeft);
-        liftEncoderLeft.setDistancePerPulse(1.0);
+        liftEncoderLeft.setDistancePerPulse(1.0/200);
         
-        liftEncoderRight = new Encoder(2, 3, false, EncodingType.k4X);
+        liftEncoderRight = new Encoder(8, 9, false, EncodingType.k4X);
         addChild("Lift Encoder Right",liftEncoderRight);
-        liftEncoderRight.setDistancePerPulse(1.0);
+        liftEncoderRight.setDistancePerPulse(1.0/200);
 
         liftMotorLeft = new Spark(2);
         addChild("Lift Motor Left",liftMotorLeft);
@@ -97,6 +97,14 @@ public class Lift extends Subsystem {
 
     public double getLiftMotorCurrent(){
         return Math.max(pdp.getCurrent(2), pdp.getCurrent(1)) ;
+    }
+
+    public double getLiftEncoderRightDistance (){
+        return liftEncoderRight.getDistance();
+    }
+
+    public double getLiftEncoderLeftDistance (){
+        return liftEncoderLeft.getDistance();
     }
 
     @Override
