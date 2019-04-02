@@ -23,7 +23,6 @@ public class HabThree extends CommandGroup {
 
     public HabThree() {
         addSequential(new LiftToHeight(Lift.HAB_THREE_HEIGHT));
-        addSequential(new WaitForever());
         addSequential(new SetCrawler(1));
     }
 

@@ -40,8 +40,22 @@ public class LiftToHeight extends Command {
         double goal = 1;
         double tilt = Robot.drive.navX.getRoll();
         double difference = tilt - goal;
+        double distanceLeft = Robot.lift.getLiftEncoderLeftDistance();
+        double distanceRight = Robot.lift.getLiftEncoderRightDistance();
+        
+        if (distanceLeft == distanceRight) {
+            Robot.lift.setLiftMotors(1);
+        }
+        
+        else if (distanceLeft < distanceRight){
+            Robot.lift.setLiftLeft(1);
+            Robot.lift.setLiftRight(0.9);
+        }
 
-        Robot.lift.setLiftMotors(1);
+        else {
+            Robot.lift.setLiftLeft(0.9);
+            Robot.lift.setLiftRight(1);
+        }
     Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
     }
 

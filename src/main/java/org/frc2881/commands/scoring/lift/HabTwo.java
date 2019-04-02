@@ -23,7 +23,6 @@ public class HabTwo extends CommandGroup {
 
     public HabTwo() {
         addSequential(new LiftToHeight(Lift.HAB_TWO_HEIGHT));
-        addSequential(new WaitForever());
         addSequential(new SetCrawler(1));
     }
 

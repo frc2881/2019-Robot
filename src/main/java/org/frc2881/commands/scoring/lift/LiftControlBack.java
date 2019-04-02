@@ -44,7 +44,7 @@ public class LiftControlBack extends Command {
         // if height < 1 set speed to half of speed
         // if height < 0.25 set speed to 0
         double distance = Robot.lift.getLiftEncoderRightDistance();
-        if (distance < 1) {
+        if (distance < 2) {
             speed /= 2;
         }
 
