@@ -38,6 +38,17 @@ public class LiftControl extends PIDCommand {
     @Override
     protected void execute() {
         double speed = Math.pow(Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft), 2);
+
+        // if height > 21 set speed to half of speed
+        // if height > 21.75 set speed to 0
+        double distance = Robot.lift.getLiftEncoderRightDistance();
+        if (distance > 21) {
+            speed /= 2;
+        }
+
+        if (distance > 21.75) {
+            speed = 0;
+        }
         Robot.lift.setLiftMotors(speed);
     }
 

@@ -41,6 +41,16 @@ public class LiftControlBack extends Command {
     @Override
     protected void execute() {
         double speed = -Math.pow(Robot.oi.driver.getTriggerAxis(Hand.kRight), 2);
+        // if height < 1 set speed to half of speed
+        // if height < 0.25 set speed to 0
+        double distance = Robot.lift.getLiftEncoderRightDistance();
+        if (distance < 1) {
+            speed /= 2;
+        }
+
+        if (Robot.lift.getLiftEncoderRightDistance() < .25) {
+            speed = 0;
+        }
         Robot.lift.setLiftMotors(speed);
 
         if (ampMonitor.isTriggered()) {
@@ -49,6 +59,7 @@ public class LiftControlBack extends Command {
                 new RumbleNo(Robot.oi.manipulator).start();
                 Robot.log("Lift current limit exceeded");
                 rumbled = true;
+
             }
 
             Robot.lift.setLiftMotors(0);   
