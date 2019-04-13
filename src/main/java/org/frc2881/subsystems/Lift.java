@@ -97,6 +97,29 @@ public class Lift extends Subsystem {
     public void setLiftMotors(double speed) {
         double tilt = Robot.drive.navX.getPitch();
 
+        if(speed == 0){
+            liftMotorLeft.set(0);
+            liftMotorRight.set(0);
+            return;
+        }
+
+        if(speed < 0) {
+            liftMotorLeft.set(speed);
+            liftMotorRight.set(speed);
+            return;
+        }
+
+        double adjustment = tilt / 8;
+
+        if (adjustment < 0) {
+            liftMotorLeft.set(speed * (1 + adjustment)); // adjustment is negative, so adding it will make speed smaller
+            liftMotorRight.set(speed);
+        } else {
+            liftMotorLeft.set(speed);
+            liftMotorRight.set(speed * (1 - adjustment)); // adjustment is positive, so subtracting it will make speed smaller
+        }
+        
+/*
         //If the robot is basically level, set the lift motor speeds to the same speed
         if(Math.abs(tilt)<.5){
             liftMotorRight.set(speed);
@@ -127,8 +150,8 @@ public class Lift extends Subsystem {
                 liftMotorRight.set(speed*.8);
                 liftMotorLeft.set(speed);
             }
-        }
-    }
+        } */
+    } 
 
     public double getLiftMotorCurrent(){
         return Math.max(pdp.getCurrent(2), pdp.getCurrent(1)) ;

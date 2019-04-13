@@ -41,11 +41,9 @@ public class LiftToHeight extends Command {
         double tilt = Robot.drive.navX.getRoll();
         double difference = tilt - goal;
  
-        
-            Robot.lift.setLiftMotors(1);
-    
-        
-    Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
+        Robot.lift.setLiftMotors(1);
+
+        Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
     }
 
     // Make this return true when this Command no longer needs to run execute()

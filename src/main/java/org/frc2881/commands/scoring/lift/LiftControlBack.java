@@ -74,7 +74,8 @@ public class LiftControlBack extends Command {
 
     @Override
     protected void end() {
-        Robot.lift.setLiftMotors(0);
+        Robot.lift.setLiftLeft(0);
+        Robot.lift.setLiftRight(0);
         Robot.logEnd(this);
     }
 
