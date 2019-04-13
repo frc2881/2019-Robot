@@ -165,9 +165,6 @@ public class OI {
         //Climbs to third platform
         highLift = buttonFromPOV(driver, 0);
         highLift.whileHeld(new HabThree());
-
-        highLift = new JoystickButton(driver, PS4.SHARE_BUTTON);
-        highLift.whileHeld(new HabThree());
       
         setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
         setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
