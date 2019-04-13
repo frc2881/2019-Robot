@@ -31,7 +31,7 @@ public class LiftToHeight extends Command {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        initial = Robot.lift.getLiftEncoderRightDistance();
+        initial = Robot.lift.getLiftEncoderLeftDistance();
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -41,7 +41,7 @@ public class LiftControl extends PIDCommand {
 
         // if height > 21 set speed to half of speed
         // if height > 21.75 set speed to 0
-        double distance = Robot.lift.getLiftEncoderRightDistance();
+        double distance = Robot.lift.getLiftEncoderLeftDistance();
         if (distance > 21) {
             speed /= 2;
         }

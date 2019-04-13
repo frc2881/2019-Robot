@@ -43,12 +43,12 @@ public class LiftControlBack extends Command {
         double speed = -Math.pow(Robot.oi.driver.getTriggerAxis(Hand.kRight), 2);
         // if height < 1 set speed to half of speed
         // if height < 0.25 set speed to 0
-        double distance = Robot.lift.getLiftEncoderRightDistance();
+        double distance = Robot.lift.getLiftEncoderLeftDistance();
         if (distance < 2) {
             speed /= 2;
         }
 
-        if (Robot.lift.getLiftEncoderRightDistance() < .25) {
+        if (Robot.lift.getLiftEncoderLeftDistance() < .25) {
             speed = 0;
         }
         Robot.lift.setLiftMotors(speed);

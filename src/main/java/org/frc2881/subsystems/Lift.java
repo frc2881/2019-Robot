@@ -18,7 +18,6 @@ import org.frc2881.utils.frc4048.Logging;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -43,8 +42,6 @@ public class Lift extends Subsystem {
 
     private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
     private Encoder liftEncoderLeft;
-    private Encoder liftEncoderRight;
-    //private SpeedControllerGroup liftMotors;
     private Spark liftMotorLeft;
     private Spark liftMotorRight;
 
@@ -54,10 +51,6 @@ public class Lift extends Subsystem {
         liftEncoderLeft = new Encoder(6, 7, false, EncodingType.k4X);
         addChild("Lift Encoder Left",liftEncoderLeft);
         liftEncoderLeft.setDistancePerPulse(1.0/200);
-        
-        liftEncoderRight = new Encoder(8, 9, false, EncodingType.k4X);
-        addChild("Lift Encoder Right",liftEncoderRight);
-        liftEncoderRight.setDistancePerPulse(1.0/1000);
 
         liftMotorLeft = new Spark(2);
         addChild("Lift Motor Left",liftMotorLeft);
@@ -66,11 +59,6 @@ public class Lift extends Subsystem {
         liftMotorRight = new Spark(1);
         addChild("Lift Motor Right",liftMotorRight);
         liftMotorRight.setInverted(false);
-
-        /*liftMotors = new SpeedControllerGroup(liftMotorLeft, liftMotorRight);
-        addChild("Lift Motors",liftMotors);
-        liftMotors.setInverted(false);*/
-
 
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
@@ -116,48 +104,10 @@ public class Lift extends Subsystem {
                 liftMotorRight.set(speed * (1 - adjustment)); // adjustment is positive, so subtracting it will make speed smaller
             }
         }
-
-        
-/*
-        //If the robot is basically level, set the lift motor speeds to the same speed
-        if(Math.abs(tilt)<.5){
-            liftMotorRight.set(speed);
-            liftMotorLeft.set(speed);
-        }
-        //Else if the robot is tilted to the right
-        else if (tilt<0) {
-            //If legs are being pulled up
-            if(speed<0){
-                liftMotorRight.set(speed);
-                liftMotorLeft.set(speed*.8);
-            }
-            //Otherwise legs are being extended down
-            else{
-                liftMotorLeft.set(speed*.8);
-                liftMotorRight.set(speed);
-            }
-        }
-        //Otherwise the robot is tilted to the left
-        else{
-            //If legs are being pulled up
-            if(speed<0){
-                liftMotorLeft.set(speed);
-                liftMotorRight.set(speed*.8);                
-            }
-            //Otherwise legs are being extended down
-            else{
-                liftMotorRight.set(speed*.8);
-                liftMotorLeft.set(speed);
-            }
-        } */
     } 
 
     public double getLiftMotorCurrent(){
         return Math.max(pdp.getCurrent(2), pdp.getCurrent(1)) ;
-    }
-
-    public double getLiftEncoderRightDistance (){
-        return liftEncoderRight.getDistance();
     }
 
     public double getLiftEncoderLeftDistance (){
