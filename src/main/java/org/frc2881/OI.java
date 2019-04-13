@@ -58,6 +58,7 @@ import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Drive.ArmExtensionState;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.TongueState;
+import org.frc2881.utils.ButtonFromPOV;
 import org.frc2881.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -192,15 +193,15 @@ public class OI {
         intakeHPHuman.whenPressed(new HPIntakeHuman());
 
         //Sets Arm to low goal;
-        lowGoal = buttonFromPOV(manipulator, 180);
+        lowGoal = new ButtonFromPOV(manipulator, 180);
         lowGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.LOW_GOAL, true));
 
         //Sets Arm to middle goal
-        mediumGoal = buttonFromPOV(manipulator, 90);
+        mediumGoal = new ButtonFromPOV(manipulator, 90);
         mediumGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.MEDIUM_GOAL, true));
 
         //Sets arm to high goal
-        highGoal = buttonFromPOV(manipulator, 0);
+        highGoal = new ButtonFromPOV(manipulator, 0);
         highGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HIGH_GOAL, true));
 
         //scores HP
@@ -263,21 +264,6 @@ public class OI {
 
     public XboxController getManipulator() {
         return manipulator;
-    }
-
-    int i;
-
-    private Button buttonFromPOV(GenericHID controller, int angle) {
-        return new Button() {
-            @Override
-            public boolean get() {
-                return controller.getPOV() == angle;
-                /*boolean intial = false;
-                boolean result;
-                i++;
-                return result;*/
-            }
-        };
     }
 
     private Button buttonFromPOVClimb(GenericHID controller, int angle) {
