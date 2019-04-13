@@ -66,8 +66,6 @@ public class LiftControl extends PIDCommand {
         Robot.logEnd(this);
     }
 
-    private int i = 0;
-
     @Override
     protected double returnPIDInput() {
         return Robot.drive.navX.getRoll();
@@ -76,11 +74,6 @@ public class LiftControl extends PIDCommand {
     @Override
     protected void usePIDOutput(double output) {
         double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft) * .5;
-        if(i++ == 10)
-        {
-            i = 0;
-            Robot.log("Output: " + output);
-        }
         //Robot.arm.armMotor.set(-(speed * joystickMultiplier - output));
     }
 }

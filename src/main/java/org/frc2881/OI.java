@@ -58,6 +58,7 @@ import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Drive.ArmExtensionState;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.TongueState;
+import org.frc2881.utils.ButtonFromPOV;
 import org.frc2881.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -134,7 +135,7 @@ public class OI {
 
         driver = new XboxController(1);
 
-        //DRIVER
+        //DRIVER (DO NOT ADD MORE POV BUTTONS!!!)
 
         //switches camera front to back & vice versa
         switchCamera = new JoystickButton(driver, PS4.RIGHT_BUMPER);
@@ -151,7 +152,7 @@ public class OI {
         liftControl.whileHeld(new LiftControl());
 
         //Climbs to two platform
-        liftAutomatedHabTwo = buttonFromPOV(driver, 180);
+        liftAutomatedHabTwo = buttonFromPOVClimb(driver, 180);
         liftAutomatedHabTwo.whileHeld(new HabTwo());
 
         habEscape = new JoystickButton(driver, PS4.PINK_SQUARE);
@@ -163,7 +164,7 @@ public class OI {
     //    threeLift = buttonFromPOV(driver, 0);
     //    threeLift.whileHeld(new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));
         //Climbs to third platform
-        highLift = buttonFromPOV(driver, 0);
+        highLift = buttonFromPOVClimb(driver, 0);
         highLift.whileHeld(new HabThree());
       
         setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
@@ -192,15 +193,15 @@ public class OI {
         intakeHPHuman.whenPressed(new HPIntakeHuman());
 
         //Sets Arm to low goal;
-        lowGoal = buttonFromPOV(manipulator, 180);
+        lowGoal = new ButtonFromPOV(manipulator, 180);
         lowGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.LOW_GOAL, true));
 
         //Sets Arm to middle goal
-        mediumGoal = buttonFromPOV(manipulator, 90);
+        mediumGoal = new ButtonFromPOV(manipulator, 90);
         mediumGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.MEDIUM_GOAL, true));
 
         //Sets arm to high goal
-        highGoal = buttonFromPOV(manipulator, 0);
+        highGoal = new ButtonFromPOV(manipulator, 0);
         highGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HIGH_GOAL, true));
 
         //scores HP
@@ -265,11 +266,16 @@ public class OI {
         return manipulator;
     }
 
-    private Button buttonFromPOV(GenericHID controller, int angle) {
+    private Button buttonFromPOVClimb(GenericHID controller, int angle) {
         return new Button() {
             @Override
             public boolean get() {
-                return (controller.getPOV()) == angle;
+                if (angle == 0) {
+                    return (controller.getPOV() == 0) || (controller.getPOV() == 45) || (controller.getPOV() == 315);
+                }
+                else {
+                    return (controller.getPOV() == 180) || (controller.getPOV() == 225) || (controller.getPOV() == 135);
+                }
             }
         };
     }
