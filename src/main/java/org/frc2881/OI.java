@@ -134,7 +134,7 @@ public class OI {
 
         driver = new XboxController(1);
 
-        //DRIVER
+        //DRIVER (DO NOT ADD MORE POV BUTTONS!!!)
 
         //switches camera front to back & vice versa
         switchCamera = new JoystickButton(driver, PS4.RIGHT_BUMPER);
@@ -151,7 +151,7 @@ public class OI {
         liftControl.whileHeld(new LiftControl());
 
         //Climbs to two platform
-        liftAutomatedHabTwo = buttonFromPOV(driver, 180);
+        liftAutomatedHabTwo = buttonFromPOVClimb(driver, 180);
         liftAutomatedHabTwo.whileHeld(new HabTwo());
 
         habEscape = new JoystickButton(driver, PS4.PINK_SQUARE);
@@ -163,7 +163,7 @@ public class OI {
     //    threeLift = buttonFromPOV(driver, 0);
     //    threeLift.whileHeld(new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));
         //Climbs to third platform
-        highLift = buttonFromPOV(driver, 0);
+        highLift = buttonFromPOVClimb(driver, 0);
         highLift.whileHeld(new HabThree());
 
         highLift = new JoystickButton(driver, PS4.SHARE_BUTTON);
@@ -268,11 +268,31 @@ public class OI {
         return manipulator;
     }
 
+    int i;
+
     private Button buttonFromPOV(GenericHID controller, int angle) {
         return new Button() {
             @Override
             public boolean get() {
-                return (controller.getPOV()) == angle;
+                return controller.getPOV() == angle;
+                /*boolean intial = false;
+                boolean result;
+                i++;
+                return result;*/
+            }
+        };
+    }
+
+    private Button buttonFromPOVClimb(GenericHID controller, int angle) {
+        return new Button() {
+            @Override
+            public boolean get() {
+                if (angle == 0) {
+                    return (controller.getPOV() == 0) || (controller.getPOV() == 45) || (controller.getPOV() == 315);
+                }
+                else {
+                    return (controller.getPOV() == 180) || (controller.getPOV() == 225) || (controller.getPOV() == 135);
+                }
             }
         };
     }
