@@ -51,7 +51,8 @@ public class LiftControlBack extends Command {
         if (Robot.lift.getLiftEncoderLeftDistance() < .25) {
             speed = 0;
         }
-        Robot.lift.setLiftMotors(speed);
+        Robot.lift.setLiftLeft(speed);
+        Robot.lift.setLiftRight(speed);
 
         if (ampMonitor.isTriggered()) {
             

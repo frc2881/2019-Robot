@@ -83,7 +83,7 @@ public class Lift extends Subsystem {
     }
 
     public void setLiftMotors(double speed) {
-        double tilt = Robot.drive.navX.getPitch();
+        double tilt = Robot.drive.navX.getPitch() - 3.5;
 
         double adjustment = tilt / 8;
 
