@@ -24,11 +24,15 @@ public class DriveWithJoysticks extends Command {
     @Override
     protected void execute() {
         //if the joysticks move, it moves the corrisponding side of the robot \/
-        double left = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
-        double right = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
-        Robot.drive.tankDrive(left, right);
+
+        double xSpeed = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
+        double ySpeed = -Robot.oi.driver.getX(GenericHID.Hand.kLeft);
+        double rotateSpeed = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
+        //double left = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
+        //double right = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
+        Robot.drive.mecanumDriveRobot(xSpeed, ySpeed, rotateSpeed);
         if(Robot.drive.getArmExtensionState() == ArmExtensionState.LOCKED){
-            Robot.drive.setLiftCrawler((right + left)/2);
+            //Robot.drive.setLiftCrawler((right + left)/2);
         }
     }
 
