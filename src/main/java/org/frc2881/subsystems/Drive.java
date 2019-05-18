@@ -87,12 +87,12 @@ public class Drive extends Subsystem {
         // Use 'squaredInputs' to get better control at low speed    
     }
 
-    public void mecanumDriveRobot(double xSpeed, double ySpeed, double rotateSpeed) {
-        mecanumDrive.driveCartesian(xSpeed, ySpeed, rotateSpeed);
+    public void mecanumDriveRobot(double ySpeed, double xSpeed, double rotateSpeed) {
+        mecanumDrive.driveCartesian(ySpeed, xSpeed, rotateSpeed);
     }
 
-    public void mecanumDriveField(double xSpeed, double ySpeed, double rotateSpeed, double yaw) {
-        mecanumDrive.driveCartesian(xSpeed, ySpeed, rotateSpeed, yaw);
+    public void mecanumDriveField(double ySpeed, double xSpeed, double rotateSpeed, double yaw) {
+        mecanumDrive.driveCartesian(ySpeed, xSpeed, rotateSpeed, yaw);
     }
 
     public void setIntakeLocation(IntakeLocation intakeLocation) {
