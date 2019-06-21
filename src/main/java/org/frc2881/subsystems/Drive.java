@@ -192,4 +192,7 @@ public class Drive extends Subsystem {
     public double getLiftCrawlerSpeed() {
         return liftCrawler.getSpeed();
     }
+
+	public void cargoDanceRotate(double rotateToAngleRate, double d) {
+	}
 }

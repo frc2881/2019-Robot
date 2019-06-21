@@ -9,7 +9,11 @@ public class CargoFollowing extends Command {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        int angle = getCargoY();  
+        Robot.log("Turn to POV has started: " + angle);
+        Robot.driveSubsystem.initializeTurnToHeading(angle);
+        //int angle = getCargoY(
+
+        );  
         
     }
 
@@ -18,7 +22,14 @@ public class CargoFollowing extends Command {
     }
 
     @Override
-    protected void execute() { 
+    protected void execute() {         
+        //Calls to the subsystem to update the angle if controller value has changed
+        double rotateToAngleRate = Robot.drive.getRotateToAngleRate();
+        Robot.drive.cargoDanceRotate(rotateToAngleRate, -rotateToAngleRate);
+        Robot.drive.changeHeadingTurnToHeading(getDriverPOVAngle());
+
+        
+       // double rotateToAngleRate = utils.NTValues;
     }
 
     @Override
