@@ -9,11 +9,14 @@ public class NTValue {
     private static NetworkTableInstance ntinst;
     private static NetworkTable table;
     private static NetworkTableEntry cameraForward;
+    private static NetworkTableEntry cargoInfo;
+    private double[] defaultValue = new double[0];
 
     static {
         ntinst = NetworkTableInstance.getDefault();
         table = ntinst.getTable("RPi");
         cameraForward = table.getEntry("cameraForward");
+        cargoInfo = table.getEntry("cargoInfo");
     }
 
     public static void setCameraForward(boolean forward) {
@@ -24,8 +27,10 @@ public class NTValue {
         return cameraForward.getBoolean(true);
     } 
 
-    public static void getCargoCameraY() {
-        
+    public double getCargoY() {
+        //find one with largest radius first
+        cargoInfo.getDoubleArray(defaultValue);
+        return 2;
     }
  
 }
