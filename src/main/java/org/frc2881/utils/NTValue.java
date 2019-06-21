@@ -24,4 +24,8 @@ public class NTValue {
         return cameraForward.getBoolean(true);
     } 
 
+    public static void getCargoCameraY() {
+        
+    }
+ 
 }
