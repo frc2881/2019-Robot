@@ -16,6 +16,7 @@ import org.frc2881.commands.basic.CameraSwitch;
 import org.frc2881.commands.basic.background.NavXReset;
 import org.frc2881.commands.basic.background.RobotPrep;
 import org.frc2881.commands.basic.background.TWINKLES;
+import org.frc2881.commands.basic.drive.CargoFollowing;
 import org.frc2881.commands.basic.drive.DriveForward;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
 import org.frc2881.commands.basic.drive.IntakeSetAsBack;
@@ -125,6 +126,7 @@ public class OI {
     public Button setArmExtension;
     public Button driveBackward;
     public Button hpTongue;
+    public Button cargoFollow;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -156,6 +158,9 @@ public class OI {
 
         habEscape = new JoystickButton(driver, PS4.PINK_SQUARE);
         habEscape.whileHeld(new HabEscape());
+
+        cargoFollow = new JoystickButton(driver, PS4.SHARE_BUTTON);
+        cargoFollow.whileHeld(new CargoFollowing());
 
 
 

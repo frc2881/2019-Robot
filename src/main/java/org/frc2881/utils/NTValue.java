@@ -11,7 +11,7 @@ public class NTValue {
     private static NetworkTableEntry cameraForward;
     private static NetworkTableEntry cargoInfo;
     private static double[] cargoInfoArray;
-    private double[] defaultValue = new double[0];
+    private static double[] defaultValue = new double[0];
     private Boolean first;
 
     static {
@@ -29,10 +29,13 @@ public class NTValue {
         return cameraForward.getBoolean(true);
     } 
 
-    public Boolean biggerCargoFirst() {
+    public static Boolean biggerCargoFirst() {
         cargoInfoArray = cargoInfo.getDoubleArray(defaultValue);
 
-        if (cargoInfoArray.length > 3 && cargoInfoArray[2] < cargoInfoArray[5]) {
+        if (cargoInfoArray.length == 0) {
+            return true;
+        }
+        else if (cargoInfoArray.length > 3 && cargoInfoArray[2] < cargoInfoArray[5]) {
             return false;
         }
         else {
@@ -40,9 +43,12 @@ public class NTValue {
         }
     }
 
-    public double getCargoX() {
+    public static double getCargoX() {
         //find one with largest radius first
         if (biggerCargoFirst()){
+            if (cargoInfoArray.length == 0) {
+                return -1;
+            }
             return cargoInfoArray[0];
         }
         else {
@@ -50,9 +56,12 @@ public class NTValue {
         }
     }
 
-    public double getCargoY() {
+    public static double getCargoY() {
         //find one with largest radius first
         if (biggerCargoFirst()){
+            if (cargoInfoArray.length == 0) {
+                return -1;
+            }
             return cargoInfoArray[1];
         }
         else {
@@ -60,9 +69,12 @@ public class NTValue {
         }
     }
 
-    public double getCargoR() {
+    public static double getCargoR() {
         //find one with largest radius first
         if (biggerCargoFirst()){
+            if (cargoInfoArray.length == 0) {
+                return -1;
+            }
             return cargoInfoArray[2];
         }
         else {
