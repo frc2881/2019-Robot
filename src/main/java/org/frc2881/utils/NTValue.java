@@ -14,6 +14,7 @@ public class NTValue {
     private static double[] cargoInfoArray;
     private static Double[][] cargo;
     private static double[] targetInfoArray;
+    private static Double[][] target;
     private static double[] targetInfo1;
     private static double[] targetInfo2;
     private static double[] targetInfo3;
@@ -56,6 +57,19 @@ public class NTValue {
         }
 
         return biggestCargo;
+
+    }
+
+    public static void targetLocation() {
+        targetInfoArray = targetInfo.getDoubleArray(defaultValue);
+        int totalTargets = targetInfoArray.length / 3;
+        target = new Double[totalTargets][3];
+        
+        for(int i = 0; i < totalTargets; i++) {
+            target[i][0] = targetInfoArray[i * 3];
+            target[i][1] = targetInfoArray[i * 3 + 1];
+            target[i][2] = targetInfoArray[i * 3 + 2];
+        }
 
     }
 
