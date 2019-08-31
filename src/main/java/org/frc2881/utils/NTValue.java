@@ -107,4 +107,43 @@ public class NTValue {
         //find one with largest radius first
         return cargo[biggestCargoIndex()][2];
     }
+
+    public double[] targetPick(){
+        //double[] = targetInfoArray
+        if(targetInfoArray.length == 9 || targetInfoArray.length == 6){
+            return targetInfoArray;
+            /*if(targetInfoArray.length == 9){
+                for(int j = 0; j < targetInfoArray.length; j++){
+
+                }
+            }*/
+            
+        }
+        else if(targetInfoArray.length > 9){
+            System.out.println("Too many targets");
+            return null;
+        }
+
+        //look at spreadsheet: which is left and which is right(115 and 50)?
+        for(int i = 0; i < targetInfoArray.length;i+=3){
+            if(targetInfoArray.length == 3){
+                if(targetInfoArray[i + 1] < 50)
+                    System.out.println("left");
+                else if(targetInfoArray[i + 1] > 115)
+                    System.out.println("right");
+            }
+        }
+        return null;
+    }
+
+    //targetInfoArray --> x, y, r
+    public double[] visionConvert(){
+        double coordinate = 0;
+        double[] newTargetInfoArray = new double[6];
+        for(int i = 0; i < targetInfoArray.length; i++){
+            coordinate = targetInfoArray[i];
+            newTargetInfoArray[i] = coordinate/6;
+        }
+        return newTargetInfoArray;
+    }
 }
