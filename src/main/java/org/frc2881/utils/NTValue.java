@@ -60,7 +60,7 @@ public class NTValue {
 
     }
 
-    public static void targetLocation() {
+    private static void targetLocation() {
         targetInfoArray = targetInfo.getDoubleArray(defaultValue);
         int totalTargets = targetInfoArray.length / 3;
         target = new Double[totalTargets][3];
