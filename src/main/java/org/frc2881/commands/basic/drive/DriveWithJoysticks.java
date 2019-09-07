@@ -30,10 +30,10 @@ public class DriveWithJoysticks extends Command {
         double h;
 
         if (Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft) != 0) {
-            h = -Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+            h = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
         }
         else   {
-            h = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kRight);
+            h = -Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kRight);
         }
         Robot.drive.tankDrive(left, right, h);
         if(Robot.drive.getArmExtensionState() == ArmExtensionState.LOCKED){
