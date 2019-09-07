@@ -4,6 +4,7 @@ import org.frc2881.Robot;
 import org.frc2881.subsystems.Drive.ArmExtensionState;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -26,7 +27,14 @@ public class DriveWithJoysticks extends Command {
         //if the joysticks move, it moves the corrisponding side of the robot \/
         double left = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
         double right = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
-        double h = -Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        double h;
+
+        if (Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft) != 0) {
+            h = -Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        }
+        else   {
+            h = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kRight);
+        }
         Robot.drive.tankDrive(left, right, h);
         if(Robot.drive.getArmExtensionState() == ArmExtensionState.LOCKED){
             Robot.drive.setLiftCrawler((right + left)/2);
