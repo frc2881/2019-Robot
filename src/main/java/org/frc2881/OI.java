@@ -144,12 +144,15 @@ public class OI {
         driveBackward = new JoystickButton(driver, PS4.LEFT_BUMPER);
         driveBackward.whileHeld(new DriveForward(-0.5));
 
-        liftLift = buttonFromAxis(driver, PS4.RIGHT_TRIGGER);
+        /*liftLift = buttonFromAxis(driver, PS4.RIGHT_TRIGGER);
         liftLift.whileHeld(new LiftControlBack());
         
         //controls lift
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
         liftControl.whileHeld(new LiftControl());
+*/
+
+
 
         //Climbs to two platform
         liftAutomatedHabTwo = buttonFromPOVClimb(driver, 180);
