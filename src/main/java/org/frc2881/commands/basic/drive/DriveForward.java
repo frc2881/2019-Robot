@@ -34,7 +34,7 @@ public class DriveForward extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.drive.tankDrive(speed, speed);
+        Robot.drive.tankDrive(speed, speed, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -51,7 +51,7 @@ public class DriveForward extends Command {
     @Override
     protected void end() {
         Robot.logEnd(this);
-        Robot.drive.tankDrive(0, 0);
+        Robot.drive.tankDrive(0, 0, 0);
         
     }
 }
