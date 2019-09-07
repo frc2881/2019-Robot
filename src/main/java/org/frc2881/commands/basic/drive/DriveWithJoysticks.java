@@ -26,10 +26,12 @@ public class DriveWithJoysticks extends Command {
         //if the joysticks move, it moves the corrisponding side of the robot \/
         double left = -Robot.oi.driver.getY(GenericHID.Hand.kLeft);
         double right = -Robot.oi.driver.getY(GenericHID.Hand.kRight);
-        Robot.drive.tankDrive(left, right);
+        double h = -Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+        Robot.drive.tankDrive(left, right, h);
         if(Robot.drive.getArmExtensionState() == ArmExtensionState.LOCKED){
             Robot.drive.setLiftCrawler((right + left)/2);
         }
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()

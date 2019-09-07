@@ -50,6 +50,7 @@ public class Drive extends Subsystem {
     private Solenoid armExtension;
     private SpeedController left;
     private SpeedController right;
+    private SpeedController sideways;
 
     public Drive() {
         navX = new NavX(SPI.Port.kMXP);
@@ -57,22 +58,24 @@ public class Drive extends Subsystem {
     
 
         if (RobotType.get() == RobotType.COMPETITION_BOT) {
-            CANSparkMax leftFront = addDevice("Left Front", new CANSparkMax(1, MotorType.kBrushless));
+            CANSparkMax hDrive = addDevice("H-Drive", new CANSparkMax(1, MotorType.kBrushless));
             CANSparkMax leftBack = addDevice("Left Back", new CANSparkMax(2, MotorType.kBrushless));
             CANSparkMax rightFront = addDevice("Right Front", new CANSparkMax(3, MotorType.kBrushless));
             CANSparkMax rightBack = addDevice("Right Back", new CANSparkMax(4, MotorType.kBrushless));
 
-            left = addDevice("Left", new SpeedControllerGroup(leftFront, leftBack));
+            left = addDevice("Left", new SpeedControllerGroup(leftBack));
             right = addDevice("Right", new SpeedControllerGroup(rightFront, rightBack));
+            sideways = addDevice("H-Drive", new SpeedControllerGroup(hDrive));
 
         } else if (RobotType.get() == RobotType.TEST_BOARD_1) {
-            WPI_TalonSRX leftFront = addDevice("Left Front", new WPI_TalonSRX(1));
+            WPI_TalonSRX hDrive = addDevice("H-Drive", new WPI_TalonSRX(1));
             WPI_TalonSRX leftBack = addDevice("Left Back", new WPI_TalonSRX(2));
             WPI_TalonSRX rightFront = addDevice("Right Front", new WPI_TalonSRX(3));
             Spark rightBack = addDevice("Right Back", new Spark(8));  // SparkMAX on PWM
 
-            left = addDevice("Left", new SpeedControllerGroup(leftFront, leftBack));
+            left = addDevice("Left", new SpeedControllerGroup(leftBack));
             right = addDevice("Right", new SpeedControllerGroup(rightFront, rightBack));
+            sideways = addDevice("H-Drive", new SpeedControllerGroup(hDrive));
 
         } else {
             left = addDevice("Left", new WPI_TalonSRX(1));
@@ -112,13 +115,14 @@ public class Drive extends Subsystem {
     	
     };
 
-    public void tankDrive(double leftSpeed, double rightSpeed) {
+    public void tankDrive(double leftSpeed, double rightSpeed, double hSpeed) {
         // Use 'squaredInputs' to get better control at low speed
         if (intakeLocation == IntakeLocation.FRONT) {
             differentialDrive.tankDrive(leftSpeed, rightSpeed, true);
         } else {
             differentialDrive.tankDrive(-rightSpeed, -leftSpeed, true);
         }
+        sideways.set(hSpeed);
     }
 
     public void setIntakeLocation(IntakeLocation intakeLocation) {
@@ -192,4 +196,20 @@ public class Drive extends Subsystem {
     public double getLiftCrawlerSpeed() {
         return liftCrawler.getSpeed();
     }
+    public void cargoDanceRotate(double rotateToAngleRate, double d) {
+	}
+
+	/*public void initializeDriveForward(double distance, int i) {
+        straightPID.setSetpoint(getDistanceDriven() + distance);
+        straightSpeed = 0;
+        straightPID.enable();
+        turnPID.setSetpoint(navX.pidGet() + angle);
+        rotateToAngleRate = 0;
+        turnPID.enable();
+        currentMovingAverage.reset();
+	}*/
+
+	public String getLocation() {
+		return null;
+	}
 }

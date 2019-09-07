@@ -32,7 +32,6 @@ public class CargoIntake extends Command {
 
     public CargoIntake() {
         requires(Robot.intake);
-
     }
 
     @Override
