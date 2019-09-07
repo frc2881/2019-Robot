@@ -196,10 +196,7 @@ public class Drive extends Subsystem {
     public double getLiftCrawlerSpeed() {
         return liftCrawler.getSpeed();
     }
-<<<<<<< Updated upstream
-=======
-
-	public void cargoDanceRotate(double rotateToAngleRate, double d) {
+    public void cargoDanceRotate(double rotateToAngleRate, double d) {
 	}
 
 	/*public void initializeDriveForward(double distance, int i) {
@@ -215,5 +212,4 @@ public class Drive extends Subsystem {
 	public String getLocation() {
 		return null;
 	}
->>>>>>> Stashed changes
 }
