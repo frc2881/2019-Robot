@@ -18,11 +18,11 @@ import org.frc2881.Robot;
  */
 public class DriveForward extends Command {
 
-    private double speed;
+    private double distance;
 
-    public DriveForward(double speed) {
+    public DriveForward(double distance) {
         // TODO: implement this
-        this.speed = speed;
+        this.distance = distance;
         requires(Robot.drive);
     }
 
@@ -34,7 +34,6 @@ public class DriveForward extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.drive.tankDrive(speed, speed, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
