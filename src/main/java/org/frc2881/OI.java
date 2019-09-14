@@ -60,7 +60,9 @@ import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.TongueState;
 import org.frc2881.utils.ButtonFromPOV;
 import org.frc2881.subsystems.Lift;
+import org.frc2881.utils.ButtonFromDigitalInput;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -220,6 +222,11 @@ public class OI {
         hpTongue = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
         hpTongue.whenPressed(new HPTongue(TongueState.BUTTON));
 
+        //Other (not driver or manipulator)
+
+        //digital inputs that tell you when hatch has been picked up
+        ButtonFromDigitalInput hatchDetector = new ButtonFromDigitalInput(new DigitalInput(0));
+        hatchDetector.whenPressed(new HPIntakeHuman());
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
