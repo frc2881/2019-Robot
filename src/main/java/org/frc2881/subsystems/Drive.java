@@ -196,7 +196,7 @@ public class Drive extends Subsystem {
 	public void cargoDanceRotate(double rotateToAngleRate, double d) {
 	}
 
-	public void initializeDriveForward(double distance, int i) {
+	/*public void initializeDriveForward(double distance, int i) {
         straightPID.setSetpoint(getDistanceDriven() + distance);
         straightSpeed = 0;
         straightPID.enable();
@@ -204,7 +204,7 @@ public class Drive extends Subsystem {
         rotateToAngleRate = 0;
         turnPID.enable();
         currentMovingAverage.reset();
-	}
+	}*/
 
 	public String getLocation() {
 		return null;
