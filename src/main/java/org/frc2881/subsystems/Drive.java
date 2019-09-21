@@ -59,7 +59,7 @@ public class Drive extends Subsystem {
     private SpeedController left;
     private SpeedController right;
     // private SpeedController sideways;
-    private CANEncoder strafeEncoder;
+    public CANEncoder strafeEncoder;
     private CANSparkMax hDrive;
     private DoubleSupplier strafeEncoderPosition;
     private DoubleSupplier strafeEncoderVelocity;
@@ -71,6 +71,7 @@ public class Drive extends Subsystem {
         addChild("NavX",navX);
 
             hDrive = addDevice("H-Drive", new CANSparkMax(1, MotorType.kBrushless));
+            hDrive.setRampRate(0.5);
             CANSparkMax leftBack = addDevice("Left Back", new CANSparkMax(2, MotorType.kBrushless));
             CANSparkMax rightFront = addDevice("Right Front", new CANSparkMax(3, MotorType.kBrushless));
             CANSparkMax rightBack = addDevice("Right Back", new CANSparkMax(4, MotorType.kBrushless));

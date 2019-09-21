@@ -16,10 +16,12 @@ import org.frc2881.commands.basic.CameraSwitch;
 import org.frc2881.commands.basic.background.NavXReset;
 import org.frc2881.commands.basic.background.RobotPrep;
 import org.frc2881.commands.basic.background.TWINKLES;
+import org.frc2881.commands.basic.drive.DriveForDistance;
 import org.frc2881.commands.basic.drive.DriveForward;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
 import org.frc2881.commands.basic.drive.IntakeSetAsBack;
 import org.frc2881.commands.basic.drive.IntakeSetAsFront;
+import org.frc2881.commands.basic.drive.DriveForDistance;
 import org.frc2881.commands.basic.rumble.RumbleDriver;
 import org.frc2881.commands.basic.rumble.RumbleJoysticks;
 import org.frc2881.commands.basic.rumble.RumbleNo;
@@ -47,9 +49,6 @@ import org.frc2881.commands.scoring.lift.ArmExtension;
 import org.frc2881.commands.scoring.lift.ArmUntil15;
 import org.frc2881.commands.scoring.lift.HabThree;
 import org.frc2881.commands.scoring.lift.HabTwo;
-import org.frc2881.commands.scoring.lift.LiftControl;
-import org.frc2881.commands.scoring.lift.LiftControlBack;
-import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.commands.scoring.lift.LiftUntil0;
 import org.frc2881.commands.scoring.lift.SetCrawler;
 import org.frc2881.controllers.PS4;
@@ -58,9 +57,8 @@ import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Drive.ArmExtensionState;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.TongueState;
-import org.frc2881.utils.ButtonFromPOV;
-import org.frc2881.subsystems.Lift;
 import org.frc2881.utils.ButtonFromDigitalInput;
+import org.frc2881.utils.ButtonFromPOV;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -128,6 +126,7 @@ public class OI {
     public Button setArmExtension;
     public Button driveBackward;
     public Button hpTongue;
+    public Button driveForDistance;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -186,9 +185,15 @@ public class OI {
         setIntakeFront = new JoystickButton(driver, PS4.GREEN_TRIANGLE);
         setIntakeFront.whenPressed(new IntakeSetAsFront());
 
-        //MANIPULATOR
-        
+        driveForDistance = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
+        driveForDistance.whileHeld(new DriveForDistance(1));
 
+
+
+
+
+
+        //MANIPULATOR
 
         //intakes HP from human player
         intakeHPHuman = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
