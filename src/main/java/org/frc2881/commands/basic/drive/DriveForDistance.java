@@ -6,14 +6,13 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveForDistance extends Command {
 
-    double distance;
+    double targetPosition;
 
-    double startingPosition;
 
     public DriveForDistance(double distance) {
-        this.distance = distance;
         requires(Robot.drive);
-        startingPosition = Robot.drive.strafeEncoder.getPosition();
+        Robot.log("position " + Robot.drive.strafeEncoder.getPosition() + " distance " + distance);
+        targetPosition = Robot.drive.strafeEncoder.getPosition() + distance;
     } 
     
     @Override
@@ -23,15 +22,15 @@ public class DriveForDistance extends Command {
 
     @Override
     protected void execute() {
-        Robot.drive.setStrafeMotorSpeed(distance);
-        Robot.drive.strafeEncoder.getPosition();
-        
+        double error = targetPosition - Robot.drive.strafeEncoder.getPosition();
+        Robot.drive.setStrafeMotorSpeed(error * 1);
+        Robot.log("position " + Robot.drive.strafeEncoder.getPosition() + " error " + error);
     }
 
     @Override
-    protected boolean isFinished() { 
-    
-        return false;
+    protected boolean isFinished() {       
+        double error = targetPosition - Robot.drive.strafeEncoder.getPosition();
+        return Math.abs(error) < 1;
     }
 
     @Override
