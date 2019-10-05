@@ -186,9 +186,9 @@ public class OI {
         setIntakeFront.whenPressed(new IntakeSetAsFront());
 
         driveForDistance = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
-        driveForDistance.whileHeld(new DriveForDistance(1));
+        driveForDistance.whileHeld(new DriveForDistance(2));
 
-
+        //WRITE SLOWSTRAFE INTO OI
 
 
 

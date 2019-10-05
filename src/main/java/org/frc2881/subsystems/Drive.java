@@ -250,7 +250,7 @@ public class Drive extends Subsystem {
     }
 
 
-    public void setStrafeMotorSpeed(double setpoint) {
+    public void setStrafeMotorSpeed(double speed) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
         /*double min = getArmMotorMin(setpoint);
         double max = getArmMotorMax(setpoint);
@@ -262,32 +262,27 @@ public class Drive extends Subsystem {
             speed = max;
         }*/
 
-        double speed;
-        double distance = setpoint - getStrafeEncoderDistance();
-
-        speed = distance / 15;
-
         if (speed > 1) {
             speed = 1;
         }
 
-        if (speed < -0.75) {
-            speed = -0.75;
+        if (speed < -1) {
+            speed = -1;
         }
 
-        if ((speed >= 0) && (speed <= 0.125)) {
-            speed = 0.125;
+        if ((speed > 0) && (speed <= 0.1)) {
+            speed = 0.1;
         }
 
         if ((speed < 0) && (speed > -0.1)) {
-            speed = 0;
-        }
-
-        if ((speed <= -0.1) && (speed > -0.125)) {
-            speed = -0.125;
+            speed = -0.1;
         }
 
         hDrive.set(speed);
+    }
+
+    public void slowStrafe() {
+        hDrive.set(0.065);
     }
 
 
