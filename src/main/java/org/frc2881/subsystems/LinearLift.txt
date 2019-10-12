@@ -1,0 +1,106 @@
+
+package org.frc2881.subsystems;
+
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+
+import org.frc2881.Robot;
+import org.frc2881.utils.frc4048.Logging;
+
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+/**
+ *
+ */
+public class LinearLift extends Subsystem {
+
+    private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
+    private Encoder linearLiftEncoderLeft;
+    private Encoder linearLiftEncoderRight;
+    private Spark liftMotorLeft;
+    private Spark liftMotorRight;
+
+    // Initialize your subsystem here
+    public LinearLift() {
+
+        LinearLiftEncoderLeft = new Encoder(*, *, false, EncodingType.k4X);
+        addChild("Linear Lift Encoder Left",linearLiftEncoderLeft);
+        linearLiftEncoderLeft.setDistancePerPulse(1.0/200);
+
+        linearLiftEncoderRight = new Encoder(*, *, false, EncodingType.k4X);
+        andChild("Linear Lift Encoder Right",linearLiftEncoderRight);
+        linearLiftEncoderRight.setDistancePerPulse(1.0/200);
+
+        linearLiftMotorLeft = new Spark(*);
+        addChild("Linear Lift Motor Left",linearLiftMotorLeft);
+        linearLiftMotorLeft.setInverted(false);
+
+        linearLiftMotorRight = new Spark(*);
+        addChild("Linear Lift Motor Right",linearLiftMotorRight);
+        linearLiftMotorRight.setInverted(false);
+
+        // Use these to get going:
+        // setSetpoint() -  Sets where the PID controller should move the system
+        //                  to
+        // enable() - Enables the PID controller.
+    }
+/**
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.INTAKE) {
+
+        @Override
+        protected void addAll() {
+            
+        }
+}; */
+
+    public void setLineatLiftLeft(double speed){
+        liftMotorLeft.setSpeed(speed);
+    }
+    
+    public void setLinearLiftRight(double speed){
+        liftMotorRight.setSpeed(speed);
+    }
+
+    public void setLiftMotors(double speed) {
+        double tilt = Robot.drive.navX.getPitch();
+
+        double adjustment = tilt / 8;
+
+        if (adjustment < 0) {
+            if (speed < 0) {
+                liftMotorLeft.set (speed);
+                liftMotorRight.set (speed * (1 + adjustment));
+            } else {
+                liftMotorLeft.set(speed * (1 + adjustment)); // adjustment is negative, so adding it will make speed smaller
+                liftMotorRight.set(speed);
+            }
+        } else {
+            if (speed < 0) {
+                liftMotorLeft.set (speed * (1 - adjustment));
+                liftMotorRight.set (speed);
+            } else {
+                liftMotorLeft.set(speed);
+                liftMotorRight.set(speed * (1 - adjustment)); // adjustment is positive, so subtracting it will make speed smaller
+            }
+        }
+    } 
+
+    public double getLiftMotorCurrent(){
+        return Math.max(pdp.getCurrent(2), pdp.getCurrent(1)) ;
+    }
+
+    public double getLiftEncoderLeftDistance (){
+        return linearLiftEncoderLeft.getDistance();
+    }
+
+    public double getLiftEncoderRightDistance (){
+        return linearLiftEncoderRight.getDistance();
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+
+    }
+}

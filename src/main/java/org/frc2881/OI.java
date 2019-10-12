@@ -21,6 +21,7 @@ import org.frc2881.commands.basic.drive.DriveForward;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
 import org.frc2881.commands.basic.drive.IntakeSetAsBack;
 import org.frc2881.commands.basic.drive.IntakeSetAsFront;
+import org.frc2881.commands.basic.drive.SlowStrafe;
 import org.frc2881.commands.basic.drive.DriveForDistance;
 import org.frc2881.commands.basic.rumble.RumbleDriver;
 import org.frc2881.commands.basic.rumble.RumbleJoysticks;
@@ -127,6 +128,7 @@ public class OI {
     public Button driveBackward;
     public Button hpTongue;
     public Button driveForDistance;
+    public Button slowStrafe;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -188,7 +190,9 @@ public class OI {
         driveForDistance = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
         driveForDistance.whileHeld(new DriveForDistance(2));
 
-        //WRITE SLOWSTRAFE INTO OI
+        slowStrafe = new JoystickButton(driver, PS4.SHARE_BUTTON);
+        slowStrafe.whileHeld(new SlowStrafe(0.065));
+
 
 
 
@@ -267,6 +271,7 @@ public class OI {
         SmartDashboard.putData("Wait Until HP Detected", new WaitUntilHPDetected());
         SmartDashboard.putData("Wait Until NavX Detected", new WaitUntilNavXDetected());
         SmartDashboard.putData("Camera Switch", new CameraSwitch());
+        //SmartDashboard.putData("Drive For Distance", new DriveForDistance());
 
     }
 

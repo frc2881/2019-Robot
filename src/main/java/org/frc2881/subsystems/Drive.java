@@ -189,6 +189,7 @@ public class Drive extends Subsystem {
         super.addChild(name, device);
         return device;
     }
+ //addDevice("Drive for Distances",hDrive.getEncoder());
 
     private CANSparkMax addDevice(String name, CANSparkMax spark) {
         addDevice(name, new SendableBase() {
