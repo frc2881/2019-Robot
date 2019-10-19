@@ -11,15 +11,11 @@ public class NTValue {
     private static NetworkTableEntry cameraForward;
     private static NetworkTableEntry cargoInfo;
     private static NetworkTableEntry targetInfo;
-    private static double[] cargoInfoArray;
-    private static Double[][] cargo;
-    private static double[] targetInfoArray;
-    private static Double[][] target;
-    private static double[] targetInfo1;
-    private static double[] targetInfo2;
-    private static double[] targetInfo3;
-    private static double[] targetInfo4;
     private static double[] defaultValue = new double[0];
+    private static double[] cargoInfoArray = cargoInfo.getDoubleArray(defaultValue);
+    private static Double[][] cargo = new Double[cargoInfoArray.length / 3][3];
+    private static double[] targetInfoArray;
+    private static Double[][] target = new Double[targetInfoArray.length / 3][2];
     private Boolean first;
 
     static {
@@ -39,9 +35,7 @@ public class NTValue {
     } 
 
     public static int biggestCargoIndex() {
-        cargoInfoArray = cargoInfo.getDoubleArray(defaultValue);
         int totalCargo = cargoInfoArray.length / 3;
-        cargo = new Double[totalCargo][3];
         int biggestCargo = 0;
 
         for (int i = 0; i < totalCargo; i++) {
@@ -60,38 +54,24 @@ public class NTValue {
 
     }
 
-    private static void targetLocation() {
+    private static int findTarget() {
         targetInfoArray = targetInfo.getDoubleArray(defaultValue);
-        int totalTargets = targetInfoArray.length / 3;
-        target = new Double[totalTargets][3];
+        int totalCargo = targetInfoArray.length/ 3;
+        double[] cargoTarget = new double[0];
         
-        for(int i = 0; i < totalTargets; i++) {
-            target[i][0] = targetInfoArray[i * 3];
-            target[i][1] = targetInfoArray[i * 3 + 1];
-            target[i][2] = targetInfoArray[i * 3 + 2];
+        for (int i = 0; i < targetInfoArray.length / 3; i++) {
+            target[i][0] = targetInfoArray[i * 3];//x
+            target[i][1] = targetInfoArray[i * 3 + 1];//y
         }
 
-    }
-
-    private static void groupLines() {
-        targetInfoArray = targetInfo.getDoubleArray(defaultValue);
-
-        Double[][] line = new Double[targetInfoArray.length / 4][4];
-        Double x1;
-        Double y1;
-        Double x2;
-        Double y2;
-        Double angle;
-        
-        for (int i = 0; i < targetInfoArray.length / 4; i++) {
-            x1 = line[i][0] = cargoInfoArray[i * 4];//x1
-            y1 = line[i][1] = cargoInfoArray[i * 4 + 1];//y1
-            x2 = line[i][2] = cargoInfoArray[i * 4 + 2];//x2
-            y2 = line[i][3] = cargoInfoArray[i * 4 + 3];//y2
-            angle = line[i][4] = Math.atan((x2-x1)/(y2-y1));//angle
+        for (int i = 0; i < totalCargo; i++) {
+            if (target[i][1] > cargo[cargoTarget][3]){  
+                cargoTarget = i;
+            }  
         }
         
     }
+    
 
     public static double getCargoX() {
         //find one with largest radius first
