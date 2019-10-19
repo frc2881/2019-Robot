@@ -33,7 +33,7 @@ public class ArmUntil15 extends Command {
     @Override
     protected void execute() {
         Robot.logging.traceMessage("Roll: " + Robot.drive.navX.getRoll());
-        Robot.arm.setArmMotorSpeed(-0.2);
+        Robot.arm.setArmSpeed(-0.2);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -44,13 +44,13 @@ public class ArmUntil15 extends Command {
 
     @Override
     protected void end() {
-        Robot.arm.setArmMotorSpeed(0);
+        Robot.arm.setArmSpeed(0);
         Robot.logEnd(this);
     }
 
     @Override
     protected void interrupted() {
-        Robot.arm.setArmMotorSpeed(0);
+        Robot.arm.setArmSpeed(0);
         Robot.logInterrupted(this);
     }
 

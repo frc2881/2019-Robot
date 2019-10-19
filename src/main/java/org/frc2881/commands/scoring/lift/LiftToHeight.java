@@ -43,7 +43,7 @@ public class LiftToHeight extends Command {
  
         Robot.lift.setLiftMotors(1);
 
-        Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
+        Robot.arm.setArmSpeed(-.4 + difference * -0.05);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -55,7 +55,7 @@ public class LiftToHeight extends Command {
     @Override
     protected void end() {
         Robot.lift.setLiftMotors(0);
-        Robot.arm.setArmMotorSpeed(0);
+        Robot.arm.setArmSpeed(0);
         Robot.logEnd(this);
     }
 

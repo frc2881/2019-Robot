@@ -77,7 +77,6 @@ public class ArmToHeight extends Command {
 
     @Override
     protected void execute(){
-        Robot.arm.armToHeight(setpoint);
     }
     
     // Make this return true when this Command no longer needs to run execute()
@@ -102,7 +101,7 @@ public class ArmToHeight extends Command {
 
     @Override
     protected void end() {
-        Robot.arm.setArmMotorSpeed(0);
+        Robot.arm.setArmSpeed(0);
         if (rumble) {
             new RumbleYes(Robot.oi.manipulator).start();
         }
@@ -111,7 +110,7 @@ public class ArmToHeight extends Command {
 
     @Override
     protected void interrupted() {
-        Robot.arm.setArmMotorSpeed(0);
+        Robot.arm.setArmSpeed(0);
         Robot.logInterrupted(this);
     }
 

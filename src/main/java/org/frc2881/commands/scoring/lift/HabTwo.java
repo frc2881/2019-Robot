@@ -44,7 +44,7 @@ public class HabTwo extends CommandGroup {
 
     @Override
     protected void end() {
-        Robot.arm.setArmMotorSpeed(0);
+        Robot.arm.setArmSpeed(0);
         Robot.lift.setLiftMotors(0);
         Robot.drive.setLiftCrawler(0);
         Robot.logEnd(this);

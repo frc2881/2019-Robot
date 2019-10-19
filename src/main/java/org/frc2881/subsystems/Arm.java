@@ -75,12 +75,13 @@ public class Arm extends PIDSubsystem {
     private static double topThreshold = topLimit - 15;
     private static double bottomThreshold = bottomLimit + 15;*/
 
-    public SpeedController armMotor;
     private boolean isArmCalibrated;
     private AnalogInput armPotentiometer;
     private DoubleSupplier armEncoderPosition;
     private DoubleSupplier armEncoderVelocity;
     private double beginningPosition = 0;
+    private CANSparkMax leftArm; 
+    private CANSparkMax rightArm; 
 
     //ENCODER
     private static final double armKc = 0.2;
@@ -110,27 +111,9 @@ public class Arm extends PIDSubsystem {
         armPotentiometer = new AnalogInput(1);
         addChild("Arm Potentiometer", armPotentiometer);
 
-        if (RobotType.get() == RobotType.COMPETITION_BOT) {
-            distancePerPulse = -55/83.0;
-            CANSparkMax sparkMax = new CANSparkMax(5, MotorType.kBrushless);
-            armMotor = addDevice("Arm Motor", sparkMax);
-            sparkMax.setRampRate(0.5);
-            
-            CANEncoder encoder = sparkMax.getEncoder();
-            final double potHeight = 0;//getArmPotHeight();
-            beginningPosition = encoder.getPosition() * distancePerPulse;
-            armEncoderPosition = () -> encoder.getPosition() * distancePerPulse;// - beginningPosition + potHeight;
-            armEncoderVelocity = () -> encoder.getVelocity() * distancePerPulse;
-        } else {
-            distancePerPulse = 1.2345;
-            armMotor = addDevice ("Arm Motor", new Spark(0));
-            Encoder armEncoder = new Encoder(6, 7, false, EncodingType.k4X);
-            beginningPosition = armEncoder.getDistance() * distancePerPulse;
-            armEncoderPosition = () -> armEncoder.getDistance() * distancePerPulse - beginningPosition;
-            armEncoderVelocity = () -> armEncoder.getRate() * distancePerPulse;
-        }
+        leftArm = addDevice("Left Arm", new CANSparkMax(5, MotorType.kBrushless));
+        rightArm = addDevice("Right Arm", new CANSparkMax(6, MotorType.kBrushless));
 
-        armMotor.setInverted(true);
 
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
@@ -141,11 +124,8 @@ public class Arm extends PIDSubsystem {
     public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ARM) {
 
 		@Override
-		protected void addAll() {
-            add("Arm Encoder Height", getArmEncoderHeight());
-            add("Arm Potentiometer Height", getArmPotHeight());
-            add("Arm Potentiometer Angle", getArmAngleDegrees());
-            add("Arm Speed", armMotor.get());
+		protected void addAll(){
+            add("Arm Speed", leftArm.get());
 		}
     	
     };
@@ -169,14 +149,6 @@ public class Arm extends PIDSubsystem {
         // e.g. a sensor, like a potentiometer:
         //return getArmAngleRadians();
         return armEncoderPosition.getAsDouble();
-    }
-
-    @Override
-    protected void usePIDOutput(double output) {
-        // Use output to drive your system, like a motor
-        // e.g. yourMotor.set(output);
-
-        armMotor.pidWrite(output);
     }
 
     public void setArmDesiredHeight(double height) {
@@ -212,10 +184,6 @@ public class Arm extends PIDSubsystem {
     private static double heightFromAngle(double radians) {
         return ARM_LENGTH * Math.sin(radians) + HEIGHT_AT_HORIZONTAL;
     }
-
-    private static double angleFromHeight(double height) {
-        return Math.asin((height - HEIGHT_AT_HORIZONTAL) / ARM_LENGTH);
-    }
     
     public boolean isSpeedReallySmall() {
         return Math.abs(armEncoderVelocity.getAsDouble()) < .05;
@@ -225,11 +193,7 @@ public class Arm extends PIDSubsystem {
         return armEncoderVelocity.getAsDouble();
     }
 
-    public void armToHeight(double setpoint){
-        setArmHeightMotorSpeed(setpoint);
-    }
-
-    public void setArmMotorSpeed(double speed) {
+    public void setArmSpeed(double speed) {
         // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
         /*double min = getArmMotorMin(setpoint);
         double max = getArmMotorMax(setpoint);
@@ -241,47 +205,8 @@ public class Arm extends PIDSubsystem {
             speed = max;
         }*/
 
-        armMotor.set(speed);
-    }
-
-    public void setArmHeightMotorSpeed(double setpoint) {
-        // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
-        /*double min = getArmMotorMin(setpoint);
-        double max = getArmMotorMax(setpoint);
-
-        if (speed < min) {
-            speed = min;
-        }
-        if (speed > max) {
-            speed = max;
-        }*/
-
-        double speed;
-        double distance = setpoint - getArmEncoderHeight();
-
-        speed = distance / 15;
-
-        if (speed > 1) {
-            speed = 1;
-        }
-
-        if (speed < -0.75) {
-            speed = -0.75;
-        }
-
-        if ((speed >= 0) && (speed <= 0.125)) {
-            speed = 0.125;
-        }
-
-        if ((speed < 0) && (speed > -0.1)) {
-            speed = 0;
-        }
-
-        if ((speed <= -0.1) && (speed > -0.125)) {
-            speed = -0.125;
-        }
-
-        armMotor.set(speed);
+        leftArm.set(speed);
+        rightArm.set(speed);
     }
 
     /*private double getArmMotorMin(double setpoint) {
@@ -345,6 +270,12 @@ public class Arm extends PIDSubsystem {
             }
         });
         return spark;
+    }
+
+    @Override
+    protected void usePIDOutput(double output) {
+        // TODO Auto-generated method stub
+
     }
 
     /*public WristState getWristState(){
