@@ -17,11 +17,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class HDriveCmdGroup extends CommandGroup {
+public class SidewaysSequence extends CommandGroup {
 
-    public HDriveCmdGroup() {
+    int distance = 3;
+
+    public SidewaysSequence() {
         addSequential(new SlowStrafe(0.065));
-        addSequential(new DriveForDistance(3));
+        addSequential(new DriveForDistance(distance));
     }
 
     @Override
@@ -32,7 +34,7 @@ public class HDriveCmdGroup extends CommandGroup {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+            return false; 
     }
     
     @Override

@@ -21,6 +21,7 @@ import org.frc2881.commands.basic.drive.DriveForward;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
 import org.frc2881.commands.basic.drive.IntakeSetAsBack;
 import org.frc2881.commands.basic.drive.IntakeSetAsFront;
+import org.frc2881.commands.basic.drive.SidewaysSequence;
 import org.frc2881.commands.basic.drive.SlowStrafe;
 import org.frc2881.commands.basic.drive.DriveForDistance;
 import org.frc2881.commands.basic.rumble.RumbleDriver;
@@ -129,6 +130,7 @@ public class OI {
     public Button hpTongue;
     public Button driveForDistance;
     public Button slowStrafe;
+    public Button sidewaysSequence;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -170,8 +172,8 @@ public class OI {
         highLift = buttonFromPOVClimb(driver, 0);
         highLift.whileHeld(new HabThree());
       
-        setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
-        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
+    //   setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
+    //    setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
 
 
         //Climbs to middle platform KINDA NOT NECESSARY RN
@@ -188,11 +190,13 @@ public class OI {
         setIntakeFront.whenPressed(new IntakeSetAsFront());
 
         driveForDistance = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
-        driveForDistance.whileHeld(new DriveForDistance(2));
+        driveForDistance.whenPressed(new DriveForDistance(2));
 
         slowStrafe = new JoystickButton(driver, PS4.SHARE_BUTTON);
         slowStrafe.whileHeld(new SlowStrafe(0.065));
 
+        sidewaysSequence = new JoystickButton(driver, PS4.RED_CIRCLE);
+        sidewaysSequence.whenPressed(new SidewaysSequence());
 
 
 
