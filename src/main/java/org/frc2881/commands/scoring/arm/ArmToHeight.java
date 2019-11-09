@@ -72,7 +72,7 @@ public class ArmToHeight extends Command {
 
         Robot.logInitialize(this, setpoint);
 
-        initial = Robot.arm.getArmEncoderHeight();
+        //initial = Robot.arm.getArmEncoderHeight();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ArmToHeight extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        double currentHeight = Robot.arm.getArmEncoderHeight();
+        /*double currentHeight = Robot.arm.getArmEncoderHeight();
 
         if(goal == ArmValue.BUTTON) {
             return false;
@@ -96,7 +96,8 @@ public class ArmToHeight extends Command {
         }
         else {
             return true;
-        }
+        }*/
+        return false;
     }
 
     @Override

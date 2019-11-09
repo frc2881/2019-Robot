@@ -77,10 +77,14 @@ public class Arm extends PIDSubsystem {
 
     private boolean isArmCalibrated;
     private AnalogInput armPotentiometer;
-    private DoubleSupplier armEncoderPosition;
+    private DoubleSupplier armLeftPosition;
+    private DoubleSupplier armRightPosition;
     private DoubleSupplier armEncoderVelocity;
     private double beginningPosition = 0;
     private CANSparkMax leftArm; 
+    private CANEncoder leftEncoder;
+    private CANEncoder rightEncoder;
+
     private CANSparkMax rightArm; 
 
     //ENCODER
@@ -111,8 +115,21 @@ public class Arm extends PIDSubsystem {
         armPotentiometer = new AnalogInput(1);
         addChild("Arm Potentiometer", armPotentiometer);
 
+
         leftArm = addDevice("Left Arm", new CANSparkMax(5, MotorType.kBrushless));
         rightArm = addDevice("Right Arm", new CANSparkMax(6, MotorType.kBrushless));
+
+        leftEncoder = leftArm.getEncoder();
+        rightEncoder = rightArm.getEncoder();
+        
+
+        double distancePerPulse = -55/83;
+
+        armLeftPosition = () -> leftEncoder.getPosition()*distancePerPulse;
+        armRightPosition = () -> rightEncoder.getPosition()*distancePerPulse;
+
+        addChild("Encoder Left",leftEncoder);
+        addChild("Encoder Right",rightEncoder);
 
 
         // Use these to get going:
@@ -132,11 +149,12 @@ public class Arm extends PIDSubsystem {
 
     @Override
     public void initSendable(SendableBuilder builder) {
+        
         super.initSendable(builder);
-        builder.addDoubleProperty("Pot Height", this::getArmPotHeight, null);
-        builder.addDoubleProperty("Angle", this::getArmAngleDegrees, null);
-        builder.addDoubleProperty("Encoder Height", this::getArmEncoderHeight, null);
+        builder.addDoubleProperty("Left Arm", armLeftPosition, null);
+        builder.addDoubleProperty("Right Arm", armRightPosition, null);
     }
+    
             
     @Override
     public void initDefaultCommand() {
@@ -147,8 +165,8 @@ public class Arm extends PIDSubsystem {
     protected double returnPIDInput() {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
-        //return getArmAngleRadians();
-        return armEncoderPosition.getAsDouble();
+        return getArmAngleRadians();
+        //return armEncoderPosition.getAsDouble();
     }
 
     public void setArmDesiredHeight(double height) {
@@ -161,7 +179,7 @@ public class Arm extends PIDSubsystem {
         return heightFromAngle(getArmAngleRadians());
     }
 
-    public double getArmEncoderHeight() {
+    /*public double getArmEncoderHeight() {
         double position = armEncoderPosition.getAsDouble();
         
         if (position < beginningPosition) {
@@ -169,7 +187,7 @@ public class Arm extends PIDSubsystem {
         }
 
         return position - beginningPosition;
-    }
+    }*/
 
     /** Returns the approximate angle of the arm relative to horizontal, in radians. */
     private double getArmAngleRadians() {
@@ -194,19 +212,21 @@ public class Arm extends PIDSubsystem {
     }
 
     public void setArmSpeed(double speed) {
-        // Make sure the motor doesn't move too fast when it's close to the top & bottom limits
-        /*double min = getArmMotorMin(setpoint);
-        double max = getArmMotorMax(setpoint);
-
-        if (speed < min) {
-            speed = min;
+        double distanceLeft = armLeftPosition.getAsDouble();
+        double distanceRight = armRightPosition.getAsDouble();
+        if (distanceLeft == distanceRight) {
+            leftArm.set(speed);
+            rightArm.set(speed);
         }
-        if (speed > max) {
-            speed = max;
-        }*/
-
-        leftArm.set(speed);
-        rightArm.set(speed);
+        else if (distanceLeft < distanceRight){
+            leftArm.set(speed);
+            rightArm.set(speed*0.5);
+        }
+        else {
+            leftArm.set(speed*0.5);
+            rightArm.set(speed);
+        }
+        
     }
 
     /*private double getArmMotorMin(double setpoint) {
