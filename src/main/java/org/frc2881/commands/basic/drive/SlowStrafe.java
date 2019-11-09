@@ -40,7 +40,7 @@ public class SlowStrafe extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return timeSinceInitialized() >= 3;
+        return timeSinceInitialized() >= .25;
     }
 
     @Override

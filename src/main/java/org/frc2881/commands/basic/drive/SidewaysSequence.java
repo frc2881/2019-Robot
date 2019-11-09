@@ -10,8 +10,6 @@
 
 package org.frc2881.commands.basic.drive;
 
-import org.frc2881.Robot;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -25,29 +23,4 @@ public class SidewaysSequence extends CommandGroup {
         addSequential(new SlowStrafe(0.065));
         addSequential(new DriveForDistance(distance));
     }
-
-    @Override
-    protected void initialize() {
-        Robot.logInitialize(this);
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-            return false; 
-    }
-    
-    @Override
-    protected void interrupted() {
-        end();
-    }
-
-    @Override
-    protected void end() {
-        Robot.arm.setArmMotorSpeed(0);
-        Robot.lift.setLiftMotors(0);
-        Robot.drive.setLiftCrawler(0);
-        Robot.logEnd(this);
-    }
-
 }

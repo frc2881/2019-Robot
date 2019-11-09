@@ -242,6 +242,10 @@ public class Drive extends Subsystem {
 
     public double getStrafeEncoderDistance() {
         double position = strafeEncoderPosition.getAsDouble();
+
+        //position = inches * distance;
+
+        //TODO: Find position unit for h drive and create formula for converting the unit to inches
         
         if (position < beginningPosition) {
             beginningPosition = position;

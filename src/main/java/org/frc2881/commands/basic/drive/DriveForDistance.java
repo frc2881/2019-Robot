@@ -24,7 +24,7 @@ public class DriveForDistance extends Command {
     @Override
     protected void execute() {
         double error = targetPosition - Robot.drive.strafeEncoder.getPosition();
-        Robot.drive.setStrafeMotorSpeed(error * 0.125);
+        Robot.drive.setStrafeMotorSpeed(error * 0.125); //0.2
         Robot.log("position " + Robot.drive.strafeEncoder.getPosition() + " error " + error); //takes the value of differen positions from drive.java and prints them out
     }
 
