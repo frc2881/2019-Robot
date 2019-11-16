@@ -99,8 +99,8 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putData("Auto mode", chooser);
 
-        CameraServer.getInstance().startAutomaticCapture(0);
-        CameraServer.getInstance().startAutomaticCapture(1);
+        //CameraServer.getInstance().startAutomaticCapture(0);
+        //CameraServer.getInstance().startAutomaticCapture(1);
     }
 
     private void resetRobot() {

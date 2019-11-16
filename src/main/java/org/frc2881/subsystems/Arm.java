@@ -16,21 +16,17 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import org.frc2881.Robot;
-import org.frc2881.RobotType;
 import org.frc2881.commands.scoring.arm.ArmControl;
 import org.frc2881.utils.frc4048.Logging;
+
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -123,13 +119,13 @@ public class Arm extends PIDSubsystem {
         rightEncoder = rightArm.getEncoder();
         
 
-        double distancePerPulse = -55/83;
+        double distancePerPulse = -55.0/83;
 
         armLeftPosition = () -> leftEncoder.getPosition()*distancePerPulse;
         armRightPosition = () -> rightEncoder.getPosition()*distancePerPulse;
 
-        addChild("Encoder Left",leftEncoder);
-        addChild("Encoder Right",rightEncoder);
+        SmartDashboard.putNumber("Encoder Left",leftEncoder.getPosition());
+        SmartDashboard.putNumber("Encoder Right",rightEncoder.getPosition());
 
 
         // Use these to get going:
@@ -212,20 +208,37 @@ public class Arm extends PIDSubsystem {
     }
 
     public void setArmSpeed(double speed) {
-        double distanceLeft = armLeftPosition.getAsDouble();
-        double distanceRight = armRightPosition.getAsDouble();
-        if (distanceLeft == distanceRight) {
-            leftArm.set(speed);
-            rightArm.set(speed);
+        //double distanceLeft = armLeftPosition.getAsDouble();
+        //double distanceRight = armRightPosition.getAsDouble();
+        double distanceLeft = leftEncoder.getPosition();
+        double distanceRight = rightEncoder.getPosition();
+        System.out.print(distanceLeft + "," + distanceRight);
+        double adjustment = Math.abs(distanceLeft-distanceRight) * 0.1;
+        if(speed>0){
+            if (distanceLeft < distanceRight){
+                leftArm.set(speed);
+                rightArm.set(speed*(1-adjustment));
+                System.out.println("," + speed + "," + speed*(1-adjustment));
+            }
+            else {
+                leftArm.set(speed*(1-adjustment));
+                rightArm.set(speed);
+                System.out.println("," + speed*(1-adjustment) + "," + speed);
+            }
         }
-        else if (distanceLeft < distanceRight){
-            leftArm.set(speed);
-            rightArm.set(speed*0.5);
+        else{
+            if (distanceLeft > distanceRight){
+                leftArm.set(speed);
+                rightArm.set(speed*(1-adjustment));
+                System.out.println("," + speed + "," + speed*(1-adjustment));
+            }
+            else {
+                leftArm.set(speed*(1-adjustment));
+                rightArm.set(speed);
+                System.out.println("," + speed*(1-adjustment) + "," + speed);
+            }
         }
-        else {
-            leftArm.set(speed*0.5);
-            rightArm.set(speed);
-        }
+        
         
     }
 
