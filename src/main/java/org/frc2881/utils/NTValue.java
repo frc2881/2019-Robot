@@ -54,10 +54,10 @@ public class NTValue {
 
     }
 
-    private static int findTarget() {
+    public static Double[] findTarget() {
         targetInfoArray = targetInfo.getDoubleArray(defaultValue);
         int totalCargo = targetInfoArray.length/ 3;
-        double[] cargoTarget = new double[0];
+        Double[] rocketTarget = new Double[2];
         
         for (int i = 0; i < targetInfoArray.length / 3; i++) {
             target[i][0] = targetInfoArray[i * 3];//x
@@ -65,11 +65,11 @@ public class NTValue {
         }
 
         for (int i = 0; i < totalCargo; i++) {
-            if (target[i][1] > cargo[cargoTarget][3]){  
-                cargoTarget = i;
+            if (target[i][1] < 60){  //TODO change this (60) when we get new values from positioned camera
+                target[i][0] = rocketTarget[i];
             }  
         }
-        
+        return rocketTarget;
     }
     
 

@@ -13,14 +13,16 @@ package org.frc2881.commands.scoring;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.frc2881.Robot;
+import org.frc2881.utils.NTValue;
 
 /**
  *
  */
 public class AutonomousCommand extends Command {
 
-    public AutonomousCommand() {
+    Double[] rocketTarget;
 
+    public AutonomousCommand() {
     }
 
     @Override
@@ -31,6 +33,16 @@ public class AutonomousCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        rocketTarget = NTValue.findTarget();
+        Double avgX = 0.0;
+        Double z;
+        for(int i = 0; i < rocketTarget.length; i++){
+            avgX += rocketTarget[i];
+        }
+        
+        avgX = (avgX/rocketTarget.length - 80) * 5.212; // 80 pixels is middle of screen, 5.212 is avg of slopes (see spreadsheet)
+
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
