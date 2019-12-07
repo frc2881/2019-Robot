@@ -11,15 +11,16 @@
 package org.frc2881.commands.basic.drive;
 
 import org.frc2881.Robot;
+import org.frc2881.utils.NTValue;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  
  */
-public class AutonomousDriveByButton extends CommandGroup {
-    public AutonomousDriveByButton() {
+public class AutonomousRocketAlignment extends CommandGroup {
+    public AutonomousRocketAlignment() {
         Robot.logInitialize(this);
-       // addSequential(new DriveForward(0.65));
+        addSequential(new DriveForward(NTValue.distanceToMove()));
     }
 }
