@@ -24,6 +24,7 @@ import org.frc2881.commands.basic.drive.IntakeSetAsFront;
 import org.frc2881.commands.basic.drive.SidewaysSequence;
 import org.frc2881.commands.basic.drive.SlowStrafe;
 import org.frc2881.commands.basic.drive.DriveForDistance;
+//import org.frc2881.commands.basic.drive.StrafeEncoderPosition;
 import org.frc2881.commands.basic.rumble.RumbleDriver;
 import org.frc2881.commands.basic.rumble.RumbleJoysticks;
 import org.frc2881.commands.basic.rumble.RumbleNo;
@@ -276,6 +277,8 @@ public class OI {
         SmartDashboard.putData("Wait Until NavX Detected", new WaitUntilNavXDetected());
         SmartDashboard.putData("Camera Switch", new CameraSwitch());
         //SmartDashboard.putData("Drive For Distance", new DriveForDistance());
+        SmartDashboard.putData("H-DRIVE Encoder Position:", new StrafeEncoderPosition());
+
 
     }
 
