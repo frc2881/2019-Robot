@@ -12,6 +12,8 @@ package org.frc2881.commands.scoring.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import javax.lang.model.util.ElementScanner6;
+
 import org.frc2881.Robot;
 import org.frc2881.commands.basic.rumble.RumbleNo;
 import org.frc2881.controllers.PS4;
@@ -24,7 +26,7 @@ import org.frc2881.utils.AmpMonitor;
 public class CargoIntake extends Command {
 
     // The AmpMonitor should be 40A on the competition robot and 10A on the practice robot.
-    private AmpMonitor ampMonitor = new AmpMonitor(40, () -> Robot.intake.getCargoRollerCurrent());
+    //private AmpMonitor ampMonitor = new AmpMonitor(40, () -> Robot.intake.getCargoRollerCurrent());
     private boolean monitoringAmps;
     private boolean rumbleNo;
     // The speedCap should be 0.35 on the competition robot and 0.2 on the practice robot.
@@ -45,6 +47,21 @@ public class CargoIntake extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        double left = Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER);
+        double right= Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER);
+        if(left>0 && right==0)
+        {
+            Robot.intake.spinMotorIn(left);
+        }
+        else if(right>0 && left==0)
+        {
+            Robot.intake.spinMotorOut(right);
+        }
+        else {
+            Robot.intake.spinMotorIn(0);
+        }
+        
+        /*
         ampMonitor.checkTriggered();
 
         if (!monitoringAmps && timeSinceInitialized() > 0.2) {
@@ -65,7 +82,8 @@ public class CargoIntake extends Command {
         }
         else {
             Robot.intake.cargoRollers(Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER), RollerDirection.INTAKE);
-}
+        }
+        */
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -76,7 +94,7 @@ public class CargoIntake extends Command {
 
     @Override
     protected void end() {
-        Robot.intake.cargoRollers(0, RollerDirection.BUTTON);
+        //Robot.intake.cargoRollers(0, RollerDirection.BUTTON);
         Robot.logEnd(this);
     }
 } 

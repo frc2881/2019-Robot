@@ -22,7 +22,7 @@ import org.frc2881.utils.AmpMonitor;
  */
 public class HPControlRollers extends Command {
 
-    private AmpMonitor ampMonitor = new AmpMonitor(10, () -> Robot.intake.getHPRollerCurrent());
+    //private AmpMonitor ampMonitor = new AmpMonitor(10, () -> Robot.intake.getHPRollerCurrent());
     private boolean monitoringAmps;
     private double speedCap;
     private double joystickValue;
@@ -42,7 +42,7 @@ public class HPControlRollers extends Command {
     @Override
     protected void execute() {
 
-        Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER), RollerDirection.INTAKE);
+      //  Robot.intake.HPRollers(Robot.oi.manipulator.getRawAxis(PS4.RIGHT_TRIGGER), RollerDirection.INTAKE);
 
         /*if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
                 joystickValue + Robot.oi.manipulator.getRawAxis(PS4.LEFT_TRIGGER) >= 0.25)) {

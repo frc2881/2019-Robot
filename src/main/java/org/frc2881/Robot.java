@@ -99,8 +99,8 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putData("Auto mode", chooser);
 
-        CameraServer.getInstance().startAutomaticCapture(0);
-        CameraServer.getInstance().startAutomaticCapture(1);
+        //CameraServer.getInstance().startAutomaticCapture(0);
+        //CameraServer.getInstance().startAutomaticCapture(1);
     }
 
     private void resetRobot() {
@@ -124,8 +124,8 @@ public class Robot extends TimedRobot {
         logging.traceMessage(
 				"---------------------------- Robot Disabled ----------------------------");
         resetRobot = true;
-        Robot.intake.suction(SuctionState.CLOSED);
-        Robot.intake.setHPGrabber(GrabberState.RELEASE);
+        //Robot.intake.suction(SuctionState.CLOSED);
+        //Robot.intake.setHPGrabber(GrabberState.RELEASE);
     }
 
     @Override
@@ -153,8 +153,8 @@ public class Robot extends TimedRobot {
 		logging.traceMessage( "Field plate selection:" + gameData);
         resetRobot();
 
-        Robot.intake.suction(SuctionState.CLOSED);
-        Robot.intake.setHPGrabber(GrabberState.GRAB);
+        //Robot.intake.suction(SuctionState.CLOSED);
+        //Robot.intake.setHPGrabber(GrabberState.GRAB);
 
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)

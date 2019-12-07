@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.GenericHID;
  */
 public class CargoControlRollers extends Command {
 
-    private AmpMonitor ampMonitor = new AmpMonitor(10, () -> Robot.intake.getCargoRollerCurrent());
+    //private AmpMonitor ampMonitor = new AmpMonitor(10, () -> Robot.intake.getCargoRollerCurrent());
     private boolean monitoringAmps;
     private double speedCap;
     private double joystickValue;
@@ -40,7 +40,7 @@ public class CargoControlRollers extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kLeft), RollerDirection.BUTTON);
+        //Robot.intake.cargoRollers(Robot.oi.manipulator.getY(GenericHID.Hand.kLeft), RollerDirection.BUTTON);
 
         /*if (!ampMonitor.isTriggered() && (programTime == 0 || timeSinceInitialized() > 500 ||
                 joystickValue - Robot.oi.manipulator.getY(GenericHID.Hand.kLeft) >= 0.25)) {

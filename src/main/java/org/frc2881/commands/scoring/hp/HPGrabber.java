@@ -31,7 +31,7 @@ public class HPGrabber extends InstantCommand {
     @Override
     protected void initialize() {
         //this turns the piston to true/extended
-        Robot.intake.setHPGrabber(state);
+        //Robot.intake.setHPGrabber(state);
     }
 
     @Override

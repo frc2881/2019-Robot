@@ -189,8 +189,8 @@ public class OI {
 
 
         //intakes HP from human player
-        intakeHPHuman = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
-        intakeHPHuman.whenPressed(new HPIntakeHuman());
+        //intakeHPHuman = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
+        //intakeHPHuman.whenPressed(new HPIntakeHuman());
 
         //Sets Arm to low goal;
         lowGoal = new ButtonFromPOV(manipulator, 180);
@@ -213,8 +213,8 @@ public class OI {
         placeCargo.whileHeld(new CargoPlace());
 
         //intake Cargo
-        intakeCargo = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
-        intakeCargo.whileHeld(new CargoIntake());
+        //intakeCargo = buttonFromAxis(manipulator, PS4.LEFT_TRIGGER);
+        //intakeCargo.whileHeld(new CargoIntake());
 
         //tongue
         hpTongue = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);

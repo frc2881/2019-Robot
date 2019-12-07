@@ -43,10 +43,11 @@ public class Intake extends Subsystem {
 
     public Intake() {
         
-        cargoIntakeMotor = new Spark(4);
+        cargoIntakeMotor = new Spark(0);
         addChild("Cargo Intake Motor",cargoIntakeMotor);
         cargoIntakeMotor.setInverted(false);
 
+        /*
         hPSuctionCup = new Solenoid(11, 1);
         addChild("HP Suction Cup Solenoid",hPSuctionCup);
 
@@ -63,11 +64,12 @@ public class Intake extends Subsystem {
         //on is unblocked, off is blocked
         hPDetector = new DigitalInput(5);
         addChild("HP Infrared Detector", hPDetector);
+        */
     }
 
     @Override
     public void initDefaultCommand() {
-        
+        setDefaultCommand(new CargoIntake());
     }
 
     public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.INTAKE) {
@@ -75,13 +77,23 @@ public class Intake extends Subsystem {
         @Override
         protected void addAll() {
             add("Cargo Intake Motor Speed", cargoIntakeMotor.getSpeed());
-            add("HP Intake Motor Speed", hPIntakeMotor.getSpeed());
-            add("HP Suction State", getSuctionState());
-            add("HP Grabber State", getGrabberState());
+            //add("HP Intake Motor Speed", hPIntakeMotor.getSpeed());
+            //add("HP Suction State", getSuctionState());
+            //add("HP Grabber State", getGrabberState());
         }
     };
 
+    public void spinMotorIn(double speed)
+    {
+        cargoIntakeMotor.set(speed);
+    }
+    public void spinMotorOut(double speed)
+    {
+        cargoIntakeMotor.set(-speed);
+    }
+
     //Suction Cups
+    /*
     public void suction(SuctionState state) {
         if (state == SuctionState.BUTTON) {
             hPSuctionCup.set(!hPSuctionCup.get());
@@ -118,7 +130,7 @@ public class Intake extends Subsystem {
             return TongueState.OUT;
         }
     }
-
+    */
 
     @Override
     public void periodic() {
@@ -126,6 +138,7 @@ public class Intake extends Subsystem {
 
     }
 
+    /*
     public boolean isHPDetected(){
         //true is not detected (no hatch panel)
         return !hPDetector.get();
@@ -199,4 +212,5 @@ public class Intake extends Subsystem {
             return GrabberState.GRAB;
         }
     }
+    */
 }

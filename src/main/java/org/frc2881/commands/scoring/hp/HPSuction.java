@@ -31,7 +31,7 @@ public class HPSuction extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        Robot.intake.suction(state);
+        //Robot.intake.suction(state);
     }
 
 }

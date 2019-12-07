@@ -42,8 +42,9 @@ public class ArmToHeight extends Command {
         boolean highGoal = height == Arm.HIGH_GOAL;
         boolean mediumGoal = height == Arm.MEDIUM_GOAL;
         boolean lowGoal = height == Arm.LOW_GOAL;
-        boolean HPLoaded = Robot.intake.getSuctionState() == SuctionState.CLOSED;
+        //boolean HPLoaded = Robot.intake.getSuctionState() == SuctionState.CLOSED;
 
+        /*
         if (goal == ArmValue.BUTTON){
             if (!HPLoaded) {
                 if (highGoal) {
@@ -69,6 +70,7 @@ public class ArmToHeight extends Command {
         else {
             setpoint = (height);
         }
+        */
 
         Robot.logInitialize(this, setpoint);
 

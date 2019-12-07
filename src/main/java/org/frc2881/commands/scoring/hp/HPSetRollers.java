@@ -35,18 +35,19 @@ public class HPSetRollers extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intake.HPRollers(speed, RollerDirection.BUTTON);
+      //  Robot.intake.HPRollers(speed, RollerDirection.BUTTON);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.intake.isHPDetected();
+        //return Robot.intake.isHPDetected();
+        return false;
     }
 
     @Override
     protected void end() {
-        Robot.intake.stopHPRollers();
+      //  Robot.intake.stopHPRollers();
         Robot.logEnd(this);
     }
 }
