@@ -41,7 +41,7 @@ public class LiftControl extends PIDCommand {
 
         // if height > 21 set speed to half of speed
         // if height > 21.75 set speed to 0
-        double distance = Robot.lift.getLiftEncoderRightDistance();
+        double distance = Robot.lift.getLiftEncoderLeftDistance();
         if (distance > 21) {
             speed /= 2;
         }
@@ -66,8 +66,6 @@ public class LiftControl extends PIDCommand {
         Robot.logEnd(this);
     }
 
-    private int i = 0;
-
     @Override
     protected double returnPIDInput() {
         return Robot.drive.navX.getRoll();
@@ -76,11 +74,6 @@ public class LiftControl extends PIDCommand {
     @Override
     protected void usePIDOutput(double output) {
         double speed = Robot.oi.driver.getTriggerAxis(GenericHID.Hand.kLeft) * .5;
-        if(i++ == 10)
-        {
-            i = 0;
-            Robot.log("Output: " + output);
-        }
         //Robot.arm.armMotor.set(-(speed * joystickMultiplier - output));
     }
 }

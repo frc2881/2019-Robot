@@ -17,10 +17,15 @@ import org.frc2881.commands.basic.background.NavXReset;
 import org.frc2881.commands.basic.background.RobotPrep;
 import org.frc2881.commands.basic.background.TWINKLES;
 import org.frc2881.commands.basic.drive.CargoFollowing;
+import org.frc2881.commands.basic.drive.DriveForDistance;
 import org.frc2881.commands.basic.drive.DriveForward;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
 import org.frc2881.commands.basic.drive.IntakeSetAsBack;
 import org.frc2881.commands.basic.drive.IntakeSetAsFront;
+import org.frc2881.commands.basic.drive.SidewaysSequence;
+import org.frc2881.commands.basic.drive.SlowStrafe;
+import org.frc2881.commands.basic.drive.DriveForDistance;
+//import org.frc2881.commands.basic.drive.StrafeEncoderPosition;
 import org.frc2881.commands.basic.rumble.RumbleDriver;
 import org.frc2881.commands.basic.rumble.RumbleJoysticks;
 import org.frc2881.commands.basic.rumble.RumbleNo;
@@ -48,9 +53,6 @@ import org.frc2881.commands.scoring.lift.ArmExtension;
 import org.frc2881.commands.scoring.lift.ArmUntil15;
 import org.frc2881.commands.scoring.lift.HabThree;
 import org.frc2881.commands.scoring.lift.HabTwo;
-import org.frc2881.commands.scoring.lift.LiftControl;
-import org.frc2881.commands.scoring.lift.LiftControlBack;
-import org.frc2881.commands.scoring.lift.LiftToHeight;
 import org.frc2881.commands.scoring.lift.LiftUntil0;
 import org.frc2881.commands.scoring.lift.SetCrawler;
 import org.frc2881.controllers.PS4;
@@ -59,8 +61,10 @@ import org.frc2881.subsystems.Arm.ArmValue;
 import org.frc2881.subsystems.Drive.ArmExtensionState;
 import org.frc2881.subsystems.Intake.RollerDirection;
 import org.frc2881.subsystems.Intake.TongueState;
-import org.frc2881.subsystems.Lift;
+import org.frc2881.utils.ButtonFromDigitalInput;
+import org.frc2881.utils.ButtonFromPOV;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -127,6 +131,9 @@ public class OI {
     public Button driveBackward;
     public Button hpTongue;
     public Button cargoFollow;
+    public Button driveForDistance;
+    public Button slowStrafe;
+    public Button sidewaysSequence;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -136,7 +143,7 @@ public class OI {
 
         driver = new XboxController(1);
 
-        //DRIVER
+        //DRIVER (DO NOT ADD MORE POV BUTTONS!!!)
 
         //switches camera front to back & vice versa
         switchCamera = new JoystickButton(driver, PS4.RIGHT_BUMPER);
@@ -145,15 +152,15 @@ public class OI {
         driveBackward = new JoystickButton(driver, PS4.LEFT_BUMPER);
         driveBackward.whileHeld(new DriveForward(-0.5));
 
-        liftLift = buttonFromAxis(driver, PS4.RIGHT_TRIGGER);
+        /*liftLift = buttonFromAxis(driver, PS4.RIGHT_TRIGGER);
         liftLift.whileHeld(new LiftControlBack());
         
         //controls lift
         liftControl = buttonFromAxis(driver, PS4.LEFT_TRIGGER);
-        liftControl.whileHeld(new LiftControl());
+        liftControl.whileHeld(new LiftControl());*/
 
         //Climbs to two platform
-        liftAutomatedHabTwo = buttonFromPOV(driver, 180);
+        liftAutomatedHabTwo = buttonFromPOVClimb(driver, 180);
         liftAutomatedHabTwo.whileHeld(new HabTwo());
 
         habEscape = new JoystickButton(driver, PS4.PINK_SQUARE);
@@ -168,11 +175,11 @@ public class OI {
     //    threeLift = buttonFromPOV(driver, 0);
     //    threeLift.whileHeld(new LiftToHeight(Lift.HAB_THREE_HEIGHT, true));
         //Climbs to third platform
-        highLift = buttonFromPOV(driver, 0);
+        highLift = buttonFromPOVClimb(driver, 0);
         highLift.whileHeld(new HabThree());
       
-        setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
-        setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
+    //   setArmExtension = new JoystickButton(driver, PS4.RED_CIRCLE);
+    //    setArmExtension.whenPressed(new ArmExtension(ArmExtensionState.BUTTON));
 
 
         //Climbs to middle platform KINDA NOT NECESSARY RN
@@ -188,24 +195,34 @@ public class OI {
         setIntakeFront = new JoystickButton(driver, PS4.GREEN_TRIANGLE);
         setIntakeFront.whenPressed(new IntakeSetAsFront());
 
-        //MANIPULATOR
-        
+        driveForDistance = new JoystickButton(driver, PS4.OPTIONS_BUTTON);
+        driveForDistance.whenPressed(new DriveForDistance(2));
 
+        slowStrafe = new JoystickButton(driver, PS4.SHARE_BUTTON);
+        slowStrafe.whileHeld(new SlowStrafe(0.065));
+
+        sidewaysSequence = new JoystickButton(driver, PS4.RED_CIRCLE);
+        sidewaysSequence.whenPressed(new SidewaysSequence());
+
+
+
+
+        //MANIPULATOR
 
         //intakes HP from human player
         intakeHPHuman = buttonFromAxis(manipulator, PS4.RIGHT_TRIGGER);
         intakeHPHuman.whenPressed(new HPIntakeHuman());
 
         //Sets Arm to low goal;
-        lowGoal = buttonFromPOV(manipulator, 180);
+        lowGoal = new ButtonFromPOV(manipulator, 180);
         lowGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.LOW_GOAL, true));
 
         //Sets Arm to middle goal
-        mediumGoal = buttonFromPOV(manipulator, 90);
+        mediumGoal = new ButtonFromPOV(manipulator, 90);
         mediumGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.MEDIUM_GOAL, true));
 
         //Sets arm to high goal
-        highGoal = buttonFromPOV(manipulator, 0);
+        highGoal = new ButtonFromPOV(manipulator, 0);
         highGoal.whileHeld(new ArmToHeight(ArmValue.BUTTON, Arm.HIGH_GOAL, true));
 
         //scores HP
@@ -224,6 +241,11 @@ public class OI {
         hpTongue = new JoystickButton(manipulator, PS4.GREEN_TRIANGLE);
         hpTongue.whenPressed(new HPTongue(TongueState.BUTTON));
 
+        //Other (not driver or manipulator)
+
+        //digital inputs that tell you when hatch has been picked up
+        ButtonFromDigitalInput hatchDetector = new ButtonFromDigitalInput(new DigitalInput(0));
+        hatchDetector.whenPressed(new HPIntakeHuman());
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
@@ -259,6 +281,7 @@ public class OI {
         SmartDashboard.putData("Wait Until HP Detected", new WaitUntilHPDetected());
         SmartDashboard.putData("Wait Until NavX Detected", new WaitUntilNavXDetected());
         SmartDashboard.putData("Camera Switch", new CameraSwitch());
+        //SmartDashboard.putData("Drive For Distance", new DriveForDistance());
 
     }
 
@@ -270,11 +293,16 @@ public class OI {
         return manipulator;
     }
 
-    private Button buttonFromPOV(GenericHID controller, int angle) {
+    private Button buttonFromPOVClimb(GenericHID controller, int angle) {
         return new Button() {
             @Override
             public boolean get() {
-                return (controller.getPOV()) == angle;
+                if (angle == 0) {
+                    return (controller.getPOV() == 0) || (controller.getPOV() == 45) || (controller.getPOV() == 315);
+                }
+                else {
+                    return (controller.getPOV() == 180) || (controller.getPOV() == 225) || (controller.getPOV() == 135);
+                }
             }
         };
     }

@@ -35,7 +35,7 @@ public class SetCrawler extends Command {
     @Override
     protected void execute() {
         Robot.drive.setLiftCrawler(speed);
-        Robot.drive.tankDrive(speed, speed);
+        Robot.drive.tankDrive(speed, speed, 0);
     }
 
 
@@ -53,7 +53,7 @@ public class SetCrawler extends Command {
     @Override
     protected void end() {
         Robot.drive.setLiftCrawler(0);
-        Robot.drive.tankDrive(0, 0);
+        Robot.drive.tankDrive(0, 0, 0);
         Robot.logEnd(this);
     }
 }

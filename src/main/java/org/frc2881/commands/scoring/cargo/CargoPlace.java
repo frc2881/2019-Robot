@@ -26,7 +26,6 @@ public class CargoPlace extends CommandGroup {
         //addSequential(new ArmWrist(WristState.DOWN));
         //addSequential(new WaitCommand("Cargo Wait", 1));
         addSequential(new CargoSetRollers(1.0, RollerDirection.EJECT));
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

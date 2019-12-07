@@ -8,55 +8,50 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.frc2881.commands.scoring.lift;
-
-import org.frc2881.Robot;
+package org.frc2881.commands.basic.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.frc2881.Robot;
 
 /**
  *
  */
-public class LiftToHeight extends Command {
+public class SlowStrafe extends Command {
 
-    double initial;
-    double height;
-    
-    public LiftToHeight(double height) {
-        requires(Robot.lift);
-        requires(Robot.arm);
-        this.height = height;
+    private double distance;
+
+    public SlowStrafe(double distance) {
+        // TODO: implement this
+        this.distance = distance;
+        requires(Robot.drive);
     }
 
     @Override
     protected void initialize() {
         Robot.logInitialize(this);
-        initial = Robot.lift.getLiftEncoderLeftDistance();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double goal = 1;
-        double tilt = Robot.drive.navX.getRoll();
-        double difference = tilt - goal;
- 
-        Robot.lift.setLiftMotors(1);
-
-        Robot.arm.setArmMotorSpeed(-.4 + difference * -0.05);
+        Robot.drive.slowStrafe();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return height <= Robot.lift.getLiftEncoderLeftDistance() - initial;
+        return timeSinceInitialized() >= .25;
+    }
+
+    @Override
+    protected void interrupted() {
+        end();
     }
 
     @Override
     protected void end() {
-        Robot.lift.setLiftMotors(0);
-        Robot.arm.setArmMotorSpeed(0);
         Robot.logEnd(this);
+        Robot.drive.tankDrive(0, 0, 0);
+        
     }
-
 }

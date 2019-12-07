@@ -23,7 +23,8 @@ public class DriveForward extends Command {
     private double distance;
 
     public DriveForward(double distance) {
-        super(computeTimeout(distance));
+        // TODO: implement this
+        this.distance = distance;
         requires(Robot.drive);
         this.distance = distance;
     }
@@ -35,47 +36,26 @@ public class DriveForward extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        //Make a call to the subsystem to use a PID loop controller in the subsystem
-        //to set the heading based on the angle passed into the method.
-        Robot.log("Autonomous driving " + distance + " ft: " + Robot.drive.getDistanceDriven());
-        Robot.drive.initializeDriveForward(distance, 0);
+        
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        //Calls to the subsystem to update the angle if controller value has changed
-        double speed = Robot.drive.getStraightSpeed();
-
-        //So DriveForward won't time out (it goes backwards fast enough to make a difference)
-        if(Math.abs(speed) < speedSole) {
-            speed = Math.copySign(speedSole, speed);
-        }
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (isTimedOut()) {
-            Robot.log("Drive forward timed out:" + Robot.drive.getDistanceDriven());
+        
             return true;
-        }
-        //asking the PID loop have we reached our position
-        return Robot.drive.isFinishedDriveForward();
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
-        //call the drive subsystem to make sure the PID loop is disabled
-        Robot.drive.endDriveForward();
-        Robot.log("Drive Forward has ended: " + Robot.drive.getDistanceDriven());
-    }
-
-    //This method allows us to make changes to the property this.distance in Shuffleboard
-    //It is called automatically when you call SmartDashboard.putData() in OI.java.
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        builder.addDoubleProperty("Drive Forward Distance", () -> distance, (distance) -> this.distance = distance);
+        Robot.logEnd(this);
+        Robot.drive.tankDrive(0, 0, 0);
+        
     }
 }
