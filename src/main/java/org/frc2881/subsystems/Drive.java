@@ -11,13 +11,20 @@
 package org.frc2881.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.frc2881.Robot;
 import org.frc2881.RobotType;
 import org.frc2881.commands.basic.background.NavX;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
 import org.frc2881.utils.frc4048.Logging;
+
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
@@ -27,13 +34,14 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.filters.LinearDigitalFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 
 /**
  *
  */
-public class Drive extends Subsystem {
+public class Drive extends Subsystem implements SendableWithChildren{
 
     public enum IntakeLocation {
         FRONT, BACK
@@ -50,34 +58,76 @@ public class Drive extends Subsystem {
     private Solenoid armExtension;
     private SpeedController left;
     private SpeedController right;
+    private CANEncoder leftFrontEncoder;
+    private CANEncoder leftBackEncoder;
+    private CANEncoder rightFrontEncoder;
+    private CANEncoder rightBackEncoder;
+    
+    //PID Tuning as described at http://i.imgur.com/aptC5bP.png and https://www.youtube.com/watch?v=UOuRx9Ujsog
+    private static final double straightKc = 1.9;
+    private static final double straightPc = 1.271679;  // period of oscillation
+    private static final double straightP = 0.6 * straightKc;
+    private static final double straightI = 0;//2 * straightP * 0.05 / straightPc;
+    private static final double straightD = 0.125 * straightP * straightPc / 0.05;
+    private static final double straightF = 0.00;
+
+    private final LinearDigitalFilter currentMovingAverage;
+    private final LinearDigitalFilter straightMovingAverage;
+    private final PowerDistributionPanel pdp = new PowerDistributionPanel(10);
+    private PIDController straightPID;
+    private double straightSpeed;
+
 
     public Drive() {
         navX = new NavX(SPI.Port.kMXP);
         addChild("NavX",navX);
-    
 
-        if (RobotType.get() == RobotType.COMPETITION_BOT) {
-            CANSparkMax leftFront = addDevice("Left Front", new CANSparkMax(1, MotorType.kBrushless));
-            CANSparkMax leftBack = addDevice("Left Back", new CANSparkMax(2, MotorType.kBrushless));
-            CANSparkMax rightFront = addDevice("Right Front", new CANSparkMax(3, MotorType.kBrushless));
-            CANSparkMax rightBack = addDevice("Right Back", new CANSparkMax(4, MotorType.kBrushless));
+        currentMovingAverage = LinearDigitalFilter.movingAverage(new PIDSource() {
+            @Override
+            public void setPIDSourceType(PIDSourceType pidSource) {
+            }
 
-            left = addDevice("Left", new SpeedControllerGroup(leftFront, leftBack));
-            right = addDevice("Right", new SpeedControllerGroup(rightFront, rightBack));
+            @Override
+            public PIDSourceType getPIDSourceType() {
+                return PIDSourceType.kRate;
+            }
 
-        } else if (RobotType.get() == RobotType.TEST_BOARD_1) {
-            WPI_TalonSRX leftFront = addDevice("Left Front", new WPI_TalonSRX(1));
-            WPI_TalonSRX leftBack = addDevice("Left Back", new WPI_TalonSRX(2));
-            WPI_TalonSRX rightFront = addDevice("Right Front", new WPI_TalonSRX(3));
-            Spark rightBack = addDevice("Right Back", new Spark(8));  // SparkMAX on PWM
+            @Override
+            public double pidGet() {
+                return pdp.getTotalCurrent();
+            }
+        }, 15);
 
-            left = addDevice("Left", new SpeedControllerGroup(leftFront, leftBack));
-            right = addDevice("Right", new SpeedControllerGroup(rightFront, rightBack));
+        CANSparkMax leftFront = addDevice("Left Front", new CANSparkMax(1, MotorType.kBrushless));
+        CANSparkMax leftBack = addDevice("Left Back", new CANSparkMax(2, MotorType.kBrushless));
+        CANSparkMax rightFront = addDevice("Right Front", new CANSparkMax(3, MotorType.kBrushless));
+        CANSparkMax rightBack = addDevice("Right Back", new CANSparkMax(4, MotorType.kBrushless));
 
-        } else {
-            left = addDevice("Left", new WPI_TalonSRX(1));
-            right = addDevice("Right", new WPI_TalonSRX(2));
-        }
+        left = addDevice("Left", new SpeedControllerGroup(leftFront, leftBack));
+        right = addDevice("Right", new SpeedControllerGroup(rightFront, rightBack));
+        
+        leftFrontEncoder = leftFront.getEncoder();
+        leftBackEncoder = leftBack.getEncoder();
+        rightFrontEncoder = rightFront.getEncoder();
+        rightBackEncoder = rightBack.getEncoder();
+
+        //This is the code to implement code to drive straight a certain distance
+        straightPID = new PIDController(straightP, straightI, straightD, straightF, new DistancePIDSource(), new PIDOutput() {
+            @Override
+            public void pidWrite(double output) {
+                straightSpeed = output;
+            }
+        });
+        addChild("StraightPID", straightPID);
+
+        straightPID.setOutputRange(-1, 1);
+        straightPID.setAbsoluteTolerance(0.1);
+        straightPID.disable();
+        /* Add the PID Controller to the Test-mode dashboard, allowing manual  */
+        /* tuning of the Turn Controller's P, I and D coefficients.            */
+        /* Typically, only the P value needs to be modified.                   */
+        straightPID.setName("DriveSubsystem", "StraightController");
+        straightMovingAverage = LinearDigitalFilter.movingAverage(new DistancePIDSource(), 3);
         
         liftCrawler = new Spark(5);
         addChild("Lift Crawler",liftCrawler);
@@ -99,8 +149,8 @@ public class Drive extends Subsystem {
 
 		@Override
 		protected void addAll() {
-            add("Left Distance", getLeftDistance());
-            add("Right Distance", getRightDistance());
+            add("Left Speed", getLeftDistance());
+            add("Right Speed", getRightDistance());
             add("Arm Extension State", getArmExtensionState());
             add("Lift Crawler Speed", getLiftCrawlerSpeed());
             add("Intake Location", intakeLocation);
@@ -118,6 +168,22 @@ public class Drive extends Subsystem {
             differentialDrive.tankDrive(leftSpeed, rightSpeed, true);
         } else {
             differentialDrive.tankDrive(-rightSpeed, -leftSpeed, true);
+        }
+    }
+
+    private class DistancePIDSource implements PIDSource {
+        @Override
+        public void setPIDSourceType(PIDSourceType pidSource) {
+        }
+
+        @Override
+        public PIDSourceType getPIDSourceType() {
+            return PIDSourceType.kDisplacement;
+        }
+
+        @Override
+        public double pidGet() {
+            return getDistanceDriven();
         }
     }
 
@@ -193,6 +259,10 @@ public class Drive extends Subsystem {
         return liftCrawler.getSpeed();
     }
 
+    private double getAverageEncoderSpeed() {
+        return (rightFrontEncoder.getVelocity() + leftFrontEncoder.getVelocity() + rightBackEncoder.getVelocity() + leftBackEncoder.getVelocity()) / 4;
+    }
+
 	public void cargoDanceRotate(double rotateToAngleRate, double d) {
 	}
 
@@ -204,9 +274,42 @@ public class Drive extends Subsystem {
         rotateToAngleRate = 0;
         turnPID.enable();
         currentMovingAverage.reset();
-	}*/
+    }*/
+    
+    public double getDistanceDriven() {
+        double left = (leftFrontEncoder.getPosition() + leftBackEncoder.getPosition())/2;
+        double right = (rightFrontEncoder.getPosition() + rightBackEncoder.getPosition())/2;
+        return (left + right) / 2;
+    }
 
-	public String getLocation() {
-		return null;
-	}
+    public void initializeDriveForward(double distance, double angle) {
+        straightPID.setSetpoint(getDistanceDriven() + distance);
+        straightSpeed = 0;
+        straightPID.enable();
+        currentMovingAverage.reset();
+
+    }
+    //this will drive the robot straight with the speed indicated
+
+    public boolean isFinishedDriveForward() {
+        //called to finish the command when PID loop is finished
+        boolean stopped = Math.abs(getDistanceDriven() - straightMovingAverage.pidGet()) < 0.02;
+        boolean pushing = (currentMovingAverage.pidGet() > 60 && Math.abs(getAverageEncoderSpeed()) < 1);
+        if (pushing){
+            Robot.log("Drive Forward interrupted");
+        };
+        if (stopped && straightPID.onTarget() || pushing ) {
+            return true;
+        }
+        return false;
+    }
+
+    public void endDriveForward() {
+        //Disable the PID loop when the turn is finished
+        straightPID.disable();
+    }
+
+    public double getStraightSpeed() {
+        return straightSpeed;
+    }
 }

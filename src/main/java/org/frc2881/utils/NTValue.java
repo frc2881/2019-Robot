@@ -54,24 +54,44 @@ public class NTValue {
 
     }
 
-    public static Double[] findTarget() {
+    public static Double[][] findTarget() {
         targetInfoArray = targetInfo.getDoubleArray(defaultValue);
         int totalCargo = targetInfoArray.length/ 3;
-        Double[] rocketTarget = new Double[2];
+        Double[][] rocketTarget = new Double[2][2];
         
         for (int i = 0; i < targetInfoArray.length / 3; i++) {
             target[i][0] = targetInfoArray[i * 3];//x
             target[i][1] = targetInfoArray[i * 3 + 1];//y
         }
 
+        int j = 0;
         for (int i = 0; i < totalCargo; i++) {
             if (target[i][1] < 60){  //TODO change this (60) when we get new values from positioned camera
-                target[i][0] = rocketTarget[i];
+                target[i][0] = rocketTarget[j][0];//x
+                target[i][1] = rocketTarget[j][1];//y
+                j++;
             }  
         }
         return rocketTarget;
     }
-    
+
+    public static double distanceToMove(){
+        Double[][] target = findTarget();
+        double pxpIn = (4.8132 + 5.6098)/2; // pixels per inch; from slopes in "numbers" spreadsheet
+        double targetHeightIn = (60 - 49.85) * pxpIn; //TODO Find "actual" target HEIGHT for camera purposes
+
+        //Calculations with height (y) for distance from robot (depth) (z)
+        double maxInV = 60/pxpIn; // 60 max pixels (vertically)
+        double maxRadV = Math.atan2(maxInV, 30); // y/x
+        double radpPx = maxRadV/60; // radians per pixel
+        double avgHeightPx = (target[0][1] + target[1][1])/2;// avg height (pixels) of targets
+        double distanceZFromRocket = targetHeightIn/Math.tan(radpPx * avgHeightPx); //y / tan(theta) = x
+
+        //Calculations with depth (z) for horizontal distance from target (x)
+        double avgXPx = (target[0][0] + target[1][0])/2;// avg distance (pixels) from robot x axis
+        double distanceXFromRocket = Math.tan(radpPx * avgXPx) * distanceZFromRocket; // x * tan(theta) = y
+        return distanceXFromRocket;
+    }
 
     public static double getCargoX() {
         //find one with largest radius first
