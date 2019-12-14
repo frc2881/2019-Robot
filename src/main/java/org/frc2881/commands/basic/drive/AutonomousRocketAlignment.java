@@ -11,6 +11,7 @@
 package org.frc2881.commands.basic.drive;
 
 import org.frc2881.Robot;
+import org.frc2881.commands.basic.rumble.RumbleYes;
 import org.frc2881.utils.NTValue;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -21,6 +22,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomousRocketAlignment extends CommandGroup {
     public AutonomousRocketAlignment() {
         Robot.logInitialize(this);
-        addSequential(new DriveForward(NTValue.distanceToMove()));
+        if (NTValue.distanceToMove() < 3) {
+            addSequential(new SidewaysSequence(NTValue.distanceToMove()), 1);
+        }
+        
+        addSequential(new RumbleYes(Robot.oi.manipulator));
     }
 }

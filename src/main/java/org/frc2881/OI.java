@@ -16,13 +16,13 @@ import org.frc2881.commands.basic.CameraSwitch;
 import org.frc2881.commands.basic.background.NavXReset;
 import org.frc2881.commands.basic.background.RobotPrep;
 import org.frc2881.commands.basic.background.TWINKLES;
+import org.frc2881.commands.basic.drive.AutonomousRocketAlignment;
 import org.frc2881.commands.basic.drive.CargoFollowing;
 import org.frc2881.commands.basic.drive.DriveForDistance;
 import org.frc2881.commands.basic.drive.DriveForward;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
 import org.frc2881.commands.basic.drive.IntakeSetAsBack;
 import org.frc2881.commands.basic.drive.IntakeSetAsFront;
-import org.frc2881.commands.basic.drive.SidewaysSequence;
 import org.frc2881.commands.basic.drive.SlowStrafe;
 import org.frc2881.commands.basic.drive.DriveForDistance;
 //import org.frc2881.commands.basic.drive.StrafeEncoderPosition;
@@ -133,7 +133,7 @@ public class OI {
     public Button cargoFollow;
     public Button driveForDistance;
     public Button slowStrafe;
-    public Button sidewaysSequence;
+    public Button autoAlign;
     public XboxController driver;
     public XboxController manipulator;
 
@@ -201,8 +201,8 @@ public class OI {
         slowStrafe = new JoystickButton(driver, PS4.SHARE_BUTTON);
         slowStrafe.whileHeld(new SlowStrafe(0.065));
 
-        sidewaysSequence = new JoystickButton(driver, PS4.RED_CIRCLE);
-        sidewaysSequence.whenPressed(new SidewaysSequence());
+        autoAlign = new JoystickButton(driver, PS4.RED_CIRCLE);
+        autoAlign.whenPressed(new AutonomousRocketAlignment());
 
 
 

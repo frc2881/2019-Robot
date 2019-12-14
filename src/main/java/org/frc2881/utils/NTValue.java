@@ -16,7 +16,6 @@ public class NTValue {
     private static Double[][] cargo = new Double[cargoInfoArray.length / 3][3];
     private static double[] targetInfoArray;
     private static Double[][] target = new Double[targetInfoArray.length / 3][2];
-    private Boolean first;
 
     static {
         ntinst = NetworkTableInstance.getDefault();

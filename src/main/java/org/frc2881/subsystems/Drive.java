@@ -21,6 +21,7 @@ import org.frc2881.Robot;
 import org.frc2881.RobotType;
 import org.frc2881.commands.basic.background.NavX;
 import org.frc2881.commands.basic.drive.DriveWithJoysticks;
+import org.frc2881.utils.DistancePerPulse;
 import org.frc2881.utils.frc4048.Logging;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -119,7 +120,7 @@ public class Drive extends Subsystem implements SendableWithChildren{
         addChild("Differential Drive",differentialDrive);
 
         strafeEncoder = hDrive.getEncoder();
-        double distancePerPulse = -55/83.0;
+        double distancePerPulse = DistancePerPulse.get(64, 12, 42, 4);
         strafeEncoderPosition = () -> strafeEncoder.getPosition() * distancePerPulse;// - beginningPosition + potHeight;
         strafeEncoderVelocity = () -> strafeEncoder.getVelocity() * distancePerPulse;
         beginningPosition = strafeEncoder.getPosition() * distancePerPulse;

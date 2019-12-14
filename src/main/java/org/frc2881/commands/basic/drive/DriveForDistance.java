@@ -16,21 +16,21 @@ public class DriveForDistance extends Command {
     
     @Override
     protected void initialize() {
-        targetPosition = Robot.drive.strafeEncoder.getPosition() + distance;
+        targetPosition = Robot.drive.getStrafeEncoderDistance() + distance;
         Robot.logInitialize(this);
-        Robot.log("position " + Robot.drive.strafeEncoder.getPosition() + " distance " + distance + " Target Position " + targetPosition); //takes the value of differen positions from drive.java and prints them out
+        Robot.log("position " + Robot.drive.getStrafeEncoderDistance() + " distance " + distance + " Target Position " + targetPosition); //takes the value of differen positions from drive.java and prints them out
     }
 
     @Override
     protected void execute() {
-        double error = targetPosition - Robot.drive.strafeEncoder.getPosition();
+        double error = targetPosition - Robot.drive.getStrafeEncoderDistance();
         Robot.drive.setStrafeMotorSpeed(error * 0.125); //0.2
-        Robot.log("position " + Robot.drive.strafeEncoder.getPosition() + " error " + error); //takes the value of differen positions from drive.java and prints them out
+        Robot.log("position " + Robot.drive.getStrafeEncoderDistance() + " error " + error); //takes the value of differen positions from drive.java and prints them out
     }
 
     @Override
     protected boolean isFinished() {       
-        double error = targetPosition - Robot.drive.strafeEncoder.getPosition();
+        double error = targetPosition - Robot.drive.getStrafeEncoderDistance();
         return Math.abs(error) < 1;
     }
 

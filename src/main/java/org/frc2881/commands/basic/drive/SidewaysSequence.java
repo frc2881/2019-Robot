@@ -17,9 +17,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class SidewaysSequence extends CommandGroup {
 
-    int distance = 3;
-
-    public SidewaysSequence() {
+    public SidewaysSequence(double distance) {
         addSequential(new SlowStrafe(0.065));
         addSequential(new DriveForDistance(distance));
     }
